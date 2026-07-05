@@ -1,0 +1,23 @@
+# Datos sensibles
+datos/
+datos_usuarios/
+*.json
+!assets/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Backend/Entorno
+backend/venv/
+.env
+
+# Archivos compilados
+*.apk
+build/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db
