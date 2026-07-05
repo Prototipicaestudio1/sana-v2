@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 Sana - Bienestar Educativo</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--verde:#2D6A4F;--verde-claro:#40916C;--verde-palido:#D8F3DC;--verde-bg:#EEF7F0;--azul:#1B3A4B;--azul-claro:#2D6A7B;--rosa:#9B5D6E;--rosa-claro:#C98B9B;--naranja:#C27A3E;--naranja-claro:#E8A75D;--morado:#6B5B8A;--blanco:#FFFFFF;--crema:#FAF7F2;--gris:#F0EDE8;--gris-medio:#D1CDCC;--gris-oscuro:#8A8787;--texto:#2D2D2D;--texto-claro:#6B6B6B;--sombra:0 4px 20px rgba(0,0,0,0.06);--radius:16px}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--crema);color:var(--texto);min-height:100vh;padding-bottom:80px;-webkit-tap-highlight-color:transparent}
+        .header{background:linear-gradient(135deg,var(--verde),var(--verde-claro));color:var(--blanco);padding:20px;border-radius:0 0 28px 28px;margin-bottom:16px;box-shadow:0 4px 30px rgba(45,106,79,0.3);position:sticky;top:0;z-index:100}
+        .header-top{display:flex;justify-content:space-between;align-items:center}
+        .header h1{font-size:24px;display:flex;align-items:center;gap:8px}
+        .header .subtitle{opacity:0.9;font-size:12px;margin-top:2px}
+        .header-user{background:rgba(255,255,255,0.2);padding:4px 14px;border-radius:20px;font-size:11px}
+        .login-panel{background:var(--blanco);padding:24px 16px;border-radius:var(--radius);margin:16px;box-shadow:var(--sombra)}
+        .login-panel h2{color:var(--verde);font-size:18px;margin-bottom:14px;text-align:center}
+        .login-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+        .login-card{background:var(--crema);padding:14px 8px;border-radius:12px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+        .login-card:active{transform:scale(0.95)}
+        .login-card .icon{font-size:26px;display:block;margin-bottom:2px}
+        .login-card h3{font-size:12px}
+        .login-card.verde{border-color:var(--verde);background:var(--verde-bg)}
+        .login-card.azul{border-color:var(--azul);background:#E8EEF2}
+        .login-card.rosa{border-color:var(--rosa);background:#F5ECEF}
+        .login-input{width:100%;padding:12px;border:2px solid var(--gris);border-radius:12px;font-size:14px;outline:none}
+        .login-input:focus{border-color:var(--verde)}
+        #mainContent{padding:0 16px}
+        .hidden{display:none!important}
+        .seccion{display:none;animation:fadeIn 0.3s ease}
+        .seccion.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .seccion-title{font-size:19px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:8px}
+        .seccion-subtitle{color:var(--texto-claro);font-size:12px;margin-bottom:14px}
+        .grid-inicio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+        .card-inicio{background:var(--blanco);padding:16px 10px;border-radius:var(--radius);text-align:center;cursor:pointer;box-shadow:var(--sombra);border:2px solid transparent;transition:all 0.2s}
+        .card-inicio:active{transform:scale(0.95)}
+        .card-inicio .icon{font-size:28px;display:block;margin-bottom:4px}
+        .card-inicio h3{font-size:12px;font-weight:600}
+        .card-inicio p{font-size:10px;color:var(--texto-claro);margin-top:2px}
+        .card-inicio.verde{border-color:var(--verde)}
+        .card-inicio.azul{border-color:var(--azul)}
+        .card-inicio.rosa{border-color:var(--rosa)}
+        .card-inicio.naranja{border-color:var(--naranja)}
+        .card-inicio.morado{border-color:var(--morado)}
+        .badge{background:var(--verde);color:#fff;font-size:7px;padding:1px 6px;border-radius:8px;display:inline-block}
+        .chat-container{background:var(--blanco);border-radius:var(--radius);padding:14px;box-shadow:var(--sombra)}
+        .chat-messages{max-height:300px;overflow-y:auto;margin-bottom:10px}
+        .message{padding:10px 14px;border-radius:14px;margin-bottom:6px;max-width:88%;font-size:13px;word-wrap:break-word;animation:fadeIn 0.3s}
+        .message.user{background:var(--verde);color:#fff;margin-left:auto;border-radius:16px 4px 16px 16px}
+        .message.bot{background:var(--gris);color:var(--texto);margin-right:auto;border-radius:4px 16px 16px 16px}
+        .chat-input-group{display:flex;gap:8px}
+        .chat-input-group input{flex:1;padding:10px 14px;border:2px solid var(--gris);border-radius:12px;font-size:14px;outline:none;background:#fff}
+        .chat-input-group input:focus{border-color:var(--verde)}
+        .chat-input-group button{padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
+        .chat-input-group button:active{transform:scale(0.95)}
+        .emoji-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+        .emoji-chip{background:var(--verde);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer}
+        .emoji-chip:active{transform:scale(0.9)}
+        .emoji-chip.rosa{background:var(--rosa)}
+        .emoji-chip.azul{background:var(--azul)}
+        .emoji-chip.naranja{background:var(--naranja)}
+        .emoji-chip.morado{background:var(--morado)}
+        .racha-display{text-align:center;padding:10px;background:var(--verde-bg);border-radius:12px;margin-top:10px;font-size:13px;color:var(--verde);font-weight:500}
+        .input-group{background:var(--blanco);padding:14px;border-radius:var(--radius);margin:10px 0;box-shadow:var(--sombra)}
+        .input-group input,.input-group textarea{width:100%;padding:10px 14px;border:2px solid var(--gris);border-radius:12px;font-size:13px;margin-bottom:6px;outline:none;font-family:inherit}
+        .input-group input:focus,.input-group textarea:focus{border-color:var(--verde)}
+        .input-group textarea{resize:vertical;min-height:50px}
+        .btn-primary{width:100%;padding:10px;background:var(--verde);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer}
+        .btn-primary:active{transform:scale(0.97)}
+        .btn-primary.naranja{background:var(--naranja)}
+        .btn-primary.rosa{background:var(--rosa)}
+        .btn-primary.azul{background:var(--azul)}
+        .bitacora-entry{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;border-left:4px solid var(--verde);box-shadow:var(--sombra)}
+        .bitacora-entry .autor{font-weight:600;color:var(--verde);font-size:12px}
+        .bitacora-entry .fecha{font-size:10px;color:var(--gris-oscuro);float:right}
+        .bitacora-entry .texto{margin-top:4px;font-size:13px;line-height:1.4}
+        .bitacora-entry .meta{font-size:11px;color:var(--texto-claro);margin-top:4px}
+        .tarea-item{background:var(--blanco);padding:10px 14px;border-radius:var(--radius);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sombra)}
+        .tarea-item .texto{font-size:13px;flex:1}
+        .tarea-item .carga{font-size:10px;color:var(--texto-claro);margin-right:6px}
+        .tarea-item .carga-bar{width:50px;height:5px;background:var(--gris);border-radius:4px;overflow:hidden}
+        .tarea-item .carga-bar .fill{height:100%;background:var(--naranja);border-radius:4px}
+        .tarea-item .delete-btn{background:none;border:none;color:var(--gris-oscuro);font-size:16px;cursor:pointer;padding:2px 6px}
+        .ejercicio-card{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--sombra);border-left:4px solid var(--azul)}
+        .ejercicio-card .nombre{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px}
+        .ejercicio-card .desc{font-size:12px;color:var(--texto-claro);margin-top:2px}
+        .materia-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .materia-card{background:var(--blanco);padding:14px;border-radius:var(--radius);text-align:center;cursor:pointer;box-shadow:var(--sombra);border:2px solid transparent}
+        .materia-card:active{transform:scale(0.95)}
+        .materia-card .icon{font-size:24px;display:block}
+        .materia-card .nombre{font-size:12px;font-weight:600;margin-top:2px}
+        .materia-card.naranja{border-color:var(--naranja)}
+        .search-box{display:flex;gap:6px;margin-bottom:10px}
+        .search-box input{flex:1;padding:8px 14px;border:2px solid var(--gris);border-radius:12px;font-size:13px;outline:none}
+        .search-box input:focus{border-color:var(--naranja)}
+        .search-box button{padding:8px 16px;background:var(--naranja);color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer}
+        .search-box button:active{transform:scale(0.95)}
+        .ayuda-card{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;border-left:4px solid var(--rosa);box-shadow:var(--sombra)}
+        .ayuda-card .nombre{font-weight:600;font-size:13px}
+        .ayuda-card .telefono{font-size:15px;font-weight:700;color:var(--rosa);margin:2px 0}
+        .ayuda-card .desc{font-size:12px;color:var(--texto-claro)}
+        .nav-bottom{position:fixed;bottom:0;left:0;right:0;background:var(--blanco);display:flex;justify-content:space-around;padding:6px 0;padding-bottom:max(6px,env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,0.06);border-top:1px solid var(--gris);z-index:1000}
+        .nav-bottom button{background:none;border:none;font-size:9px;color:var(--gris-oscuro);cursor:pointer;padding:2px 6px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:40px;transition:all 0.2s}
+        .nav-bottom button .icono{font-size:20px}
+        .nav-bottom button.active{color:var(--verde);font-weight:600}
+        .empty-state{text-align:center;padding:24px;color:var(--texto-claro)}
+        .empty-state .icon{font-size:32px;display:block;margin-bottom:4px}
+        .empty-state p{font-size:13px}
+        .toast{position:fixed;bottom:80px;left:16px;right:16px;background:var(--verde);color:#fff;padding:12px 16px;border-radius:14px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;animation:slideUp 0.4s ease;font-size:13px;font-weight:500}
+        .toast.error{background:#E76F51}
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @media(max-width:400px){.grid-inicio{grid-template-columns:1fr 1fr}.login-grid{grid-template-columns:1fr}.materia-grid{grid-template-columns:1fr}.header h1{font-size:20px}}
+        @media(min-width:600px){.grid-inicio{grid-template-columns:1fr 1fr 1fr}.materia-grid{grid-template-columns:1fr 1fr 1fr}}
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-top">
+            <div>
+                <h1><span>🌿</span>Sana</h1>
+                <div class="subtitle">Bienestar Educativo</div>
+            </div>
+            <div class="header-user" id="userDisplay">👤 Invitado</div>
+        </div>
+    </header>
+
+    <!-- LOGIN -->
+    <div id="loginPanel" class="login-panel">
+        <h2>🔑 Selecciona tu rol</h2>
+        <div class="login-grid">
+            <div class="login-card verde" onclick="login('alumno')">
+                <span class="icon">🎓</span>
+                <h3>Alumno</h3>
+            </div>
+            <div class="login-card azul" onclick="login('docente')">
+                <span class="icon">👨‍🏫</span>
+                <h3>Docente</h3>
+            </div>
+            <div class="login-card rosa" onclick="login('admin')">
+                <span class="icon">🔑</span>
+                <h3>Admin</h3>
+            </div>
+        </div>
+        <input id="codigoInput" class="login-input" placeholder="Código (opcional)">
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" class="hidden">
+
+        <!-- INICIO -->
+        <div id="seccion-inicio" class="seccion active">
+            <div class="grid-inicio">
+                <div class="card-inicio verde" onclick="mostrar('chat')"><span class="icon">💬</span><h3>Chat</h3><p>Habla con Sana</p></div>
+                <div class="card-inicio azul" onclick="mostrar('bitacora')"><span class="icon">📝</span><h3>Bitácora</h3><p>Registros</p></div>
+                <div class="card-inicio naranja" onclick="mostrar('ejercicios')"><span class="icon">🌬️</span><h3>Respirar</h3><p>Ejercicios</p></div>
+                <div class="card-inicio rosa" onclick="mostrar('diario')"><span class="icon">📔</span><h3>Diario</h3><p>Emociones</p></div>
+                <div class="card-inicio" onclick="mostrar('tareas')"><span class="icon">📅</span><h3>Tareas</h3><p>Organiza</p></div>
+                <div class="card-inicio morado" onclick="mostrar('regularizacion')"><span class="icon">📚</span><h3>Regularización</h3><p>Material</p></div>
+                <div class="card-inicio" onclick="mostrar('ayuda')" style="border-color:#E76F51"><span class="icon">🆘</span><h3>Ayuda</h3><p>Líneas de apoyo</p></div>
+            </div>
+        </div>
+
+        <!-- CHAT -->
+        <div id="seccion-chat" class="seccion">
+            <div class="chat-container">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <h3 style="font-size:17px">💬 Chat con Sana</h3>
+                    <span class="badge">● En línea</span>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot"><p>Hola, ¿cómo te sientes hoy? 🌿</p></div>
+                </div>
+                <div class="chat-input-group">
+                    <input id="chatInput" placeholder="Escribe lo que sientes..." onkeypress="if(event.key==='Enter') enviarMensaje()">
+                    <button onclick="enviarMensaje()">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BITÁCORA -->
+        <div id="seccion-bitacora" class="seccion">
+            <h3 class="seccion-title">📝 Bitácora</h3>
+            <p class="seccion-subtitle">Registra observaciones, reportes y calificaciones</p>
+            <div class="input-group">
+                <input id="bitacoraTitulo" placeholder="Título / Alumno...">
+                <textarea id="bitacoraTexto" rows="3" placeholder="Escribe tu entrada..."></textarea>
+                <div style="display:flex;gap:6px;margin-bottom:6px">
+                    <select id="bitacoraTipo" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
+                        <option value="observacion">👁️ Observación</option>
+                        <option value="reporte">⚠️ Reporte</option>
+                        <option value="recomendacion">💡 Recomendación</option>
+                        <option value="calificacion">📊 Calificación</option>
+                    </select>
+                    <input id="bitacoraAlumno" placeholder="Alumno" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
+                </div>
+                <button class="btn-primary" onclick="agregarBitacora()">➕ Agregar entrada</button>
+            </div>
+            <div id="bitacoraEntries"></div>
+        </div>
+
+        <!-- EJERCICIOS -->
+        <div id="seccion-ejercicios" class="seccion">
+            <h3 class="seccion-title">🌬️ Ejercicios de Respiración</h3>
+            <p class="seccion-subtitle">7 ejercicios guiados para encontrar calma</p>
+            <div id="ejerciciosList"></div>
+        </div>
+
+        <!-- DIARIO -->
+        <div id="seccion-diario" class="seccion">
+            <h3 class="seccion-title">📔 Diario Emocional</h3>
+            <p class="seccion-subtitle">Toca una emoción para registrarla</p>
+            <div class="emoji-grid" id="emocionesGrid"></div>
+            <div id="rachaDisplay" class="racha-display hidden">🔥 Racha: 0 días</div>
+        </div>
+
+        <!-- TAREAS -->
+        <div id="seccion-tareas" class="seccion">
+            <h3 class="seccion-title">📅 Mis Tareas</h3>
+            <p class="seccion-subtitle">Organiza tu carga mental</p>
+            <div class="input-group">
+                <input id="tareaInput" placeholder="Nueva tarea..." onkeypress="if(event.key==='Enter') agregarTarea()">
+                <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">
+                    <span style="font-size:12px;color:var(--texto-claro)">⚡ Carga:</span>
+                    <select id="cargaSelect" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
+                        <option value="1">1 - Ligera</option>
+                        <option value="2">2 - Media</option>
+                        <option value="3" selected>3 - Normal</option>
+                        <option value="4">4 - Pesada</option>
+                        <option value="5">5 - Muy pesada</option>
+                    </select>
+                </div>
+                <button class="btn-primary naranja" onclick="agregarTarea()">➕ Agregar tarea</button>
+            </div>
+            <div id="tareasList"></div>
+        </div>
+
+        <!-- REGULARIZACIÓN -->
+        <div id="seccion-regularizacion" class="seccion">
+            <h3 class="seccion-title">📚 Regularización</h3>
+            <p class="seccion-subtitle">Material educativo organizado por materia</p>
+            <div class="search-box">
+                <input id="materiaBuscar" placeholder="Buscar materia..." onkeyup="buscarMateria()">
+                <button onclick="buscarMateria()">🔍</button>
+            </div>
+            <div id="materiasList" class="materia-grid"></div>
+            <div id="materialContent" style="margin-top:10px"></div>
+        </div>
+
+        <!-- AYUDA -->
+        <div id="seccion-ayuda" class="seccion">
+            <h3 class="seccion-title">🆘 Líneas de Ayuda</h3>
+            <p class="seccion-subtitle">No estás solo/a. Aquí hay personas que te escuchan 💙</p>
+            <div id="lineasAyuda"></div>
+            <div style="text-align:center;padding:14px;color:var(--texto-claro);font-size:12px;font-style:italic">💪 Pedir ayuda es valentía, no debilidad</div>
+        </div>
+
+    </div>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="nav-bottom" id="navBottom">
+        <button class="active" onclick="mostrar('inicio')"><span class="icono">🏠</span><span>Inicio</span></button>
+        <button onclick="mostrar('chat')"><span class="icono">💬</span><span>Chat</span></button>
+        <button onclick="mostrar('bitacora')"><span class="icono">📝</span><span>Bitácora</span></button>
+        <button onclick="mostrar('diario')"><span class="icono">📔</span><span>Diario</span></button>
+        <button onclick="mostrar('regularizacion')"><span class="icono">📚</span><span>Regularizar</span></button>
+    </nav>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ─── VARIABLES ───
+        let usuario = { rol: 'invitado', nombre: '' };
+
+        // ─── LOGIN ───
+        function login(rol) {
+            const codigo = document.getElementById('codigoInput').value;
+            fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rol, codigo })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    usuario = data;
+                    document.getElementById('loginPanel').classList.add('hidden');
+                    document.getElementById('mainContent').classList.remove('hidden');
+                    document.getElementById('userDisplay').textContent = '👤 ' + (data.nombre || rol);
+                    toast('✅ Bienvenido ' + (data.nombre || rol));
+                    cargarDatos();
+                } else {
+                    toast('❌ ' + (data.mensaje || 'Credenciales inválidas'), 'error');
+                }
+            })
+            .catch(() => toast('❌ Error de conexión', 'error'));
+        }
+
+        // ─── NAVEGACIÓN ───
+        function mostrar(seccion) {
+            document.querySelectorAll('.seccion').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById('seccion-' + seccion);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.remove('active'));
+            const btns = document.querySelectorAll('.nav-bottom button');
+            const idx = ['inicio', 'chat', 'bitacora', 'diario', 'regularizacion'].indexOf(seccion);
+            if (btns[idx]) btns[idx].classList.add('active');
+
+            if (seccion === 'bitacora') cargarBitacora();
+            if (seccion === 'tareas') cargarTareas();
+            if (seccion === 'ayuda') cargarAyuda();
+            if (seccion === 'regularizacion') cargarMaterias();
+            if (seccion === 'chat') setTimeout(() => { const i = document.getElementById('chatInput'); if (i) i.focus(); }, 300);
+        }
+
+        // ─── CARGAR DATOS ───
+        function cargarDatos() {
+            cargarEjercicios();
+            cargarEmociones();
+            cargarBitacora();
+            cargarTareas();
+            cargarAyuda();
+            cargarRacha();
+            cargarMaterias();
+        }
+
+        // ─── CHAT ───
+        function enviarMensaje() {
+            const input = document.getElementById('chatInput');
+            const mensaje = input.value.trim();
+            if (!mensaje) return;
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'message user';
+            div.innerHTML = `<p>${mensaje}</p>`;
+            container.appendChild(div);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje })
+            })
+            .then(r => r.json())
+            .then(data => {
+                const div2 = document.createElement('div');
+                div2.className = 'message bot';
+                div2.innerHTML = `<p>${data.respuesta}</p>`;
+                container.appendChild(div2);
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+
+        // ─── EJERCICIOS ───
+        function cargarEjercicios() {
+            fetch('/api/ejercicios')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('ejerciciosList');
+                    container.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state"><span class="icon">🧘</span><p>Sin ejercicios</p></div>';
+                        return;
+                    }
+                    data.forEach(ej => {
+                        const div = document.createElement('div');
+                        div.className = 'ejercicio-card';
+                        div.innerHTML = `<div class="nombre">🧘 ${ej[0]}</div><div class="desc">${ej[1]}</div>`;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // ─── EMOCIONES ───
+        function cargarEmociones() {
+            fetch('/api/emociones')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('emocionesGrid');
+                    container.innerHTML = '';
+                    const colores = ['', 'rosa', 'azul', 'naranja', 'morado', ''];
+                    data.slice(0, 16).forEach((emo, i) => {
+                        const chip = document.createElement('span');
+                        chip.className = 'emoji-chip ' + colores[i % colores.length];
+                        chip.textContent = emo;
+                        chip.onclick = () => registrarEmocion(emo);
+                        container.appendChild(chip);
+                    });
+                });
+        }
+
+        function registrarEmocion(emocion) {
+            fetch('/api/registrar_emocion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ emocion })
+            })
+            .then(r => r.json())
+            .then(data => {
+                toast('✅ Registrado: ' + emocion + ' 🔥 Racha: ' + data.racha + ' días');
+                cargarRacha();
+            });
+        }
+
+        function cargarRacha() {
+            fetch('/api/emociones')
+                .then(r => r.json())
+                .then(() => {
+                    const display = document.getElementById('rachaDisplay');
+                    display.classList.remove('hidden');
+                    display.textContent = '🔥 Racha: ' + (diasRacha || 0) + ' días';
+                });
+        }
+
+        // ─── BITÁCORA ───
+        function cargarBitacora() {
+            fetch('/api/bitacora/general')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('bitacoraEntries');
+                    container.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state"><span class="icon">📭</span><p>Sin entradas</p></div>';
+                        return;
+                    }
+                    data.slice().reverse().slice(0, 20).forEach(entry => {
+                        const div = document.createElement('div');
+                        div.className = 'bitacora-entry';
+                        const iconos = { 'observacion': '👁️', 'reporte': '⚠️', 'recomendacion': '💡', 'calificacion': '📊' };
+                        const icono = iconos[entry.tipo] || '📝';
+                        div.innerHTML = `
+                            <div><span class="autor">${icono} ${entry.autor || 'Anónimo'}</span><span class="fecha">${new Date(entry.fecha).toLocaleDateString()}</span></div>
+                            <div class="texto">${entry.texto}</div>
+                            ${entry.alumno ? `<div class="meta">👤 ${entry.alumno}</div>` : ''}
+                        `;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        function agregarBitacora() {
+            const titulo = document.getElementById('bitacoraTitulo').value.trim();
+            const texto = document.getElementById('bitacoraTexto').value.trim();
+            const tipo = document.getElementById('bitacoraTipo').value;
+            const alumno = document.getElementById('bitacoraAlumno').value.trim();
+            const contenido = titulo + (texto ? '\n' + texto : '');
+            if (!contenido) return toast('❌ Escribe algo', 'error');
+            const entrada = { fecha: new Date().toISOString(), autor: usuario.nombre || 'Anónimo', texto: contenido, tipo: tipo, alumno: alumno || '' };
+            fetch('/api/bitacora/agregar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ escuela: 'general', entrada })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    toast('✅ Entrada guardada');
+                    document.getElementById('bitacoraTitulo').value = '';
+                    document.getElementById('bitacoraTexto').value = '';
+                    document.getElementById('bitacoraAlumno').value = '';
+                    cargarBitacora();
+                }
+            });
+        }
+
+        // ─── TAREAS ───
+        function cargarTareas() {
+            fetch('/api/tareas')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('tareasList');
+                    container.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state"><span class="icon">✅</span><p>¡Sin tareas!</p></div>';
+                        return;
+                    }
+                    data.forEach((tarea, idx) => {
+                        const div = document.createElement('div');
+                        div.className = 'tarea-item';
+                        const fillWidth = (tarea.carga / 5) * 100;
+                        div.innerHTML = `
+                            <div>
+                                <div class="texto">${tarea.texto}</div>
+                                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+                                    <span class="carga">⚡ ${tarea.carga}/5</span>
+                                    <div class="carga-bar"><div class="fill" style="width:${fillWidth}%"></div></div>
+                                </div>
+                            </div>
+                            <button class="delete-btn" onclick="completarTarea(${idx})">✅</button>
+                        `;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        function agregarTarea() {
+            const input = document.getElementById('tareaInput');
+            const texto = input.value.trim();
+            const carga = parseInt(document.getElementById('cargaSelect').value);
+            if (!texto) return toast('❌ Escribe una tarea', 'error');
+            fetch('/api/agregar_tarea', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ texto, carga })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    toast('✅ Tarea agregada');
+                    input.value = '';
+                    cargarTareas();
+                }
+            });
+        }
+
+        function completarTarea(idx) {
+            fetch('/api/completar_tarea', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idx })
+            })
+            .then(() => {
+                toast('✅ Tarea completada');
+                cargarTareas();
+            });
+        }
+
+        // ─── REGULARIZACIÓN ───
+        function cargarMaterias() {
+            fetch('/api/materias')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('materiasList');
+                    container.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state" style="grid-column:span 2"><span class="icon">📚</span><p>Sin materias</p></div>';
+                        return;
+                    }
+                    data.forEach(materia => {
+                        const div = document.createElement('div');
+                        div.className = 'materia-card naranja';
+                        div.innerHTML = `<span class="icon">📖</span><div class="nombre">${materia}</div>`;
+                        div.onclick = () => verMaterial(materia);
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        function buscarMateria() {
+            const input = document.getElementById('materiaBuscar');
+            const texto = input.value.trim().toLowerCase();
+            if (!texto) { cargarMaterias(); return; }
+            fetch('/api/materias')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('materiasList');
+                    container.innerHTML = '';
+                    const filtradas = data.filter(m => m.toLowerCase().includes(texto));
+                    if (filtradas.length === 0) {
+                        container.innerHTML = '<div class="empty-state" style="grid-column:span 2"><span class="icon">🔍</span><p>No se encontraron</p></div>';
+                        return;
+                    }
+                    filtradas.forEach(materia => {
+                        const div = document.createElement('div');
+                        div.className = 'materia-card naranja';
+                        div.innerHTML = `<span class="icon">📖</span><div class="nombre">${materia}</div>`;
+                        div.onclick = () => verMaterial(materia);
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        function verMaterial(materia) {
+            fetch('/api/material/' + encodeURIComponent(materia))
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('materialContent');
+                    container.innerHTML = '<h4 style="color:var(--naranja);margin-bottom:6px">📚 ' + materia + '</h4>';
+                    if (!data || data.length === 0) {
+                        container.innerHTML += '<div class="empty-state"><span class="icon">📭</span><p>Sin material</p></div>';
+                        return;
+                    }
+                    data.forEach(mat => {
+                        const div = document.createElement('div');
+                        div.className = 'bitacora-entry';
+                        div.style.borderLeftColor = 'var(--naranja)';
+                        div.innerHTML = `
+                            <div><span class="autor">📖 ${mat.titulo || 'Sin título'}</span><span class="fecha">👤 ${mat.autor || 'Anónimo'}</span></div>
+                            <div class="texto">${mat.contenido || 'Sin contenido'}</div>
+                            ${mat.nivel ? `<div class="meta">📊 ${mat.nivel}</div>` : ''}
+                        `;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // ─── AYUDA ───
+        function cargarAyuda() {
+            fetch('/api/lineas_ayuda')
+                .then(r => r.json())
+                .then(data => {
+                    const container = document.getElementById('lineasAyuda');
+                    container.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state"><span class="icon">💙</span><p>Sin líneas</p></div>';
+                        return;
+                    }
+                    data.slice(0, 8).forEach(linea => {
+                        const div = document.createElement('div');
+                        div.className = 'ayuda-card';
+                        div.innerHTML = `<div class="nombre">${linea[0]}</div><div class="telefono">📞 ${linea[1]}</div><div class="desc">${linea[2]}</div>`;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // ─── TOAST ───
+        function toast(mensaje, tipo = 'success') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const div = document.createElement('div');
+            div.className = 'toast' + (tipo === 'error' ? ' error' : '');
+            div.textContent = mensaje;
+            document.body.appendChild(div);
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transition = 'opacity 0.3s';
+                setTimeout(() => div.remove(), 300);
+            }, 3000);
+        }
+
+        // ─── INICIALIZAR ───
+        console.log('🌿 Sana App cargada correctamente');
+        console.log('📱 Versión: 1.0');
+    </script>
+
+</body>
+</html>
