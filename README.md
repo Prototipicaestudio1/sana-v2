@@ -22,6 +22,6 @@ Asistente virtual con IA para el bienestar emocional de adolescentes en entornos
 
 ## 🚀 Instalación
 ```bash
-git clone https://github.com/TU-USUARIO/sana-v2.git
+git clone https://github.com/Prototipicaestudio1/sana-v2.git
 cd sana-v2
 python main.py
