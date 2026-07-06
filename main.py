@@ -34,6 +34,16 @@ regularizacion = Regularizacion()
 PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
 
+# Cargar datos desde GitHub al iniciar
+if not github.modo_local:
+    print("🔄 Sincronizando datos desde GitHub...")
+    datos_github = github.obtener_datos()
+    if datos_github:
+        if "escuelas" in datos_github:
+            escuelas.escuelas = datos_github["escuelas"]
+            escuelas._guardar()
+            print(f"✅ {len(datos_github['escuelas'])} escuelas cargadas")
+
 class SanaHandler(SimpleHTTPRequestHandler):
 
     def json(self, data, status=200):
