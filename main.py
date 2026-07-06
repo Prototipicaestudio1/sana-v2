@@ -17,6 +17,7 @@ from zonas.alertas import Alertas
 from zonas.bitacora import Bitacora
 from zonas.organizador import Organizador
 from zonas.escuelas import Escuelas
+from backend.github_sync import GitHubSync
 from zonas.regularizacion import Regularizacion
 
 respiracion = Respiracion()
@@ -31,7 +32,7 @@ escuelas = Escuelas()
 regularizacion = Regularizacion()
 
 PUERTO = int(os.environ.get('PORT', 8080))
-
+github = GitHubSync()
 
 class SanaHandler(SimpleHTTPRequestHandler):
 
