@@ -1,0 +1,99 @@
+{
+  "escuelas": {
+    "ESC-PARNHB": {
+      "nombre": "Francisco j Mujica",
+      "codigo_escuela": "ESC-PARNHB",
+      "num_docentes": 11,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-H07PTY",
+        "DOC-PIWRCU",
+        "DOC-QX02NV",
+        "DOC-5FWKNN",
+        "DOC-QQC9JP",
+        "DOC-CIDAUW",
+        "DOC-KTBYY7",
+        "DOC-1CMIQT",
+        "DOC-KUSJNI",
+        "DOC-AZWA9L",
+        "DOC-U696XV"
+      ],
+      "codigos_admin": [
+        "ADM-8BZ8SQ"
+      ],
+      "fecha_creacion": "2026-07-06T22:50:48.934288",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
+    }
+  },
+  "usuarios": {
+    "zeARi3LQw6Qe": {
+      "id": "zeARi3LQw6Qe",
+      "nombre": "Prueba",
+      "tipo": "docente",
+      "codigo_escuela": "ESC-PARNHB",
+      "codigo_docente": "DOC-H07PTY",
+      "fecha_registro": "2026-07-06T22:51:19.206950",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "88OafOFUOUTX": {
+      "id": "88OafOFUOUTX",
+      "nombre": "Leo",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-06T22:54:06.438385",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "dBE9feqiroBM": {
+      "id": "dBE9feqiroBM",
+      "nombre": "Leo",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-06T22:54:48.689554",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    }
+  },
+  "bitacoras": [
+    {
+      "id": 1,
+      "tipo": "observacion",
+      "alumno": "Prueba de persistencia en web v2.1",
+      "grupo": "1-A-SanaAlfa/FranciscoJ.MujicaClav0022",
+      "texto": "Ignorar está bitácora es prueba de persistencia",
+      "autor": "Docente",
+      "escuela": "ESC-PARNHB",
+      "publico": false,
+      "calificacion": null,
+      "fecha": "2026-07-06T22:52:44.312602",
+      "editado": false,
+      "fecha_edicion": null
+    }
+  ],
+  "regularizacion": [
+    {
+      "id": 1,
+      "materia": "Artes",
+      "titulo": "Prueba de persistencia",
+      "contenido": "Prueba de persistencia ignorar",
+      "autor": "Francisco j Mujica",
+      "escuela": "ESC-PARNHB",
+      "fecha": "2026-07-06T22:53:25.627859"
+    }
+  ],
+  "planes": [],
+  "tareas": [],
+  "red_apoyo": [],
+  "fecha": "2026-07-06T22:54:48.689923"
+}
