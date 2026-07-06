@@ -81,19 +81,9 @@
       "fecha_edicion": null
     }
   ],
-  "regularizacion": [
-    {
-      "id": 1,
-      "materia": "Artes",
-      "titulo": "Prueba de persistencia",
-      "contenido": "Prueba de persistencia ignorar",
-      "autor": "Francisco j Mujica",
-      "escuela": "ESC-PARNHB",
-      "fecha": "2026-07-06T22:53:25.627859"
-    }
-  ],
+  "regularizacion": [],
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T22:54:48.689923"
+  "fecha": "2026-07-06T23:23:41.095674"
 }
