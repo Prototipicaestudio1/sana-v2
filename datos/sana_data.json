@@ -63,6 +63,18 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "iiQYVyOmcpaZ": {
+      "id": "iiQYVyOmcpaZ",
+      "nombre": "Juan José Peña",
+      "tipo": "docente",
+      "codigo_escuela": "ESC-PARNHB",
+      "codigo_docente": "DOC-H07PTY",
+      "fecha_registro": "2026-07-06T23:29:19.341893",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -85,5 +97,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T23:23:41.095674"
+  "fecha": "2026-07-06T23:29:19.342216"
 }
