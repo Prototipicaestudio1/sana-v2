@@ -1,92 +1,90 @@
-import os
-import json
-import base64
+import os, json, base64
 from datetime import datetime
 import requests
 
 class GitHubSync:
     def __init__(self):
         self.token = os.environ.get('GITHUB_TOKEN', '')
-        self.repo_name = os.environ.get('GITHUB_REPO', 'sana-bitacora')
+        self.repo_name = os.environ.get('GITHUB_REPO', 'sana-v2')
         self.owner = os.environ.get('GITHUB_OWNER', '')
         self.modo_local = not self.token
-        
+        self.data_path = "datos/sana_data.json"
+
         if not self.modo_local:
             self.headers = {
                 'Authorization': f'token {self.token}',
                 'Accept': 'application/vnd.github.v3+json'
             }
             self.api_base = 'https://api.github.com'
-    
-    def obtener_escuelas(self):
+
+    def _github_request(self, method, url, json_data=None):
+        if method == 'GET':
+            return requests.get(url, headers=self.headers)
+        elif method == 'PUT':
+            return requests.put(url, headers=self.headers, json=json_data)
+
+    def obtener_datos(self):
         if self.modo_local:
-            return ['general', 'ejemplo']
-        try:
-            url = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/bitacoras"
-            response = requests.get(url, headers=self.headers)
-            if response.status_code == 200:
-                contents = response.json()
-                escuelas = []
-                for item in contents:
-                    if item['type'] == 'dir':
-                        escuelas.append(item['name'])
-                return escuelas
-        except:
-            pass
-        return ['general']
-    
-    def obtener_bitacora(self, escuela):
-        if self.modo_local:
-            archivo = f"bitacoras/{escuela}/bitacora.json"
-            if os.path.exists(archivo):
-                with open(archivo, 'r', encoding='utf-8') as f:
+            if os.path.exists(self.data_path):
+                with open(self.data_path, 'r') as f:
                     return json.load(f)
-            return []
+            return {}
         try:
-            path = f"bitacoras/{escuela}/bitacora.json"
-            url = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{path}"
-            response = requests.get(url, headers=self.headers)
-            if response.status_code == 200:
-                content = response.json()
-                data = json.loads(base64.b64decode(content['content']).decode('utf-8'))
-                return data
+            url = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{self.data_path}"
+            r = requests.get(url, headers=self.headers)
+            if r.status_code == 200:
+                content = r.json()
+                return json.loads(base64.b64decode(content['content']).decode('utf-8'))
         except:
             pass
-        return []
-    
-    def subir_bitacora(self, escuela, entrada):
+        return {}
+
+    def guardar_datos(self, datos):
         if self.modo_local:
-            os.makedirs(f"bitacoras/{escuela}", exist_ok=True)
-            archivo = f"bitacoras/{escuela}/bitacora.json"
-            existente = self.obtener_bitacora(escuela)
-            existente.append(entrada)
-            with open(archivo, 'w', encoding='utf-8') as f:
-                json.dump(existente, f, ensure_ascii=False, indent=2)
-            return {'status': 'local', 'archivo': archivo}
+            os.makedirs(os.path.dirname(self.data_path), exist_ok=True)
+            with open(self.data_path, 'w') as f:
+                json.dump(datos, f, indent=2, ensure_ascii=False)
+            return True
         try:
-            path = f"bitacoras/{escuela}/bitacora.json"
-            existente = self.obtener_bitacora(escuela)
-            existente.append(entrada)
-            content = json.dumps(existente, ensure_ascii=False, indent=2)
+            content = json.dumps(datos, indent=2, ensure_ascii=False)
             encoded = base64.b64encode(content.encode('utf-8')).decode('utf-8')
+            url = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{self.data_path}"
             
-            url_get = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{path}"
-            get_response = requests.get(url_get, headers=self.headers)
-            sha = None
-            if get_response.status_code == 200:
-                sha = get_response.json()['sha']
+            r = requests.get(url, headers=self.headers)
+            sha = r.json().get('sha') if r.status_code == 200 else None
             
-            url_put = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{path}"
-            data = {
-                'message': f'Actualización bitácora {escuela} - {datetime.now().isoformat()}',
+            body = {
+                'message': f'💾 SANA - {datetime.now().strftime("%Y-%m-%d %H:%M")}',
                 'content': encoded,
                 'branch': 'main'
             }
             if sha:
-                data['sha'] = sha
-            
-            response = requests.put(url_put, headers=self.headers, json=data)
-            if response.status_code in [200, 201]:
-                return {'status': 'success', 'escuela': escuela, 'entradas': len(existente)}
+                body['sha'] = sha
+
+            r = requests.put(url, headers=self.headers, json=body)
+            return r.status_code in [200, 201]
         except Exception as e:
-            return {'status': 'error', 'mensaje': str(e)}
+            print(f"⚠️ Error guardando: {e}")
+        return False
+
+    def sync_all(self, escuelas_obj, usuarios_obj):
+        """Sincroniza todos los datos a GitHub"""
+        datos = {
+            "escuelas": escuelas_obj.escuelas,
+            "usuarios": usuarios_obj.usuarios,
+            "fecha": datetime.now().isoformat()
+        }
+        return self.guardar_datos(datos)
+
+    def load_all(self, escuelas_obj, usuarios_obj):
+        """Carga todos los datos desde GitHub"""
+        datos = self.obtener_datos()
+        if datos:
+            if "escuelas" in datos:
+                escuelas_obj.escuelas = datos["escuelas"]
+                escuelas_obj._guardar()
+            if "usuarios" in datos:
+                usuarios_obj.usuarios = datos["usuarios"]
+                usuarios_obj._guardar()
+            return True
+        return False

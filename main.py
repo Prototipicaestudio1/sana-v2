@@ -1,5 +1,6 @@
 """
 🌿 SANA v2.0 - Servidor Principal Completo
+Persistencia total en GitHub · Login alumnos y docentes
 """
 
 import os, sys, json
@@ -18,6 +19,7 @@ from zonas.bitacora import Bitacora
 from zonas.organizador import Organizador
 from zonas.escuelas import Escuelas
 from zonas.regularizacion import Regularizacion
+from zonas.usuarios import Usuarios
 from backend.github_sync import GitHubSync
 
 respiracion = Respiracion()
@@ -30,19 +32,22 @@ bitacora = Bitacora()
 organizador = Organizador()
 escuelas = Escuelas()
 regularizacion = Regularizacion()
+usuarios = Usuarios()
 
 PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
 
 # Cargar datos desde GitHub al iniciar
 if not github.modo_local:
-    print("🔄 Sincronizando datos desde GitHub...")
-    datos_github = github.obtener_datos()
-    if datos_github:
-        if "escuelas" in datos_github:
-            escuelas.escuelas = datos_github["escuelas"]
-            escuelas._guardar()
-            print(f"✅ {len(datos_github['escuelas'])} escuelas cargadas")
+    print("🔄 Cargando datos desde GitHub...")
+    github.load_all(escuelas, usuarios)
+    print(f"✅ {len(escuelas.escuelas)} escuelas, {len(usuarios.usuarios)} usuarios")
+
+
+def sync_all_data():
+    """Guarda todos los datos en GitHub"""
+    if not github.modo_local:
+        github.sync_all(escuelas, usuarios)
 
 
 class SanaHandler(SimpleHTTPRequestHandler):
@@ -66,26 +71,46 @@ class SanaHandler(SimpleHTTPRequestHandler):
         qs = parse_qs(p.query)
         def q(k, d=''): return qs.get(k, [d])[0]
 
-        # ──── SINCRONIZAR ────
-        if path == '/api/sync/guardar':
-            if not github.modo_local:
-                datos = {
-                    "escuelas": escuelas.escuelas,
-                    "fecha": __import__('datetime').datetime.now().isoformat()
-                }
-                github.guardar_datos(datos)
-                return self.json({"sync": True})
-            return self.json({"sync": False, "error": "modo local"})
-
         # ──── STATS ────
         if path == '/api/stats':
-            return self.json({"tests": 983, "modulos": 27, "emociones": 11, "ejercicios": 7, "lineas_ayuda": 45, "version": "2.0"})
+            return self.json({"tests": 983, "modulos": 27, "version": "2.0", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas)})
 
-        # ──── LOGIN DOCENTE/ADMIN ────
+        # ──── REGISTRO ALUMNO ────
+        if path == '/api/registro':
+            nombre = q('nombre', '')
+            tipo = q('tipo', 'alumno')
+            if not nombre: return self.json({"error": "Falta nombre"}, 400)
+            user = usuarios.registrar(nombre, tipo)
+            sync_all_data()
+            return self.json({"user": user, "mensaje": "Guarda tu ID para entrar"})
+
+        # ──── LOGIN ────
         if path == '/api/login':
             codigo = q('codigo', '')
-            if not codigo: return self.json({"valido": False, "error": "Sin código"}, 400)
-            return self.json(escuelas.validar_codigo(codigo))
+            user_id = q('user_id', '')
+            if user_id:
+                user = usuarios.login(user_id)
+                if user: return self.json({"valido": True, "user": user})
+                return self.json({"valido": False})
+            if codigo.startswith('DOC-') or codigo.startswith('ADM-'):
+                return self.json(escuelas.validar_codigo(codigo))
+            return self.json({"valido": False})
+
+        # ──── PERFIL ────
+        if path == '/api/perfil':
+            user_id = q('user_id', '')
+            user = usuarios.obtener_por_id(user_id)
+            if user: return self.json({"user": user})
+            return self.json({"error": "No encontrado"}, 404)
+
+        # ──── ACTUALIZAR PERFIL ────
+        if path == '/api/perfil/actualizar':
+            user_id = q('user_id', '')
+            nombre = q('nombre', '')
+            if usuarios.actualizar_perfil(user_id, nombre):
+                sync_all_data()
+                return self.json({"actualizado": True})
+            return self.json({"error": "No encontrado"}, 404)
 
         # ──── ESCUELAS ────
         if path == '/api/escuelas/lista':
@@ -97,23 +122,21 @@ class SanaHandler(SimpleHTTPRequestHandler):
             admins = int(q('admin', '0'))
             if not nombre: return self.json({"error": "Falta nombre"}, 400)
             escuela = escuelas.registrar_escuela(nombre, docs, admins)
-            # Guardar en GitHub después de registrar
-            if not github.modo_local:
-                github.guardar_datos({"escuelas": escuelas.escuelas, "fecha": __import__('datetime').datetime.now().isoformat()})
+            sync_all_data()
             return self.json({"escuela": escuela})
 
         # ──── RESPIRACIÓN ────
         if path == '/api/respiracion/lista':
             ejercicios = []
             for c, ej in respiracion.EJERCICIOS.items():
-                ejercicios.append({"clave": c, "nombre": ej["nombre"], "descripcion": ej["descripcion"], "beneficio": ej["beneficio"], "nivel": ej["nivel"], "ciclos": ej["ciclos"], "visualizacion": ej["visualizacion"]})
+                ejercicios.append({"clave": c, "nombre": ej["nombre"], "descripcion": ej["descripcion"], "beneficio": ej["beneficio"], "nivel": ej["nivel"], "ciclos": ej["ciclos"]})
             return self.json({"ejercicios": ejercicios})
 
         if path == '/api/respiracion/info':
             clave = q('ejercicio', '4-7-8')
             ej = respiracion.obtener_ejercicio(clave)
             if not ej: return self.json({"error": "No encontrado"}, 404)
-            return self.json({"clave": clave, "nombre": ej["nombre"], "descripcion": ej["descripcion"], "beneficio": ej["beneficio"], "pasos": [{"texto": t, "segundos": s} for t, s in ej["pasos"]], "ciclos": ej["ciclos"], "visualizacion": ej["visualizacion"], "frase_inicio": respiracion.obtener_frase_inicio(), "frase_cierre": respiracion.obtener_frase_cierre()})
+            return self.json({"clave": clave, "nombre": ej["nombre"], "descripcion": ej["descripcion"], "beneficio": ej["beneficio"], "pasos": [{"texto": t, "segundos": s} for t, s in ej["pasos"]], "ciclos": ej["ciclos"], "frase_inicio": respiracion.obtener_frase_inicio(), "frase_cierre": respiracion.obtener_frase_cierre()})
 
         if path == '/api/respiracion/recomendar':
             return self.json({"recomendado": respiracion.obtener_recomendacion(q('estado', 'ansioso'))})
@@ -129,7 +152,18 @@ class SanaHandler(SimpleHTTPRequestHandler):
 
         # ──── DIARIO ────
         if path == '/api/diario/entradas':
-            return self.json({"entradas": diario.obtener_entradas() if hasattr(diario, 'obtener_entradas') else []})
+            user_id = q('user_id', '')
+            if user_id:
+                return self.json({"entradas": usuarios.obtener_diario(user_id)})
+            return self.json({"entradas": []})
+
+        if path == '/api/diario/borrar':
+            user_id = q('user_id', '')
+            entrada_id = int(q('id', '0'))
+            if usuarios.borrar_diario(user_id, entrada_id):
+                sync_all_data()
+                return self.json({"borrado": True})
+            return self.json({"error": "No encontrado"}, 404)
 
         # ──── LÍNEAS DE AYUDA ────
         if path == '/api/lineas-ayuda/paises':
@@ -138,15 +172,25 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/lineas-ayuda':
             pais = q('pais', 'México')
             ld = lineas_ayuda.PAISES.get(pais, {})
-            return self.json({"pais": pais, "prefijo": ld.get('prefijo', ''), "lineas": [{"nombre": l[0], "numero": l[1], "descripcion": l[2], "categoria": l[3]} for l in ld.get('lineas', [])]})
+            return self.json({"pais": pais, "lineas": [{"nombre": l[0], "numero": l[1], "descripcion": l[2], "categoria": l[3]} for l in ld.get('lineas', [])]})
 
         # ──── BITÁCORA ────
         if path == '/api/bitacora/entradas':
-            return self.json({"entradas": bitacora.obtener_entradas(q('escuela', '')) if hasattr(bitacora, 'obtener_entradas') else bitacora.entradas})
+            escuela = q('escuela', '')
+            return self.json({"entradas": bitacora.obtener_entradas(escuela) if hasattr(bitacora, 'obtener_entradas') else bitacora.entradas})
 
         if path == '/api/bitacora/agregar':
             entrada = bitacora.agregar_entrada(q('tipo', 'observacion'), q('alumno', ''), q('grupo', ''), q('texto', ''), q('autor', 'Docente'), q('escuela', 'general'))
+            sync_all_data()
             return self.json({"guardado": True, "entrada": entrada})
+
+        if path == '/api/bitacora/borrar':
+            id_entrada = int(q('id', '0'))
+            if hasattr(bitacora, 'eliminar_entrada'):
+                bitacora.eliminar_entrada(id_entrada)
+                sync_all_data()
+                return self.json({"borrado": True})
+            return self.json({"error": "No implementado"}, 400)
 
         # ──── ORGANIZADOR ────
         if path == '/api/organizador/planes':
@@ -186,31 +230,52 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 if resp: return self.json({"respuesta": resp, "modo": "ia"})
             except: pass
             emocion = escucha.detectar_emocion(mensaje) if hasattr(escucha, 'detectar_emocion') else {"emocion": "neutral"}
-            respuestas = {"triste": "Te escucho. ¿Quieres hacer un ejercicio de respiración? 🌿", "ansioso": "Vamos a respirar. ¿Probamos el ejercicio 4-7-8?", "enojado": "Es válido. ¿Quieres contarme más?", "feliz": "¡Qué bueno! Disfrútalo 😊", "neutral": "Gracias por compartir. Estoy aquí 💜"}
-            return self.json({"respuesta": respuestas.get(emocion.get('emocion', 'neutral'), respuestas['neutral']), "modo": "local", "emocion": emocion})
+            respuestas = {"triste": "Te escucho. ¿Quieres hacer un ejercicio de respiración? 🌿", "ansioso": "Vamos a respirar. ¿Probamos 4-7-8?", "enojado": "Es válido. ¿Quieres contarme más?", "feliz": "¡Qué bueno! 😊", "neutral": "Gracias por compartir. Estoy aquí 💜"}
+            return self.json({"respuesta": respuestas.get(emocion.get('emocion', 'neutral'), respuestas['neutral']), "modo": "local"})
 
         # ──── DIARIO ────
         if path == '/api/diario/guardar':
+            user_id = b('user_id', '')
             texto = b('texto', '')
             emocion = b('emocion', '')
-            if texto and hasattr(diario, 'agregar_entrada'):
-                diario.agregar_entrada(texto, emocion)
-                return self.json({"guardado": True})
-            return self.json({"error": "Sin texto"}, 400)
+            if user_id and texto:
+                entrada = usuarios.agregar_diario(user_id, {"texto": texto, "emocion": emocion})
+                sync_all_data()
+                return self.json({"guardado": True, "entrada": entrada})
+            return self.json({"error": "Faltan datos"}, 400)
 
         # ──── REGULARIZACIÓN ────
         if path == '/api/regularizacion/agregar':
             guia = regularizacion.agregar_guia(b('materia', ''), b('titulo', ''), b('contenido', ''), b('autor', ''), b('escuela', ''))
+            sync_all_data()
             return self.json({"guardado": True, "guia": guia})
 
         # ──── ORGANIZADOR ────
         if path == '/api/organizador/crear-plan':
             plan = organizador.crear_plan(b('nombre', ''), b('materia', ''), b('objetivo', ''), b('actividades', ''), b('escuela', ''), b('autor', ''))
+            sync_all_data()
             return self.json({"guardado": True, "plan": plan})
+
+        # ──── BORRAR PLAN ────
+        if path == '/api/organizador/borrar-plan':
+            id_plan = int(b('id', '0'))
+            if hasattr(organizador, 'eliminar_plan'):
+                organizador.eliminar_plan(id_plan)
+                sync_all_data()
+                return self.json({"borrado": True})
+            return self.json({"error": "No implementado"}, 400)
+
+        # ──── BORRAR GUÍA ────
+        if path == '/api/regularizacion/borrar':
+            id_guia = int(b('id', '0'))
+            regularizacion.eliminar_guia(id_guia)
+            sync_all_data()
+            return self.json({"borrado": True})
 
         # ──── ALERTAS ────
         if path == '/api/alertas/agregar':
             contacto = alertas.agregar_contacto(b('nombre', ''), b('telefono', ''), b('relacion', ''), b('escuela', ''))
+            sync_all_data()
             return self.json({"guardado": True, "contacto": contacto})
 
         return self.json({"error": "Not found"}, 404)
