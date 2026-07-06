@@ -1,6 +1,6 @@
 """
 🌿 SANA v2.0 - Servidor Principal Completo
-Persistencia TOTAL en GitHub · PDFs · Compartir · Planes públicos/privados
+Director escolar + Avisos + Bajas + Bitácora especial + Persistencia
 """
 
 import os, sys, json
@@ -20,6 +20,7 @@ from zonas.organizador import Organizador
 from zonas.escuelas import Escuelas
 from zonas.regularizacion import Regularizacion
 from zonas.usuarios import Usuarios
+from zonas.director import Director
 from backend.github_sync import GitHubSync
 
 respiracion = Respiracion()
@@ -33,6 +34,7 @@ organizador = Organizador()
 escuelas = Escuelas()
 regularizacion = Regularizacion()
 usuarios = Usuarios()
+director = Director()
 
 PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
@@ -40,11 +42,21 @@ github = GitHubSync()
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
     github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
-    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(bitacora.entradas)} bitácoras | {len(regularizacion.material)} guías | {len(organizador.planes)} planes")
+    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(director.avisos)} avisos")
 
 def sync_all():
     if not github.modo_local:
         github.sync_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
+        # También guardar datos del director
+        datos_director = {
+            "avisos": director.avisos,
+            "bajas": director.bajas,
+            "bitacora_director": director.bitacora_director
+        }
+        # Añadir al sync principal
+        data = github.obtener_datos()
+        data["director"] = datos_director
+        github.guardar_datos(data)
 
 class SanaHandler(SimpleHTTPRequestHandler):
     def json(self, data, status=200):
@@ -64,16 +76,17 @@ class SanaHandler(SimpleHTTPRequestHandler):
         def q(k, d=''): return qs.get(k, [d])[0]
 
         if path == '/api/stats':
-            return self.json({"tests": 983, "modulos": 27, "version": "2.0", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "bitacoras": len(bitacora.entradas), "guias": len(regularizacion.material), "planes": len(organizador.planes)})
+            return self.json({"tests": 983, "modulos": 27, "version": "2.0", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "avisos": len(director.avisos)})
 
+        # ──── REGISTRO / LOGIN ────
         if path == '/api/registro':
             n = q('nombre', ''); t = q('tipo', 'alumno'); cod = q('codigo', '')
             if not n: return self.json({"error": "Falta nombre"}, 400)
             cod_esc = None
-            if cod and (cod.startswith('DOC-') or cod.startswith('ADM-')):
+            if cod and (cod.startswith('DOC-') or cod.startswith('ADM-') or cod.startswith('ESC-')):
                 val = escuelas.validar_codigo(cod)
                 if val.get('valido'): cod_esc = val.get('codigo_escuela')
-            user = usuarios.registrar(n, t, cod_esc, cod if t == 'docente' else None)
+            user = usuarios.registrar(n, t, cod_esc, cod if t in ('docente','director') else None)
             sync_all(); return self.json({"user": user})
 
         if path == '/api/login':
@@ -81,24 +94,74 @@ class SanaHandler(SimpleHTTPRequestHandler):
             if uid:
                 u = usuarios.login(uid)
                 return self.json({"valido": True, "user": u}) if u else self.json({"valido": False})
+            if cod.startswith('ESC-'):
+                esc = escuelas.obtener_escuela(cod)
+                if esc: return self.json({"valido": True, "tipo": "director", "escuela": esc["nombre"], "codigo_escuela": cod, "datos_escuela": esc})
+                return self.json({"valido": False})
             if cod.startswith('DOC-') or cod.startswith('ADM-'):
                 return self.json(escuelas.validar_codigo(cod))
             return self.json({"valido": False})
 
+        # ──── PERFIL ────
         if path == '/api/perfil':
             u = usuarios.obtener_por_id(q('user_id', ''))
             return self.json({"user": u}) if u else self.json({"error": "No encontrado"}, 404)
-
         if path == '/api/perfil/actualizar':
             if usuarios.actualizar_perfil(q('user_id', ''), q('nombre', '')):
                 sync_all(); return self.json({"ok": True})
             return self.json({"error": "No encontrado"}, 404)
 
+        # ──── ESCUELAS ────
         if path == '/api/escuelas/lista': return self.json({"escuelas": escuelas.listar_escuelas()})
         if path == '/api/escuelas/registrar':
             esc = escuelas.registrar_escuela(q('nombre', ''), int(q('docentes', '0')), int(q('admin', '0')))
             sync_all(); return self.json({"escuela": esc})
 
+        # ──── DIRECTOR: Avisos ────
+        if path == '/api/director/avisos':
+            return self.json({"avisos": director.obtener_avisos(q('escuela', ''))})
+        if path == '/api/director/publicar-aviso':
+            av = director.publicar_aviso(q('escuela', ''), q('titulo', ''), q('mensaje', ''), q('autor', ''))
+            sync_all(); return self.json({"guardado": True, "aviso": av})
+        if path == '/api/director/eliminar-aviso':
+            director.eliminar_aviso(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── DIRECTOR: Bajas ────
+        if path == '/api/director/bajas':
+            return self.json({"bajas": director.obtener_bajas(q('escuela', ''))})
+        if path == '/api/director/dar-baja':
+            cod = q('codigo_docente', '')
+            # Eliminar código de la lista de docentes de la escuela
+            escuela_data = escuelas.obtener_escuela(q('escuela', ''))
+            if escuela_data and cod in escuela_data.get("codigos_docentes", []):
+                escuela_data["codigos_docentes"].remove(cod)
+                escuelas._guardar()
+            baja = director.dar_baja_docente(q('escuela', ''), cod, q('motivo', ''), q('autor', ''))
+            sync_all(); return self.json({"guardado": True, "baja": baja})
+        if path == '/api/director/nuevo-codigo':
+            import random, string
+            nuevo = f"DOC-{''.join(random.choices(string.ascii_uppercase + string.digits, k=6))}"
+            esc_data = escuelas.obtener_escuela(q('escuela', ''))
+            if esc_data:
+                esc_data["codigos_docentes"].append(nuevo)
+                escuelas._guardar()
+            sync_all(); return self.json({"nuevo_codigo": nuevo})
+        if path == '/api/director/reporte':
+            rep = director.generar_reporte_mensual(q('escuela', ''))
+            return self.json({"reporte": rep})
+
+        # ──── DIRECTOR: Bitácora ────
+        if path == '/api/director/bitacora':
+            return self.json({"entradas": director.obtener_bitacora(q('escuela', ''))})
+        if path == '/api/director/bitacora-agregar':
+            e = director.agregar_bitacora(q('escuela', ''), q('texto', ''), q('autor', ''))
+            sync_all(); return self.json({"guardado": True, "entrada": e})
+        if path == '/api/director/bitacora-compartir':
+            ok = director.compartir_bitacora(int(q('id', '0')), q('codigo', ''))
+            if ok: sync_all()
+            return self.json({"ok": ok})
+
+        # ──── RESTO DE ENDPOINTS (respiración, diario, etc.) ────
         if path == '/api/respiracion/lista':
             return self.json({"ejercicios": [{"clave": c, "nombre": e["nombre"], "descripcion": e["descripcion"], "nivel": e["nivel"], "ciclos": e["ciclos"]} for c, e in respiracion.EJERCICIOS.items()]})
         if path == '/api/respiracion/info':
@@ -107,63 +170,34 @@ class SanaHandler(SimpleHTTPRequestHandler):
             return self.json({"clave": q('ejercicio'), "nombre": ej["nombre"], "descripcion": ej["descripcion"], "pasos": [{"texto": t, "segundos": s} for t, s in ej["pasos"]], "ciclos": ej["ciclos"], "frase_inicio": respiracion.obtener_frase_inicio(), "frase_cierre": respiracion.obtener_frase_cierre()})
         if path == '/api/respiracion/recomendar': return self.json({"recomendado": respiracion.obtener_recomendacion(q('estado', 'ansioso'))})
         if path == '/api/respiracion/crisis': return self.json({"crisis": respiracion.obtener_mensaje_crisis()})
-
         if path == '/api/emociones/detectar':
             t = q('texto', ''); return self.json(escucha.detectar_emocion(t)) if t else self.json({"emocion": "neutral"})
-
         if path == '/api/diario/entradas': return self.json({"entradas": usuarios.obtener_diario(q('user_id', ''))})
-        if path == '/api/diario/borrar':
-            usuarios.borrar_diario(q('user_id', ''), int(q('id', '0'))); sync_all(); return self.json({"ok": True})
-
+        if path == '/api/diario/borrar': usuarios.borrar_diario(q('user_id', ''), int(q('id', '0'))); sync_all(); return self.json({"ok": True})
         if path == '/api/lineas-ayuda/paises': return self.json({"paises": list(lineas_ayuda.PAISES.keys())})
         if path == '/api/lineas-ayuda':
             ld = lineas_ayuda.PAISES.get(q('pais', 'México'), {})
             return self.json({"pais": q('pais'), "lineas": [{"nombre": l[0], "numero": l[1], "categoria": l[3]} for l in ld.get('lineas', [])]})
-
-        if path == '/api/bitacora/entradas':
-            return self.json({"entradas": bitacora.obtener_entradas(q('escuela', ''))})
+        if path == '/api/bitacora/entradas': return self.json({"entradas": bitacora.obtener_entradas(q('escuela', ''))})
         if path == '/api/bitacora/agregar':
             e = bitacora.agregar_entrada(q('tipo', 'observacion'), q('alumno', ''), q('grupo', ''), q('texto', ''), q('autor', ''), q('escuela', ''))
             sync_all(); return self.json({"guardado": True, "entrada": e})
-        if path == '/api/bitacora/compartir':
-            ok = bitacora.compartir_entrada(int(q('id', '0')), q('codigo', ''))
-            if ok: sync_all()
-            return self.json({"ok": ok})
-        if path == '/api/bitacora/compartidas':
-            return self.json({"entradas": bitacora.obtener_compartidas(q('codigo', ''))})
-
-        if path == '/api/organizador/planes':
-            return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
-        if path == '/api/organizador/planes-publicos':
-            return self.json({"planes": organizador.obtener_planes_publicos()})
-        if path == '/api/organizador/planes-alumno':
-            return self.json({"planes": organizador.obtener_planes_alumno(q('alumno_id', ''))})
-        if path == '/api/organizador/planes-docente':
-            return self.json({"planes": organizador.obtener_planes_docente(q('autor', ''), q('escuela', ''))})
-        if path == '/api/organizador/tareas':
-            return self.json({"tareas": organizador.obtener_tareas(q('alumno_id', ''))})
-        if path == '/api/organizador/compartir-plan':
-            ok = organizador.compartir_plan(int(q('id', '0')), q('alumno_id', ''))
-            if ok: sync_all()
-            return self.json({"ok": ok})
-        if path == '/api/organizador/hacer-publico':
-            ok = organizador.hacer_publico(int(q('id', '0')))
-            if ok: sync_all()
-            return self.json({"ok": ok})
-        if path == '/api/organizador/hacer-privado':
-            ok = organizador.hacer_privado(int(q('id', '0')))
-            if ok: sync_all()
-            return self.json({"ok": ok})
-
+        if path == '/api/bitacora/compartir': ok = bitacora.compartir_entrada(int(q('id', '0')), q('codigo', '')); sync_all() if ok else None; return self.json({"ok": ok})
+        if path == '/api/bitacora/compartidas': return self.json({"entradas": bitacora.obtener_compartidas(q('codigo', ''))})
+        if path == '/api/organizador/planes': return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
+        if path == '/api/organizador/planes-publicos': return self.json({"planes": organizador.obtener_planes_publicos()})
+        if path == '/api/organizador/planes-alumno': return self.json({"planes": organizador.obtener_planes_alumno(q('alumno_id', ''))})
+        if path == '/api/organizador/planes-docente': return self.json({"planes": organizador.obtener_planes_docente(q('autor', ''), q('escuela', ''))})
+        if path == '/api/organizador/tareas': return self.json({"tareas": organizador.obtener_tareas(q('alumno_id', ''))})
+        if path == '/api/organizador/compartir-plan': ok = organizador.compartir_plan(int(q('id', '0')), q('alumno_id', '')); sync_all() if ok else None; return self.json({"ok": ok})
+        if path == '/api/organizador/hacer-publico': ok = organizador.hacer_publico(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
+        if path == '/api/organizador/hacer-privado': ok = organizador.hacer_privado(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/regularizacion/materias': return self.json({"materias": regularizacion.obtener_materias()})
-        if path == '/api/regularizacion/guias':
-            return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
+        if path == '/api/regularizacion/guias': return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
         if path == '/api/regularizacion/guia':
             guia = regularizacion.obtener_guia(int(q('id', '0')))
             return self.json({"guia": guia}) if guia else self.json({"error": "No encontrada"}, 404)
-
-        if path == '/api/alertas/red':
-            return self.json({"red": alertas.obtener_red(q('escuela', ''))})
+        if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
 
         if path == '/' or path == '': self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
@@ -175,31 +209,21 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/chat':
             msg = v('mensaje', '')
             if not msg: return self.json({"error": "Sin mensaje"}, 400)
-            try:
-                resp = ia_chat.obtener_respuesta(msg)
-                return self.json({"respuesta": resp, "modo": "ia"})
-            except:
-                return self.json({"respuesta": "💬 Estoy aquí para ti. Cuéntame más. 🌿", "modo": "local"})
-
+            try: resp = ia_chat.obtener_respuesta(msg); return self.json({"respuesta": resp, "modo": "ia"})
+            except: return self.json({"respuesta": "💬 Estoy aquí para ti. 🌿", "modo": "local"})
         if path == '/api/diario/guardar':
             e = usuarios.agregar_diario(v('user_id', ''), {"texto": v('texto', ''), "emocion": v('emocion', '')})
             sync_all(); return self.json({"guardado": True, "entrada": e}) if e else self.json({"error": "Faltan datos"}, 400)
-
         if path == '/api/regularizacion/agregar':
-            archivo_b64 = v('archivo_base64', None)
-            regularizacion.agregar_guia(v('materia', ''), v('titulo', ''), v('contenido', ''), v('autor', ''), v('escuela', ''), archivo_b64, v('tipo_archivo', ''), v('nombre_archivo', ''))
+            regularizacion.agregar_guia(v('materia', ''), v('titulo', ''), v('contenido', ''), v('autor', ''), v('escuela', ''), v('archivo_base64', None), v('tipo_archivo', ''), v('nombre_archivo', ''))
             sync_all(); return self.json({"guardado": True})
-        if path == '/api/regularizacion/borrar':
-            regularizacion.eliminar_guia(int(v('id', '0'))); sync_all(); return self.json({"ok": True})
-
+        if path == '/api/regularizacion/borrar': regularizacion.eliminar_guia(int(v('id', '0'))); sync_all(); return self.json({"ok": True})
         if path == '/api/organizador/crear-plan':
             plan = organizador.crear_plan(v('nombre', ''), v('materia', 'General'), v('objetivo', ''), v('actividades', ''), v('escuela', ''), v('autor', ''), v('visibilidad', 'privado'), v('alumno_id', None))
             sync_all(); return self.json({"guardado": True, "plan": plan})
-
         if path == '/api/alertas/agregar':
             alertas.agregar_contacto(v('nombre', ''), v('telefono', ''), v('relacion', ''), v('escuela', ''))
             sync_all(); return self.json({"guardado": True})
-
         return self.json({"error": "Not found"}, 404)
 
     def log_message(self, f, *a): print(f"🌿 {self.client_address[0]} - {f % a}")
