@@ -1,0 +1,37 @@
+{
+  "escuelas": {
+    "ESC-PARNHB": {
+      "nombre": "Francisco j Mujica",
+      "codigo_escuela": "ESC-PARNHB",
+      "num_docentes": 11,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-H07PTY",
+        "DOC-PIWRCU",
+        "DOC-QX02NV",
+        "DOC-5FWKNN",
+        "DOC-QQC9JP",
+        "DOC-CIDAUW",
+        "DOC-KTBYY7",
+        "DOC-1CMIQT",
+        "DOC-KUSJNI",
+        "DOC-AZWA9L",
+        "DOC-U696XV"
+      ],
+      "codigos_admin": [
+        "ADM-8BZ8SQ"
+      ],
+      "fecha_creacion": "2026-07-06T22:50:48.934288",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
+    }
+  },
+  "usuarios": {},
+  "bitacoras": [],
+  "regularizacion": [],
+  "planes": [],
+  "tareas": [],
+  "red_apoyo": [],
+  "fecha": "2026-07-06T22:50:48.934566"
+}
