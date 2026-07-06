@@ -41,10 +41,25 @@
       "guias": []
     }
   },
-  "bitacoras": [],
+  "bitacoras": [
+    {
+      "id": 1,
+      "tipo": "observacion",
+      "alumno": "Prueba de persistencia en web v2.1",
+      "grupo": "1-A-SanaAlfa/FranciscoJ.MujicaClav0022",
+      "texto": "Ignorar está bitácora es prueba de persistencia",
+      "autor": "Docente",
+      "escuela": "ESC-PARNHB",
+      "publico": false,
+      "calificacion": null,
+      "fecha": "2026-07-06T22:52:44.312602",
+      "editado": false,
+      "fecha_edicion": null
+    }
+  ],
   "regularizacion": [],
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T22:51:19.207219"
+  "fecha": "2026-07-06T22:52:44.312980"
 }
