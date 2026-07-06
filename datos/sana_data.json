@@ -51,6 +51,18 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "dBE9feqiroBM": {
+      "id": "dBE9feqiroBM",
+      "nombre": "Leo",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-06T22:54:48.689554",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -83,5 +95,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T22:54:06.438665"
+  "fecha": "2026-07-06T22:54:48.689923"
 }
