@@ -7,1224 +7,330 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #08081a;
-            --surface: rgba(22, 22, 44, 0.75);
-            --surface2: rgba(30, 30, 55, 0.7);
-            --border: rgba(255, 255, 255, 0.06);
-            --text: #e8e8f5;
-            --muted: #8888a8;
-            --purple: #a78bfa;
-            --purple2: #8b5cf6;
-            --purple-dark: #5b21b6;
-            --green: #6ee7b7;
-            --green2: #34d399;
-            --orange: #fbbf24;
-            --red: #fca5a5;
-            --blue: #93c5fd;
-            --pink: #f9a8d4;
-            --radius: 1.6rem;
-            --radius-sm: 1rem;
-            --radius-xs: 0.7rem;
-            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #08081a; --surface: rgba(22,22,44,0.75); --surface2: rgba(30,30,55,0.7);
+            --border: rgba(255,255,255,0.06); --text: #e8e8f5; --muted: #8888a8;
+            --purple: #a78bfa; --purple2: #8b5cf6; --purple-dark: #5b21b6;
+            --green: #6ee7b7; --green2: #34d399; --orange: #fbbf24;
+            --red: #fca5a5; --blue: #93c5fd; --pink: #f9a8d4;
+            --radius: 1.6rem; --radius-sm: 1rem; --radius-xs: 0.7rem;
+            --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Fondo cósmico */
-        .cosmos {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .nebula {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.25;
-            animation: nebulaDrift 25s infinite ease-in-out;
-        }
-
-        .nebula:nth-child(1) {
-            width: 500px; height: 500px;
-            background: var(--purple-dark);
-            top: -150px; left: -150px;
-            animation-delay: 0s;
-        }
-
-        .nebula:nth-child(2) {
-            width: 400px; height: 400px;
-            background: var(--green2);
-            bottom: -150px; right: -100px;
-            animation-delay: -8s;
-        }
-
-        .nebula:nth-child(3) {
-            width: 300px; height: 300px;
-            background: var(--blue);
-            top: 50%; left: 60%;
-            animation-delay: -16s;
-        }
-
-        .nebula:nth-child(4) {
-            width: 350px; height: 350px;
-            background: var(--pink);
-            bottom: 30%; left: -100px;
-            animation-delay: -20s;
-        }
-
-        @keyframes nebulaDrift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(60px, -40px) scale(1.15); }
-            50% { transform: translate(-30px, 50px) scale(0.9); }
-            75% { transform: translate(-50px, -30px) scale(1.1); }
-        }
-
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.8); }
-        }
-
-        /* App */
-        .app {
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 1rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .app-header {
-            text-align: center;
-            padding: 1.5rem 0 1rem;
-            transition: all 0.5s;
-        }
-
-        .app-header.compact { padding: 0.5rem 0; }
-
-        .logo-icon {
-            font-size: 3rem;
-            display: inline-block;
-            animation: floatLogo 3s ease-in-out infinite;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .logo-icon:hover { transform: scale(1.1); }
-
-        @keyframes floatLogo {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .app-title {
-            font-size: 2.6rem;
-            font-weight: 900;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--purple), var(--green), var(--purple));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 4s linear infinite;
-        }
-
-        @keyframes shimmer { to { background-position: 200% center; } }
-
-        .app-subtitle {
-            font-size: 0.8rem;
-            color: var(--muted);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        /* Navegación */
-        .nav-tabs {
-            display: flex;
-            gap: 0.3rem;
-            background: var(--surface);
-            border-radius: 3rem;
-            padding: 0.35rem;
-            margin: 1rem 0;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .nav-tabs::-webkit-scrollbar { display: none; }
-
-        .nav-tab {
-            flex: 1;
-            min-width: fit-content;
-            padding: 0.7rem 1rem;
-            border-radius: 3rem;
-            border: none;
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            justify-content: center;
-        }
-
-        .nav-tab.active { background: var(--purple2); color: white; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
-        .nav-tab:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.05); }
-
-        /* Páginas */
-        .page { display: none; animation: pageIn 0.4s ease; flex: 1; }
-        .page.active { display: block; }
-
-        @keyframes pageIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Home */
-        .home-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .home-card {
-            background: var(--surface);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 2rem 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .home-card:nth-child(1) { border-top: 3px solid var(--purple); }
-        .home-card:nth-child(2) { border-top: 3px solid var(--green); }
-        .home-card:nth-child(3) { border-top: 3px solid var(--orange); }
-        .home-card:nth-child(4) { border-top: 3px solid var(--red); }
-
-        .home-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .home-card:active { transform: scale(0.94); }
-
-        .home-card-icon { font-size: 2.8rem; display: block; margin-bottom: 0.8rem; transition: transform 0.3s; }
-        .home-card:hover .home-card-icon { transform: scale(1.2); }
-        .home-card-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
-        .home-card-hint { font-size: 0.7rem; color: var(--muted); }
-
-        /* Secciones */
-        .section-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .feature-card {
-            background: var(--surface2);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem;
-            margin-bottom: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .feature-card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-icon {
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .feature-icon.purple { background: rgba(167,139,250,0.2); }
-        .feature-icon.green { background: rgba(110,231,183,0.2); }
-        .feature-icon.blue { background: rgba(147,197,253,0.2); }
-        .feature-icon.orange { background: rgba(251,191,36,0.2); }
-        .feature-icon.pink { background: rgba(249,168,212,0.2); }
-
-        .feature-name { font-weight: 700; font-size: 0.95rem; }
-        .feature-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
-
-        /* Chat */
-        .chat-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 1rem;
-            min-height: 200px;
-            max-height: 350px;
-            overflow-y: auto;
-            margin-bottom: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .chat-msg {
-            padding: 0.7rem 1rem;
-            border-radius: 1.2rem;
-            font-size: 0.85rem;
-            max-width: 85%;
-            animation: msgIn 0.3s ease;
-        }
-
-        @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .chat-msg.user { background: var(--purple2); align-self: flex-end; border-bottom-right-radius: 0.3rem; }
-        .chat-msg.bot { background: var(--surface2); align-self: flex-start; border-bottom-left-radius: 0.3rem; }
-
-        .chat-input-row { display: flex; gap: 0.5rem; }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.8rem 1.2rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .chat-input:focus { border-color: var(--purple); }
-
-        .btn-send {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: var(--purple2);
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            flex-shrink: 0;
-        }
-
-        .btn-send:hover { background: var(--purple); transform: scale(1.05); }
-        .btn-send:active { transform: scale(0.9); }
-
-        /* Respiración */
-        .breath-circle {
-            width: 140px; height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--purple2), var(--purple-dark));
-            margin: 1.5rem auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.1s;
-            box-shadow: 0 0 40px rgba(139,92,246,0.3);
-            user-select: none;
-        }
-
-        .breath-circle.inhale { transform: scale(1.5); box-shadow: 0 0 60px rgba(110,231,183,0.5); }
-        .breath-circle.exhale { transform: scale(0.8); box-shadow: 0 0 20px rgba(139,92,246,0.2); }
-
-        .breath-text { text-align: center; font-size: 1.1rem; font-weight: 600; margin-top: 0.5rem; }
-
-        /* Diario */
-        .diario-textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 1rem;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            resize: vertical;
-            outline: none;
-        }
-
-        .diario-textarea:focus { border-color: var(--purple); }
-
-        .mood-selector { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.8rem 0; }
-
-        .mood-btn {
-            padding: 0.4rem 0.8rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: var(--transition);
-        }
-
-        .mood-btn:hover, .mood-btn.selected { border-color: var(--purple); background: rgba(167,139,250,0.2); }
-
-        /* Botones */
-        .btn {
-            padding: 0.8rem 1.8rem;
-            border-radius: 3rem;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .btn-primary { background: var(--purple2); color: white; }
-        .btn-primary:hover { background: var(--purple); transform: scale(1.03); }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
-        .btn-outline:hover { background: rgba(255,255,255,0.05); }
-        .btn-sm { padding: 0.5rem 1rem; font-size: 0.75rem; }
-        .btn-danger { background: rgba(252,165,165,0.2); color: var(--red); border: 1px solid rgba(252,165,165,0.3); }
-
-        /* Stats */
-        .stats-row {
-            display: flex;
-            justify-content: space-around;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .stat-item { text-align: center; }
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--purple), var(--green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.65rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Select */
-        .custom-select {
-            padding: 0.6rem 1rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-size: 0.85rem;
-            outline: none;
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-
-        .custom-select:focus { border-color: var(--purple); }
-
-        /* Tabla de entradas */
-        .entry-list {
-            max-height: 300px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .entry-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xs);
-            padding: 0.8rem 1rem;
-            font-size: 0.8rem;
-        }
-
-        .entry-item .entry-meta {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            font-size: 0.7rem;
-            color: var(--muted);
-            margin-top: 0.3rem;
-        }
-
-        .entry-item .entry-tag {
-            padding: 0.15rem 0.5rem;
-            border-radius: 1rem;
-            font-size: 0.65rem;
-            font-weight: 600;
-        }
-
-        .tag-observacion { background: rgba(147,197,253,0.2); color: var(--blue); }
-        .tag-reporte { background: rgba(252,165,165,0.2); color: var(--red); }
-        .tag-recomendacion { background: rgba(110,231,183,0.2); color: var(--green); }
-        .tag-calificacion { background: rgba(251,191,36,0.2); color: var(--orange); }
-
-        /* Status */
-        .status-bar {
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--muted);
-            padding: 0.8rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-        }
-
-        .status-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--green);
-            animation: pulse-dot 2s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { box-shadow: 0 0 3px var(--green); }
-            50% { box-shadow: 0 0 12px var(--green); }
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(120px);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 3rem;
-            padding: 0.7rem 1.4rem;
-            font-size: 0.8rem;
-            z-index: 200;
-            transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-            pointer-events: none;
-            backdrop-filter: blur(20px);
-            white-space: nowrap;
-        }
-
-        .toast.show { transform: translateX(-50%) translateY(0); }
-
-        .footer {
-            text-align: center;
-            font-size: 0.65rem;
-            color: var(--muted);
-            padding: 1rem 0;
-            margin-top: auto;
-            opacity: 0.6;
-        }
-
-        .footer a { color: var(--purple); text-decoration: none; }
-
-        .loading {
-            text-align: center;
-            padding: 1rem;
-            color: var(--muted);
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-        @media (max-width: 420px) {
-            .home-grid { grid-template-columns: 1fr; }
-            .app-title { font-size: 2rem; }
-            .home-card { padding: 1.5rem 1rem; }
-            .nav-tab { font-size: 0.7rem; padding: 0.6rem 0.7rem; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;-webkit-tap-highlight-color:transparent;}
+        .cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
+        .nebula{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.25;animation:nebulaDrift 25s infinite ease-in-out;}
+        .nebula:nth-child(1){width:500px;height:500px;background:var(--purple-dark);top:-150px;left:-150px;}
+        .nebula:nth-child(2){width:400px;height:400px;background:var(--green2);bottom:-150px;right:-100px;animation-delay:-8s;}
+        .nebula:nth-child(3){width:300px;height:300px;background:var(--blue);top:50%;left:60%;animation-delay:-16s;}
+        .nebula:nth-child(4){width:350px;height:350px;background:var(--pink);bottom:30%;left:-100px;animation-delay:-20s;}
+        @keyframes nebulaDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(60px,-40px) scale(1.15)}50%{transform:translate(-30px,50px) scale(0.9)}75%{transform:translate(-50px,-30px) scale(1.1)}}
+        .app{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:1rem;min-height:100vh;display:flex;flex-direction:column;}
+        .app-header{text-align:center;padding:1.5rem 0 1rem;transition:all 0.5s;}
+        .app-header.compact{padding:0.5rem 0;}
+        .logo-icon{font-size:3rem;display:inline-block;animation:floatLogo 3s ease-in-out infinite;cursor:pointer;}
+        @keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .app-title{font-size:2.6rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--purple),var(--green),var(--purple));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
+        @keyframes shimmer{to{background-position:200% center}}
+        .app-subtitle{font-size:0.8rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+        .nav-tabs{display:flex;gap:0.3rem;background:var(--surface);border-radius:3rem;padding:0.35rem;margin:1rem 0;border:1px solid var(--border);backdrop-filter:blur(20px);overflow-x:auto;scrollbar-width:none;}
+        .nav-tabs::-webkit-scrollbar{display:none;}
+        .nav-tab{flex:1;min-width:fit-content;padding:0.7rem 1rem;border-radius:3rem;border:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:600;font-size:0.8rem;white-space:nowrap;transition:var(--transition);display:flex;align-items:center;gap:0.4rem;justify-content:center;}
+        .nav-tab.active{background:var(--purple2);color:white;box-shadow:0 4px 15px rgba(139,92,246,0.4);}
+        .nav-tab:not(.active):hover{color:var(--text);background:rgba(255,255,255,0.05);}
+        .page{display:none;animation:pageIn 0.4s ease;flex:1;}
+        .page.active{display:block;}
+        @keyframes pageIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;}
+        .home-card{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 1.2rem;cursor:pointer;transition:var(--transition);text-align:center;position:relative;overflow:hidden;}
+        .home-card:nth-child(1){border-top:3px solid var(--purple);}.home-card:nth-child(2){border-top:3px solid var(--green);}.home-card:nth-child(3){border-top:3px solid var(--orange);}.home-card:nth-child(4){border-top:3px solid var(--red);}
+        .home-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+        .home-card:active{transform:scale(0.94);}
+        .home-card-icon{font-size:2.8rem;display:block;margin-bottom:0.8rem;transition:transform 0.3s;}
+        .home-card:hover .home-card-icon{transform:scale(1.2);}
+        .home-card-label{font-weight:700;font-size:1rem;margin-bottom:0.2rem;}
+        .home-card-hint{font-size:0.7rem;color:var(--muted);}
+        .section-title{font-size:1.4rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+        .feature-card{background:var(--surface2);backdrop-filter:blur(15px);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;margin-bottom:0.8rem;transition:var(--transition);}
+        .feature-card-header{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;}
+        .feature-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+        .feature-icon.purple{background:rgba(167,139,250,0.2);}.feature-icon.green{background:rgba(110,231,183,0.2);}.feature-icon.blue{background:rgba(147,197,253,0.2);}.feature-icon.orange{background:rgba(251,191,36,0.2);}.feature-icon.pink{background:rgba(249,168,212,0.2);}
+        .feature-name{font-weight:700;font-size:0.95rem;}
+        .feature-desc{font-size:0.75rem;color:var(--muted);line-height:1.4;}
+        .chat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:200px;max-height:350px;overflow-y:auto;margin-bottom:0.8rem;display:flex;flex-direction:column;gap:0.6rem;}
+        .chat-msg{padding:0.7rem 1rem;border-radius:1.2rem;font-size:0.85rem;max-width:85%;animation:msgIn 0.3s ease;}
+        @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .chat-msg.user{background:var(--purple2);align-self:flex-end;border-bottom-right-radius:0.3rem;}
+        .chat-msg.bot{background:var(--surface2);align-self:flex-start;border-bottom-left-radius:0.3rem;}
+        .chat-input-row{display:flex;gap:0.5rem;}
+        .chat-input{flex:1;padding:0.8rem 1.2rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.9rem;outline:none;transition:border-color 0.3s;width:100%;}
+        .chat-input:focus{border-color:var(--purple);}
+        .btn-send{width:44px;height:44px;border-radius:50%;border:none;background:var(--purple2);color:white;font-size:1.2rem;cursor:pointer;transition:var(--transition);flex-shrink:0;}
+        .btn-send:hover{background:var(--purple);transform:scale(1.05);}
+        .btn{padding:0.8rem 1.8rem;border-radius:3rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.9rem;display:inline-flex;align-items:center;gap:0.4rem;}
+        .btn-primary{background:var(--purple2);color:white;}.btn-primary:hover{background:var(--purple);transform:scale(1.03);}
+        .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-outline:hover{background:rgba(255,255,255,0.05);}
+        .btn-sm{padding:0.5rem 1rem;font-size:0.75rem;}
+        .btn-danger{background:rgba(252,165,165,0.2);color:var(--red);border:1px solid rgba(252,165,165,0.3);}
+        .btn-green{background:var(--green2);color:#000;}.btn-green:hover{background:var(--green);}
+        .breath-circle{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,var(--purple2),var(--purple-dark));margin:1.5rem auto;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;cursor:pointer;transition:all 0.1s;box-shadow:0 0 40px rgba(139,92,246,0.3);user-select:none;}
+        .breath-circle.inhale{transform:scale(1.5);box-shadow:0 0 60px rgba(110,231,183,0.5);}
+        .breath-circle.exhale{transform:scale(0.8);box-shadow:0 0 20px rgba(139,92,246,0.2);}
+        .breath-text{text-align:center;font-size:1.1rem;font-weight:600;margin-top:0.5rem;}
+        .diario-textarea{width:100%;min-height:120px;padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;resize:vertical;outline:none;}
+        .mood-selector{display:flex;gap:0.4rem;flex-wrap:wrap;margin:0.8rem 0;}
+        .mood-btn{padding:0.4rem 0.8rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:0.75rem;transition:var(--transition);}
+        .mood-btn:hover,.mood-btn.selected{border-color:var(--purple);background:rgba(167,139,250,0.2);}
+        .custom-select{padding:0.6rem 1rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.85rem;outline:none;width:100%;margin-bottom:0.5rem;}
+        .custom-select:focus{border-color:var(--purple);}
+        .entry-list{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem;}
+        .entry-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.8rem 1rem;font-size:0.8rem;}
+        .entry-meta{display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.7rem;color:var(--muted);margin-top:0.3rem;}
+        .entry-tag{padding:0.15rem 0.5rem;border-radius:1rem;font-size:0.65rem;font-weight:600;}
+        .tag-observacion{background:rgba(147,197,253,0.2);color:var(--blue);}
+        .tag-reporte{background:rgba(252,165,165,0.2);color:var(--red);}
+        .tag-recomendacion{background:rgba(110,231,183,0.2);color:var(--green);}
+        .tag-calificacion{background:rgba(251,191,36,0.2);color:var(--orange);}
+        .stats-row{display:flex;justify-content:space-around;margin:1rem 0;flex-wrap:wrap;gap:0.5rem;}
+        .stat-item{text-align:center;}
+        .stat-value{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+        .status-bar{text-align:center;font-size:0.7rem;color:var(--muted);padding:0.8rem 0;display:flex;align-items:center;justify-content:center;gap:0.4rem;}
+        .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite;}
+        @keyframes pulse-dot{0%,100%{box-shadow:0 0 3px var(--green)}50%{box-shadow:0 0 12px var(--green)}}
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface);border:1px solid var(--border);border-radius:3rem;padding:0.7rem 1.4rem;font-size:0.8rem;z-index:200;transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;backdrop-filter:blur(20px);white-space:nowrap;}
+        .toast.show{transform:translateX(-50%) translateY(0);}
+        .footer{text-align:center;font-size:0.65rem;color:var(--muted);padding:1rem 0;margin-top:auto;opacity:0.6;}
+        .footer a{color:var(--purple);text-decoration:none;}
+        .badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:1rem;font-size:0.7rem;font-weight:600;}
+        .badge-success{background:rgba(110,231,183,0.2);color:var(--green);}
+        .badge-warning{background:rgba(251,191,36,0.2);color:var(--orange);}
+        @media(max-width:420px){.home-grid{grid-template-columns:1fr;}.app-title{font-size:2rem;}.home-card{padding:1.5rem 1rem;}.nav-tab{font-size:0.7rem;padding:0.6rem 0.7rem;}}
     </style>
 </head>
 <body>
-
-    <!-- Fondo cósmico -->
-    <div class="cosmos">
-        <div class="nebula"></div>
-        <div class="nebula"></div>
-        <div class="nebula"></div>
-        <div class="nebula"></div>
-    </div>
-
-    <!-- App -->
-    <div class="app">
-
-        <!-- Header -->
-        <header class="app-header" id="appHeader">
-            <div class="logo-icon" onclick="navigateTo('home')" title="Inicio">🌿</div>
-            <h1 class="app-title">SANA</h1>
-            <p class="app-subtitle">Bienestar Emocional</p>
-        </header>
-
-        <!-- Navegación -->
-        <nav class="nav-tabs" id="navTabs">
-            <button class="nav-tab active" data-page="home">🏠 Inicio</button>
-            <button class="nav-tab" data-page="alumnos">🎓 Alumnos</button>
-            <button class="nav-tab" data-page="docentes">👨‍🏫 Docentes</button>
-            <button class="nav-tab" data-page="regularizacion">📚 Regularización</button>
-            <button class="nav-tab" data-page="admin">🔑 Admin</button>
-        </nav>
-
-        <!-- ═══════════ HOME ═══════════ -->
-        <div class="page active" id="page-home">
-            <div class="home-grid">
-                <div class="home-card" onclick="navigateTo('alumnos')">
-                    <span class="home-card-icon">🎓</span>
-                    <span class="home-card-label">Alumnos</span>
-                    <span class="home-card-hint">Chat IA · Respiración · Diario</span>
-                </div>
-                <div class="home-card" onclick="navigateTo('docentes')">
-                    <span class="home-card-icon">👨‍🏫</span>
-                    <span class="home-card-label">Docentes</span>
-                    <span class="home-card-hint">Bitácora · Material · Planes</span>
-                </div>
-                <div class="home-card" onclick="navigateTo('regularizacion')">
-                    <span class="home-card-icon">📚</span>
-                    <span class="home-card-label">Regularización</span>
-                    <span class="home-card-hint">Material de estudio</span>
-                </div>
-                <div class="home-card" onclick="navigateTo('admin')">
-                    <span class="home-card-icon">🔑</span>
-                    <span class="home-card-label">Administrador</span>
-                    <span class="home-card-hint">Gestionar escuelas</span>
-                </div>
-            </div>
-            <div class="stats-row" style="margin-top:1.5rem;">
-                <div class="stat-item"><span class="stat-value">983</span><span class="stat-label">Tests</span></div>
-                <div class="stat-item"><span class="stat-value">27</span><span class="stat-label">Módulos</span></div>
-                <div class="stat-item"><span class="stat-value">11</span><span class="stat-label">Emociones</span></div>
-                <div class="stat-item"><span class="stat-value">45+</span><span class="stat-label">Líneas Ayuda</span></div>
-            </div>
-        </div>
-
-        <!-- ═══════════ ALUMNOS ═══════════ -->
-        <div class="page" id="page-alumnos">
-            <div class="section-title">🎓 Zona Alumnos</div>
-
-            <!-- Chat IA -->
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon purple">🤖</div>
-                    <div>
-                        <div class="feature-name">Chat con Sana</div>
-                        <div class="feature-desc">Habla conmigo, estoy aquí para escucharte</div>
-                    </div>
-                </div>
-                <div class="chat-box" id="chatBox">
-                    <div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes hoy? Escríbeme y te responderé con IA real.</div>
-                </div>
-                <div class="chat-input-row">
-                    <input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." onkeypress="if(event.key==='Enter')sendMessage()">
-                    <button class="btn-send" onclick="sendMessage()">➤</button>
-                </div>
-            </div>
-
-            <!-- Respiración -->
-            <div class="feature-card" id="breathCard">
-                <div class="feature-card-header">
-                    <div class="feature-icon green">🫁</div>
-                    <div>
-                        <div class="feature-name">Respiración Guiada</div>
-                        <div class="feature-desc">7 ejercicios cargados desde el servidor</div>
-                    </div>
-                </div>
-                <select class="custom-select" id="breathSelect" onchange="loadBreathInfo()">
-                    <option value="">Selecciona un ejercicio...</option>
-                </select>
-                <div id="breathInfo" style="display:none;">
-                    <div id="breathDetails" style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem;"></div>
-                    <div class="breath-circle" id="breathCircle" onclick="toggleBreathing()">🌿</div>
-                    <div class="breath-text" id="breathText">Toca el círculo para iniciar</div>
-                    <div id="breathVisual" style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:0.5rem;"></div>
-                </div>
-            </div>
-
-            <!-- Diario Emocional -->
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon pink">📝</div>
-                    <div>
-                        <div class="feature-name">Diario Emocional</div>
-                        <div class="feature-desc">Registra cómo te sientes (guardado en servidor)</div>
-                    </div>
-                </div>
-                <div class="mood-selector" id="moodSelector">
-                    <button class="mood-btn" onclick="selectMood('😊 Feliz',this)">😊 Feliz</button>
-                    <button class="mood-btn" onclick="selectMood('😢 Triste',this)">😢 Triste</button>
-                    <button class="mood-btn" onclick="selectMood('😰 Ansioso',this)">😰 Ansioso</button>
-                    <button class="mood-btn" onclick="selectMood('😠 Enojado',this)">😠 Enojado</button>
-                    <button class="mood-btn" onclick="selectMood('😌 Calma',this)">😌 Calma</button>
-                    <button class="mood-btn" onclick="selectMood('🤔 Confundido',this)">🤔 Confundido</button>
-                </div>
-                <textarea class="diario-textarea" id="diarioEntry" placeholder="Hoy me siento..."></textarea>
-                <button class="btn btn-primary" style="margin-top:0.5rem;" onclick="saveDiary()">💾 Guardar en servidor</button>
-                <button class="btn btn-outline btn-sm" style="margin-top:0.3rem;" onclick="loadDiaryEntries()">📋 Ver entradas</button>
-                <div id="diaryEntries" style="margin-top:0.5rem;"></div>
-            </div>
-
-            <!-- Red de Apoyo / Líneas de Ayuda -->
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon blue">🆘</div>
-                    <div>
-                        <div class="feature-name">Líneas de Ayuda</div>
-                        <div class="feature-desc">45+ contactos en 8 países</div>
-                    </div>
-                </div>
-                <select class="custom-select" id="paisSelect" onchange="loadLineasAyuda()">
-                    <option value="">Selecciona tu país...</option>
-                </select>
-                <div id="lineasAyudaList" style="margin-top:0.5rem;"></div>
-            </div>
-        </div>
-
-        <!-- ═══════════ DOCENTES ═══════════ -->
-        <div class="page" id="page-docentes">
-            <div class="section-title">👨‍🏫 Zona Docentes</div>
-
-            <!-- Bitácora -->
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon green">📋</div>
-                    <div>
-                        <div class="feature-name">Bitácora de Alumnos</div>
-                        <div class="feature-desc">Registra observaciones, reportes y calificaciones</div>
-                    </div>
-                </div>
-                <select class="custom-select" id="bitacoraTipo">
-                    <option value="observacion">Observación</option>
-                    <option value="reporte">Reporte</option>
-                    <option value="recomendacion">Recomendación</option>
-                    <option value="calificacion">Calificación</option>
-                </select>
-                <input type="text" class="chat-input" id="bitacoraAlumno" placeholder="Nombre del alumno" style="margin-bottom:0.4rem;">
-                <input type="text" class="chat-input" id="bitacoraGrupo" placeholder="Grupo (ej: 3A)" style="margin-bottom:0.4rem;">
-                <textarea class="diario-textarea" id="bitacoraTexto" placeholder="Descripción de la entrada..." style="min-height:80px;"></textarea>
-                <button class="btn btn-primary btn-sm" style="margin-top:0.5rem;" onclick="agregarBitacora()">📝 Registrar</button>
-                <button class="btn btn-outline btn-sm" style="margin-top:0.3rem;" onclick="cargarBitacora()">📋 Ver entradas</button>
-                <div id="bitacoraEntries" style="margin-top:0.5rem;"></div>
-            </div>
-        </div>
-
-        <!-- ═══════════ REGULARIZACIÓN ═══════════ -->
-        <div class="page" id="page-regularizacion">
-            <div class="section-title">📚 Regularización</div>
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon orange">📖</div>
-                    <div>
-                        <div class="feature-name">Material por Materia</div>
-                        <div class="feature-desc">Ejercicios y recursos de estudio</div>
-                    </div>
-                </div>
-                <p style="font-size:0.8rem;color:var(--muted);">✅ zonas/regularizacion.py listo</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-card-header">
-                    <div class="feature-icon blue">🎯</div>
-                    <div>
-                        <div class="feature-name">Planes Personalizados</div>
-                        <div class="feature-desc">Rutas de aprendizaje adaptables</div>
-                    </div>
-                </div>
-                <p style="font-size:0.8rem;color:var(--muted);">✅ zonas/organizador.py listo</p>
-            </div>
-        </div>
-
-        <!-- ═══════════ ADMIN ═══════════ -->
-        <div class="page" id="page-admin">
-            <div class="section-title">🔑 Administrador</div>
-            <div id="adminLock">
-                <div class="feature-card" style="text-align:center;">
-                    <div style="font-size:3rem;margin-bottom:1rem;">🔐</div>
-                    <p style="margin-bottom:1rem;color:var(--muted);">Ingresa el código de administración</p>
-                    <input type="password" id="adminCode" class="chat-input" placeholder="Código de acceso" style="text-align:center;margin-bottom:0.8rem;" onkeypress="if(event.key==='Enter')verifyAdmin()">
-                    <button class="btn btn-primary" onclick="verifyAdmin()">Acceder</button>
-                    <p id="adminError" style="color:var(--red);font-size:0.8rem;margin-top:0.5rem;display:none;">❌ Código incorrecto</p>
-                </div>
-            </div>
-            <div id="adminPanel" style="display:none;">
-                <div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;text-align:center;margin-bottom:1rem;">✅ Acceso concedido</div>
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon purple">🏫</div>
-                        <div><div class="feature-name">Registrar Escuelas</div><div class="feature-desc">✅ zonas/escuelas.py</div></div>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-card-header">
-                        <div class="feature-icon green">🔑</div>
-                        <div><div class="feature-name">Generar Códigos</div><div class="feature-desc">✅ listo</div></div>
-                    </div>
-                </div>
-                <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">🚪 Cerrar sesión</button>
-            </div>
-        </div>
-
-        <!-- Status -->
-        <div class="status-bar">
-            <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Verificando...</span>
-        </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>SANA v2.0 · <a href="https://github.com/Prototipicaestudio1/sana-v2" target="_blank">GitHub</a> · APIs reales · Hecho con 💜</p>
-        </footer>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
-
-    <script>
-        // ═══════════════════════════════════════════════
-        // SANA v2.0 - Motor JavaScript con APIs Reales
-        // ═══════════════════════════════════════════════
-
-        const API = '/api';
-        const state = {
-            currentPage: 'home',
-            isBreathing: false,
-            breathTimer: null,
-            breathPhase: null,
-            breathCycles: 0,
-            breathMaxCycles: 4,
-            selectedMood: null,
-            isAdmin: false,
-            currentBreathExercise: null
-        };
-
-        // ========== ESTRELLAS ==========
-        (function createStars() {
-            const cosmos = document.querySelector('.cosmos');
-            for (let i = 0; i < 60; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.width = star.style.height = (1 + Math.random() * 3) + 'px';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.animationDuration = (2 + Math.random() * 4) + 's';
-                star.style.opacity = Math.random() * 0.6 + 0.2;
-                cosmos.appendChild(star);
-            }
-        })();
-
-        // ========== NAVEGACIÓN ==========
-        function navigateTo(page) {
-            state.currentPage = page;
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.page === page);
-            });
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById('page-' + page);
-            if (target) target.classList.add('active');
-            const header = document.getElementById('appHeader');
-            header.classList.toggle('compact', page !== 'home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            if (page === 'alumnos') { loadBreathExercises(); loadPaises(); }
-            if (page === 'docentes') { cargarBitacora(); }
-            if (page === 'admin' && state.isAdmin) {
-                document.getElementById('adminLock').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-            }
-        }
-
-        document.getElementById('navTabs').addEventListener('click', (e) => {
-            const tab = e.target.closest('.nav-tab');
-            if (tab) navigateTo(tab.dataset.page);
-        });
-
-        // ========== TOAST ==========
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2200);
-        }
-
-        // ========== API HELPERS ==========
-        async function apiGet(endpoint) {
-            try {
-                const res = await fetch(`${API}${endpoint}`);
-                return await res.json();
-            } catch (e) {
-                showToast('📴 Error de conexión con el servidor');
-                return null;
-            }
-        }
-
-        async function apiPost(endpoint, data) {
-            try {
-                const body = Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&');
-                const res = await fetch(`${API}${endpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: body
-                });
-                return await res.json();
-            } catch (e) {
-                showToast('📴 Error de conexión con el servidor');
-                return null;
-            }
-        }
-
-        // ========== CHAT IA (conexión real) ==========
-        async function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            addChatMessage(msg, 'user');
-            input.value = '';
-            input.focus();
-
-            const data = await apiPost('/chat', { mensaje: msg });
-            if (data) {
-                const modo = data.modo === 'ia' ? '🧠 IA' : '💬 Local';
-                addChatMessage(`${data.respuesta} (${modo})`, 'bot');
-            }
-        }
-
-        function addChatMessage(text, type) {
-            const box = document.getElementById('chatBox');
-            const msg = document.createElement('div');
-            msg.className = 'chat-msg ' + type;
-            msg.textContent = text;
-            box.appendChild(msg);
-            box.scrollTop = box.scrollHeight;
-        }
-
-        // ========== RESPIRACIÓN (desde API real) ==========
-        async function loadBreathExercises() {
-            const select = document.getElementById('breathSelect');
-            const data = await apiGet('/respiracion/lista');
-            if (!data || !data.ejercicios) return;
-
-            select.innerHTML = '<option value="">Selecciona un ejercicio...</option>';
-            data.ejercicios.forEach(ej => {
-                const opt = document.createElement('option');
-                opt.value = ej.clave;
-                opt.textContent = `${ej.nombre} (${ej.nivel})`;
-                select.appendChild(opt);
-            });
-        }
-
-        async function loadBreathInfo() {
-            const clave = document.getElementById('breathSelect').value;
-            if (!clave) {
-                document.getElementById('breathInfo').style.display = 'none';
-                return;
-            }
-
-            const data = await apiGet(`/respiracion/info?ejercicio=${clave}`);
-            if (!data) return;
-
-            state.currentBreathExercise = data;
-            document.getElementById('breathInfo').style.display = 'block';
-            document.getElementById('breathDetails').innerHTML = `
-                <strong>${data.nombre}</strong><br>
-                ${data.descripcion}<br>
-                <em>${data.beneficio}</em><br>
-                Ciclos: ${data.ciclos} | Nivel: ${data.nivel}
-            `;
-            document.getElementById('breathVisual').textContent = data.visualizacion || '';
-            document.getElementById('breathText').textContent = 'Toca el círculo para empezar';
-            document.getElementById('breathCircle').className = 'breath-circle';
-            document.getElementById('breathCircle').textContent = '🌿';
-            stopBreathing();
-        }
-
-        function toggleBreathing() {
-            if (state.isBreathing) {
-                stopBreathing();
-                return;
-            }
-            if (!state.currentBreathExercise) {
-                showToast('⚠️ Selecciona un ejercicio primero');
-                return;
-            }
-            startBreathing();
-        }
-
-        function startBreathing() {
-            state.isBreathing = true;
-            state.breathCycles = 0;
-            state.breathMaxCycles = state.currentBreathExercise.ciclos || 4;
-            const pasos = state.currentBreathExercise.pasos || [{texto: 'Inhala', segundos: 4}, {texto: 'Exhala', segundos: 4}];
-            let pasoIndex = 0;
-
-            function cycle() {
-                if (!state.isBreathing) return;
-
-                if (pasoIndex >= pasos.length) {
-                    state.breathCycles++;
-                    pasoIndex = 0;
-                    if (state.breathCycles >= state.breathMaxCycles) {
-                        stopBreathing();
-                        document.getElementById('breathCircle').textContent = '✨';
-                        document.getElementById('breathText').textContent = state.currentBreathExercise.frase_cierre || '¡Completado! ¿Cómo te sientes?';
-                        return;
-                    }
-                }
-
-                const paso = pasos[pasoIndex];
-                const circle = document.getElementById('breathCircle');
-                const text = document.getElementById('breathText');
-
-                if (paso.texto.toLowerCase().includes('inhala')) {
-                    circle.classList.add('inhale');
-                    circle.classList.remove('exhale');
-                    circle.textContent = '💨';
-                } else if (paso.texto.toLowerCase().includes('exhala')) {
-                    circle.classList.add('exhale');
-                    circle.classList.remove('inhale');
-                    circle.textContent = '😮‍💨';
-                } else {
-                    circle.classList.remove('inhale', 'exhale');
-                    circle.textContent = '✋';
-                }
-
-                text.textContent = `${paso.texto} (${paso.segundos}s) · Ciclo ${state.breathCycles + 1}/${state.breathMaxCycles}`;
-                pasoIndex++;
-                state.breathTimer = setTimeout(cycle, paso.segundos * 1000);
-            }
-
-            document.getElementById('breathCircle').onclick = stopBreathing;
-            cycle();
-        }
-
-        function stopBreathing() {
-            state.isBreathing = false;
-            if (state.breathTimer) {
-                clearTimeout(state.breathTimer);
-                state.breathTimer = null;
-            }
-        }
-
-        // ========== DIARIO EMOCIONAL (servidor real) ==========
-        function selectMood(mood, btn) {
-            state.selectedMood = mood;
-            document.querySelectorAll('#moodSelector .mood-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
-
-        async function saveDiary() {
-            const texto = document.getElementById('diarioEntry').value.trim();
-            if (!texto && !state.selectedMood) {
-                showToast('⚠️ Escribe algo o selecciona un estado');
-                return;
-            }
-
-            const data = await apiPost('/diario/guardar', {
-                texto: texto || 'Sin descripción',
-                emocion: state.selectedMood || 'No especificado'
-            });
-
-            if (data && data.guardado) {
-                document.getElementById('diarioEntry').value = '';
-                document.querySelectorAll('#moodSelector .mood-btn').forEach(b => b.classList.remove('selected'));
-                state.selectedMood = null;
-                showToast('✅ Entrada guardada en el servidor');
-                loadDiaryEntries();
-            }
-        }
-
-        async function loadDiaryEntries() {
-            const container = document.getElementById('diaryEntries');
-            const data = await apiGet('/diario/entradas');
-            if (!data || !data.entradas || data.entradas.length === 0) {
-                container.innerHTML = '<p style="font-size:0.8rem;color:var(--muted);">📖 No hay entradas aún.</p>';
-                return;
-            }
-
-            container.innerHTML = '<div class="entry-list">' +
-                data.entradas.slice(0, 10).map(e => `
-                    <div class="entry-item">
-                        <strong>${e.emocion || 'Sin emoción'}</strong>
-                        <p>${e.texto || e.descripcion || ''}</p>
-                        <div class="entry-meta">${e.fecha || ''}</div>
-                    </div>
-                `).join('') + '</div>';
-        }
-
-        // ========== LÍNEAS DE AYUDA (desde API real) ==========
-        async function loadPaises() {
-            const select = document.getElementById('paisSelect');
-            const data = await apiGet('/lineas-ayuda/paises');
-            if (!data || !data.paises) return;
-
-            select.innerHTML = '<option value="">Selecciona tu país...</option>';
-            data.paises.forEach(pais => {
-                const opt = document.createElement('option');
-                opt.value = pais;
-                opt.textContent = pais;
-                select.appendChild(opt);
-            });
-        }
-
-        async function loadLineasAyuda() {
-            const pais = document.getElementById('paisSelect').value;
-            if (!pais) return;
-
-            const data = await apiGet(`/lineas-ayuda?pais=${encodeURIComponent(pais)}`);
-            if (!data) return;
-
-            const container = document.getElementById('lineasAyudaList');
-            container.innerHTML = `<p style="font-weight:700;margin-bottom:0.5rem;">📞 ${data.pais} (${data.prefijo || ''})</p>` +
-                '<div class="entry-list">' +
-                data.lineas.map(l => `
-                    <div class="entry-item">
-                        <strong>${l.nombre}</strong>: ${l.numero}
-                        <div class="entry-meta">
-                            <span>${l.descripcion}</span>
-                            <span class="entry-tag tag-${l.categoria}">${l.categoria}</span>
-                        </div>
-                    </div>
-                `).join('') + '</div>';
-        }
-
-        // ========== BITÁCORA DOCENTE ==========
-        async function agregarBitacora() {
-            const tipo = document.getElementById('bitacoraTipo').value;
-            const alumno = document.getElementById('bitacoraAlumno').value.trim();
-            const grupo = document.getElementById('bitacoraGrupo').value.trim();
-            const texto = document.getElementById('bitacoraTexto').value.trim();
-
-            if (!alumno || !texto) {
-                showToast('⚠️ Completa al menos alumno y descripción');
-                return;
-            }
-
-            const data = await apiGet(`/bitacora/agregar?tipo=${tipo}&alumno=${encodeURIComponent(alumno)}&grupo=${encodeURIComponent(grupo)}&texto=${encodeURIComponent(texto)}&autor=Docente&escuela=general`);
-
-            if (data && data.guardado) {
-                document.getElementById('bitacoraAlumno').value = '';
-                document.getElementById('bitacoraTexto').value = '';
-                showToast('✅ Entrada registrada en bitácora');
-                cargarBitacora();
-            }
-        }
-
-        async function cargarBitacora() {
-            const container = document.getElementById('bitacoraEntries');
-            const data = await apiGet('/bitacora/entradas');
-            if (!data || !data.entradas || data.entradas.length === 0) {
-                container.innerHTML = '<p style="font-size:0.8rem;color:var(--muted);">📋 No hay entradas en la bitácora.</p>';
-                return;
-            }
-
-            container.innerHTML = '<div class="entry-list">' +
-                data.entradas.slice(-10).reverse().map(e => `
-                    <div class="entry-item">
-                        <strong>${e.alumno}</strong> (${e.grupo || 'N/A'})
-                        <span class="entry-tag tag-${e.tipo}">${e.tipo}</span>
-                        <p>${e.texto}</p>
-                        <div class="entry-meta">
-                            <span>${e.autor || ''}</span>
-                            <span>${e.fecha ? new Date(e.fecha).toLocaleDateString() : ''}</span>
-                        </div>
-                    </div>
-                `).join('') + '</div>';
-        }
-
-        // ========== ADMIN ==========
-        function verifyAdmin() {
-            const code = document.getElementById('adminCode').value.trim();
-            if (code === 'SANA-ADMIN-2025') {
-                state.isAdmin = true;
-                document.getElementById('adminLock').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminError').style.display = 'none';
-                showToast('✅ Bienvenido Administrador');
-            } else {
-                document.getElementById('adminError').style.display = 'block';
-                document.getElementById('adminCode').value = '';
-                document.getElementById('adminCode').focus();
-            }
-        }
-
-        function logoutAdmin() {
-            state.isAdmin = false;
-            document.getElementById('adminLock').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('adminCode').value = '';
-            document.getElementById('adminError').style.display = 'none';
-            showToast('👋 Sesión cerrada');
-        }
-
-        // ========== ESTADO DE CONEXIÓN ==========
-        function updateStatus() {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            if (navigator.onLine) {
-                dot.style.background = 'var(--green)';
-                dot.style.boxShadow = '0 0 8px var(--green)';
-                text.textContent = '🌐 Online · APIs activas';
-            } else {
-                dot.style.background = 'var(--orange)';
-                dot.style.boxShadow = '0 0 8px var(--orange)';
-                text.textContent = '📴 Offline · Funciones limitadas';
-            }
-        }
-        updateStatus();
-        window.addEventListener('online', updateStatus);
-        window.addEventListener('offline', updateStatus);
-
-        // ========== INICIALIZACIÓN ==========
-        console.log('🌿 SANA v2.0 - Con APIs reales');
-        console.log('✅ Chat IA: /api/chat');
-        console.log('✅ Respiración: /api/respiracion/*');
-        console.log('✅ Diario: /api/diario/*');
-        console.log('✅ Líneas ayuda: /api/lineas-ayuda/*');
-        console.log('✅ Bitácora: /api/bitacora/*');
-        console.log('💜 https://github.com/Prototipicaestudio1/sana-v2');
-    </script>
+<div class="cosmos"><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div></div>
+<div class="app">
+<header class="app-header" id="appHeader"><div class="logo-icon" onclick="navigateTo('home')">🌿</div><h1 class="app-title">SANA</h1><p class="app-subtitle">Bienestar Emocional</p></header>
+<nav class="nav-tabs" id="navTabs">
+<button class="nav-tab active" data-page="home">🏠 Inicio</button>
+<button class="nav-tab" data-page="alumnos">🎓 Alumnos</button>
+<button class="nav-tab" data-page="docentes">👨‍🏫 Docentes</button>
+<button class="nav-tab" data-page="regularizacion">📚 Regularización</button>
+<button class="nav-tab" data-page="admin">🔑 Admin</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+<div class="home-grid">
+<div class="home-card" onclick="navigateTo('alumnos')"><span class="home-card-icon">🎓</span><span class="home-card-label">Alumnos</span><span class="home-card-hint">Chat IA · Respiración · Diario</span></div>
+<div class="home-card" onclick="navigateTo('docentes')"><span class="home-card-icon">👨‍🏫</span><span class="home-card-label">Docentes</span><span class="home-card-hint">Login · Bitácora · Planes</span></div>
+<div class="home-card" onclick="navigateTo('regularizacion')"><span class="home-card-icon">📚</span><span class="home-card-label">Regularización</span><span class="home-card-hint">Material · Guías</span></div>
+<div class="home-card" onclick="navigateTo('admin')"><span class="home-card-icon">🔑</span><span class="home-card-label">Admin</span><span class="home-card-hint">Escuelas · Códigos</span></div>
+</div>
+<div class="stats-row"><div class="stat-item"><span class="stat-value">983</span><span class="stat-label">Tests</span></div><div class="stat-item"><span class="stat-value">27</span><span class="stat-label">Módulos</span></div><div class="stat-item"><span class="stat-value">11</span><span class="stat-label">Emociones</span></div><div class="stat-item"><span class="stat-value">45+</span><span class="stat-label">Líneas</span></div></div>
+</div>
+
+<!-- ALUMNOS -->
+<div class="page" id="page-alumnos">
+<div class="section-title">🎓 Zona Alumnos</div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🤖</div><div><div class="feature-name">Chat con Sana</div><div class="feature-desc">Habla conmigo, IA real</div></div></div>
+<div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes hoy?</div></div>
+<div class="chat-input-row"><input type="text" class="chat-input" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMessage()"><button class="btn-send" onclick="sendMessage()">➤</button></div></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">🫁</div><div><div class="feature-name">Respiración Guiada</div><div class="feature-desc">7 ejercicios</div></div></div>
+<select class="custom-select" id="breathSelect" onchange="loadBreathInfo()"><option value="">Selecciona ejercicio...</option></select>
+<div id="breathInfo" style="display:none;"><div id="breathDetails" style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem;"></div>
+<div class="breath-circle" id="breathCircle" onclick="toggleBreathing()">🌿</div><div class="breath-text" id="breathText">Toca para empezar</div></div></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon pink">📝</div><div><div class="feature-name">Diario Emocional</div><div class="feature-desc">Guardado en servidor</div></div></div>
+<div class="mood-selector" id="moodSelector">
+<button class="mood-btn" onclick="selectMood('😊 Feliz',this)">😊 Feliz</button><button class="mood-btn" onclick="selectMood('😢 Triste',this)">😢 Triste</button><button class="mood-btn" onclick="selectMood('😰 Ansioso',this)">😰 Ansioso</button><button class="mood-btn" onclick="selectMood('😠 Enojado',this)">😠 Enojado</button><button class="mood-btn" onclick="selectMood('😌 Calma',this)">😌 Calma</button>
+</div>
+<textarea class="diario-textarea" id="diarioEntry" placeholder="Hoy me siento..."></textarea>
+<button class="btn btn-primary" style="margin-top:0.5rem;" onclick="saveDiary()">💾 Guardar</button>
+<button class="btn btn-outline btn-sm" style="margin-top:0.3rem;" onclick="loadDiaryEntries()">📋 Ver entradas</button>
+<div id="diaryEntries"></div></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon blue">🆘</div><div><div class="feature-name">Líneas de Ayuda</div><div class="feature-desc">45+ contactos en 8 países</div></div></div>
+<select class="custom-select" id="paisSelect" onchange="loadLineasAyuda()"><option value="">Selecciona país...</option></select>
+<div id="lineasAyudaList"></div></div>
+</div>
+
+<!-- DOCENTES -->
+<div class="page" id="page-docentes">
+<div class="section-title">👨‍🏫 Zona Docentes</div>
+<div id="docenteLogin"><div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🔐</div><div><div class="feature-name">Acceso Docente</div><div class="feature-desc">Ingresa tu código de escuela</div></div></div>
+<input type="text" class="chat-input" id="codigoDocente" placeholder="Código (ej: DOC-XXXXXX)" style="margin-bottom:0.5rem;">
+<button class="btn btn-primary" onclick="loginDocente()">Ingresar</button><p id="loginError" style="color:var(--red);font-size:0.8rem;margin-top:0.5rem;display:none;"></p></div></div>
+<div id="docentePanel" style="display:none;">
+<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;"><span id="docenteInfo"></span> <button class="btn btn-danger btn-sm" onclick="logoutDocente()">Salir</button></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">📋</div><div><div class="feature-name">Bitácora</div><div class="feature-desc">Registra observaciones</div></div></div>
+<select class="custom-select" id="bitacoraTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select>
+<input type="text" class="chat-input" id="bitacoraAlumno" placeholder="Nombre alumno" style="margin-bottom:0.4rem;"><input type="text" class="chat-input" id="bitacoraGrupo" placeholder="Grupo (ej: 3A)" style="margin-bottom:0.4rem;">
+<textarea class="diario-textarea" id="bitacoraTexto" placeholder="Descripción..." style="min-height:60px;"></textarea>
+<button class="btn btn-primary btn-sm" style="margin-top:0.5rem;" onclick="agregarBitacora()">📝 Registrar</button>
+<button class="btn btn-outline btn-sm" onclick="cargarBitacora()">📋 Ver</button><div id="bitacoraEntries"></div></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon orange">📤</div><div><div class="feature-name">Subir Guía de Estudio</div><div class="feature-desc">Material para regularización</div></div></div>
+<select class="custom-select" id="guiaMateria"></select>
+<input type="text" class="chat-input" id="guiaTitulo" placeholder="Título de la guía" style="margin-bottom:0.4rem;">
+<textarea class="diario-textarea" id="guiaContenido" placeholder="Contenido..." style="min-height:60px;"></textarea>
+<button class="btn btn-green btn-sm" style="margin-top:0.5rem;" onclick="subirGuia()">📤 Subir guía</button></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon blue">🎯</div><div><div class="feature-name">Crear Plan Personalizado</div><div class="feature-desc">Para alumnos</div></div></div>
+<input type="text" class="chat-input" id="planNombre" placeholder="Nombre del plan" style="margin-bottom:0.4rem;">
+<input type="text" class="chat-input" id="planObjetivo" placeholder="Objetivo" style="margin-bottom:0.4rem;">
+<textarea class="diario-textarea" id="planActividades" placeholder="Actividades..." style="min-height:60px;"></textarea>
+<button class="btn btn-green btn-sm" style="margin-top:0.5rem;" onclick="crearPlan()">🎯 Crear plan</button></div></div></div>
+
+<!-- REGULARIZACIÓN -->
+<div class="page" id="page-regularizacion">
+<div class="section-title">📚 Regularización</div>
+<select class="custom-select" id="filtroMateria" onchange="cargarGuias()"><option value="">Todas las materias</option></select>
+<div id="guiasList"></div></div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+<div class="section-title">🔑 Administrador</div>
+<div id="adminLock"><div class="feature-card" style="text-align:center;"><div style="font-size:3rem;">🔐</div><p style="margin:1rem;color:var(--muted);">Código de administrador</p>
+<input type="password" id="adminCode" class="chat-input" placeholder="Código" style="text-align:center;margin-bottom:0.8rem;" onkeypress="if(event.key==='Enter')verifyAdmin()">
+<button class="btn btn-primary" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
+<div id="adminPanel" style="display:none;">
+<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;">✅ <strong>Panel Administrador</strong> <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">Salir</button></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🏫</div><div><div class="feature-name">Registrar Escuela</div><div class="feature-desc">Genera códigos para docentes y admin</div></div></div>
+<input type="text" class="chat-input" id="escuelaNombre" placeholder="Nombre de la escuela" style="margin-bottom:0.4rem;">
+<input type="number" class="chat-input" id="escuelaDocentes" placeholder="Número de docentes" style="margin-bottom:0.4rem;" min="1" value="3">
+<input type="number" class="chat-input" id="escuelaAdmin" placeholder="Número de administrativos" style="margin-bottom:0.4rem;" min="1" value="1">
+<button class="btn btn-primary" onclick="registrarEscuela()">🏫 Registrar</button>
+<div id="escuelaResultado"></div></div>
+<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">📋</div><div><div class="feature-name">Escuelas Registradas</div><div class="feature-desc">Ver códigos generados</div></div></div>
+<button class="btn btn-outline btn-sm" onclick="listarEscuelas()">📋 Listar escuelas</button><div id="escuelasList"></div></div></div></div>
+
+<div class="status-bar"><span class="status-dot" id="statusDot"></span><span id="statusText"></span></div>
+<footer class="footer"><p>SANA v2.0 · <a href="https://github.com/Prototipicaestudio1/sana-v2" target="_blank">GitHub</a> · APIs reales 💜</p></footer></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API='/api';
+const state={currentPage:'home',isBreathing:false,breathTimer:null,breathCycles:0,breathMaxCycles:4,selectedMood:null,isAdmin:false,isDocente:false,docenteData:null,currentBreathExercise:null};
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+async function apiGet(e){try{const r=await fetch(API+e);return await r.json();}catch(e){showToast('📴 Error de conexión');return null;}}
+async function apiPost(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');const r=await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b});return await r.json();}catch(e){showToast('📴 Error');return null;}}
+
+function navigateTo(p){
+state.currentPage=p;
+document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===p));
+document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+const tg=document.getElementById('page-'+p);if(tg)tg.classList.add('active');
+document.getElementById('appHeader').classList.toggle('compact',p!=='home');
+window.scrollTo({top:0,behavior:'smooth'});
+if(p==='alumnos'){loadBreathExercises();loadPaises();}
+if(p==='regularizacion'){cargarMateriasFiltro();cargarGuias();}
+if(p==='admin'&&state.isAdmin){document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';}
+}
+document.getElementById('navTabs').addEventListener('click',e=>{const t=e.target.closest('.nav-tab');if(t)navigateTo(t.dataset.page);});
+
+// CHAT
+async function sendMessage(){
+const i=document.getElementById('chatInput');const m=i.value.trim();if(!m)return;
+addChatMsg(m,'user');i.value='';i.focus();
+const d=await apiPost('/chat',{mensaje:m});
+if(d)addChatMsg(d.respuesta+(d.modo==='ia'?' 🧠':''),'bot');
+}
+function addChatMsg(t,ty){const b=document.getElementById('chatBox');const d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+// RESPIRACIÓN
+async function loadBreathExercises(){
+const s=document.getElementById('breathSelect');
+const d=await apiGet('/respiracion/lista');
+if(!d)return;s.innerHTML='<option value="">Selecciona ejercicio...</option>';
+d.ejercicios.forEach(e=>{const o=document.createElement('option');o.value=e.clave;o.textContent=e.nombre+' ('+e.nivel+')';s.appendChild(o);});
+}
+async function loadBreathInfo(){
+const c=document.getElementById('breathSelect').value;
+if(!c){document.getElementById('breathInfo').style.display='none';return;}
+const d=await apiGet('/respiracion/info?ejercicio='+c);
+if(!d)return;state.currentBreathExercise=d;
+document.getElementById('breathInfo').style.display='block';
+document.getElementById('breathDetails').innerHTML='<strong>'+d.nombre+'</strong><br>'+d.descripcion+'<br><em>'+d.beneficio+'</em><br>Ciclos: '+d.ciclos;
+document.getElementById('breathText').textContent='Toca para empezar';
+document.getElementById('breathCircle').className='breath-circle';document.getElementById('breathCircle').textContent='🌿';stopBreathing();
+}
+function toggleBreathing(){if(state.isBreathing){stopBreathing();return;}if(!state.currentBreathExercise){showToast('⚠️ Selecciona ejercicio');return;}startBreathing();}
+function startBreathing(){
+state.isBreathing=true;state.breathCycles=0;state.breathMaxCycles=state.currentBreathExercise.ciclos||4;
+const pasos=state.currentBreathExercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;
+function cycle(){
+if(!state.isBreathing)return;
+if(pi>=pasos.length){state.breathCycles++;pi=0;if(state.breathCycles>=state.breathMaxCycles){stopBreathing();document.getElementById('breathCircle').textContent='✨';document.getElementById('breathText').textContent=state.currentBreathExercise.frase_cierre||'¡Listo!';return;}}
+const p=pasos[pi];const c=document.getElementById('breathCircle');const t=document.getElementById('breathText');
+if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}
+else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}
+else{c.classList.remove('inhale','exhale');c.textContent='✋';}
+t.textContent=p.texto+' ('+p.segundos+'s) · Ciclo '+(state.breathCycles+1)+'/'+state.breathMaxCycles;pi++;state.breathTimer=setTimeout(cycle,p.segundos*1000);
+}
+document.getElementById('breathCircle').onclick=stopBreathing;cycle();
+}
+function stopBreathing(){state.isBreathing=false;if(state.breathTimer){clearTimeout(state.breathTimer);state.breathTimer=null;}}
+
+// DIARIO
+function selectMood(m,btn){state.selectedMood=m;document.querySelectorAll('#moodSelector .mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+async function saveDiary(){
+const t=document.getElementById('diarioEntry').value.trim();if(!t&&!state.selectedMood){showToast('⚠️ Escribe algo');return;}
+const d=await apiPost('/diario/guardar',{texto:t||'Sin descripción',emocion:state.selectedMood||'No especificado'});
+if(d&&d.guardado){document.getElementById('diarioEntry').value='';document.querySelectorAll('#moodSelector .mood-btn').forEach(b=>b.classList.remove('selected'));state.selectedMood=null;showToast('✅ Guardado');loadDiaryEntries();}
+}
+async function loadDiaryEntries(){
+const c=document.getElementById('diaryEntries');const d=await apiGet('/diario/entradas');
+if(!d||!d.entradas||d.entradas.length===0){c.innerHTML='<p style="font-size:0.8rem;color:var(--muted);">📖 Sin entradas</p>';return;}
+c.innerHTML='<div class="entry-list">'+d.entradas.slice(0,10).map(e=>'<div class="entry-item"><strong>'+(e.emocion||'Sin emoción')+'</strong><p>'+(e.texto||'')+'</p><div class="entry-meta">'+(e.fecha||'')+'</div></div>').join('')+'</div>';
+}
+
+// LÍNEAS AYUDA
+async function loadPaises(){const s=document.getElementById('paisSelect');const d=await apiGet('/lineas-ayuda/paises');if(!d)return;s.innerHTML='<option value="">Selecciona país...</option>';d.paises.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;s.appendChild(o);});}
+async function loadLineasAyuda(){const p=document.getElementById('paisSelect').value;if(!p)return;const d=await apiGet('/lineas-ayuda?pais='+encodeURIComponent(p));if(!d)return;const c=document.getElementById('lineasAyudaList');c.innerHTML='<p style="font-weight:700;">📞 '+d.pais+' ('+d.prefijo+')</p><div class="entry-list">'+d.lineas.map(l=>'<div class="entry-item"><strong>'+l.nombre+'</strong>: '+l.numero+'<div class="entry-meta"><span>'+l.descripcion+'</span><span class="entry-tag tag-'+l.categoria+'">'+l.categoria+'</span></div></div>').join('')+'</div>';}
+
+// BITÁCORA
+async function agregarBitacora(){
+const t=document.getElementById('bitacoraTipo').value,a=document.getElementById('bitacoraAlumno').value.trim(),g=document.getElementById('bitacoraGrupo').value.trim(),tx=document.getElementById('bitacoraTexto').value.trim();
+if(!a||!tx){showToast('⚠️ Completa alumno y descripción');return;}
+const d=await apiGet('/bitacora/agregar?tipo='+t+'&alumno='+encodeURIComponent(a)+'&grupo='+encodeURIComponent(g)+'&texto='+encodeURIComponent(tx)+'&autor=Docente&escuela='+(state.docenteData?state.docenteData.codigo_escuela:'general'));
+if(d&&d.guardado){document.getElementById('bitacoraAlumno').value='';document.getElementById('bitacoraTexto').value='';showToast('✅ Registrado');cargarBitacora();}
+}
+async function cargarBitacora(){const c=document.getElementById('bitacoraEntries');const esc=state.docenteData?state.docenteData.codigo_escuela:'';const d=await apiGet('/bitacora/entradas?escuela='+esc);if(!d||!d.entradas||d.entradas.length===0){c.innerHTML='<p style="font-size:0.8rem;color:var(--muted);">📋 Sin entradas</p>';return;}c.innerHTML='<div class="entry-list">'+d.entradas.slice(-10).reverse().map(e=>'<div class="entry-item"><strong>'+e.alumno+'</strong> ('+(e.grupo||'N/A')+') <span class="entry-tag tag-'+e.tipo+'">'+e.tipo+'</span><p>'+e.texto+'</p><div class="entry-meta"><span>'+e.autor+'</span><span>'+(e.fecha?new Date(e.fecha).toLocaleDateString():'')+'</span></div></div>').join('')+'</div>';}
+
+// DOCENTE LOGIN
+async function loginDocente(){
+const c=document.getElementById('codigoDocente').value.trim();if(!c){showToast('⚠️ Ingresa código');return;}
+const d=await apiGet('/login?codigo='+c);
+if(d&&d.valido){state.isDocente=true;state.docenteData=d;document.getElementById('docenteLogin').style.display='none';document.getElementById('docentePanel').style.display='block';document.getElementById('docenteInfo').innerHTML='✅ '+d.escuela+' ('+d.tipo+')';cargarMateriasParaDocente();cargarBitacora();showToast('✅ Bienvenido, '+d.tipo);}
+else{document.getElementById('loginError').textContent='❌ Código inválido';document.getElementById('loginError').style.display='block';}
+}
+function logoutDocente(){state.isDocente=false;state.docenteData=null;document.getElementById('docenteLogin').style.display='block';document.getElementById('docentePanel').style.display='none';document.getElementById('codigoDocente').value='';document.getElementById('loginError').style.display='none';showToast('👋 Sesión cerrada');}
+async function cargarMateriasParaDocente(){const s=document.getElementById('guiaMateria');const d=await apiGet('/regularizacion/materias');if(!d)return;s.innerHTML='<option value="">Selecciona materia</option>';d.materias.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);});}
+async function subirGuia(){
+if(!state.isDocente){showToast('⚠️ Inicia sesión primero');return;}
+const mat=document.getElementById('guiaMateria').value,tit=document.getElementById('guiaTitulo').value.trim(),con=document.getElementById('guiaContenido').value.trim();
+if(!mat||!tit||!con){showToast('⚠️ Completa todos los campos');return;}
+const d=await apiPost('/regularizacion/agregar',{materia:mat,titulo:tit,contenido:con,autor:'Docente',escuela:state.docenteData.codigo_escuela});
+if(d&&d.guardado){document.getElementById('guiaTitulo').value='';document.getElementById('guiaContenido').value='';showToast('✅ Guía subida');}
+}
+async function crearPlan(){
+if(!state.isDocente){showToast('⚠️ Inicia sesión primero');return;}
+const n=document.getElementById('planNombre').value.trim(),o=document.getElementById('planObjetivo').value.trim(),a=document.getElementById('planActividades').value.trim();
+if(!n||!o||!a){showToast('⚠️ Completa todos los campos');return;}
+const d=await apiPost('/organizador/crear-plan',{nombre:n,materia:'General',objetivo:o,actividades:a,escuela:state.docenteData.codigo_escuela,autor:'Docente'});
+if(d&&d.guardado){document.getElementById('planNombre').value='';document.getElementById('planObjetivo').value='';document.getElementById('planActividades').value='';showToast('✅ Plan creado');}
+}
+
+// REGULARIZACIÓN
+async function cargarMateriasFiltro(){const s=document.getElementById('filtroMateria');const d=await apiGet('/regularizacion/materias');if(!d)return;s.innerHTML='<option value="">Todas las materias</option>';d.materias.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);});}
+async function cargarGuias(){const m=document.getElementById('filtroMateria')?.value||'';const d=await apiGet('/regularizacion/guias?materia='+(m||''));const c=document.getElementById('guiasList');if(!d||!d.guias||d.guias.length===0){c.innerHTML='<p style="color:var(--muted);">📚 No hay guías aún</p>';return;}c.innerHTML='<div class="entry-list">'+d.guias.map(g=>'<div class="entry-item"><strong>'+g.materia+'</strong>: '+g.titulo+'<p>'+g.contenido+'</p><div class="entry-meta"><span>'+g.autor+'</span><span>'+(g.fecha?new Date(g.fecha).toLocaleDateString():'')+'</span></div></div>').join('')+'</div>';}
+
+// ADMIN
+function verifyAdmin(){const c=document.getElementById('adminCode').value.trim();if(c==='SANA-ADMIN-2025'||c.startsWith('ADM-')){if(c.startsWith('ADM-')){apiGet('/login?codigo='+c).then(d=>{if(d&&d.valido&&d.tipo==='admin'){state.isAdmin=true;document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';showToast('✅ Bienvenido Admin - '+d.escuela);}else{document.getElementById('adminError').style.display='block';}});}else{state.isAdmin=true;document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';showToast('✅ Admin maestro');}}else{document.getElementById('adminError').style.display='block';}}
+function logoutAdmin(){state.isAdmin=false;document.getElementById('adminLock').style.display='block';document.getElementById('adminPanel').style.display='none';document.getElementById('adminCode').value='';document.getElementById('adminError').style.display='none';showToast('👋 Sesión cerrada');}
+async function registrarEscuela(){const n=document.getElementById('escuelaNombre').value.trim(),d=parseInt(document.getElementById('escuelaDocentes').value)||3,a=parseInt(document.getElementById('escuelaAdmin').value)||1;if(!n){showToast('⚠️ Pon nombre');return;}const r=await apiGet('/escuelas/registrar?nombre='+encodeURIComponent(n)+'&docentes='+d+'&admin='+a);if(r&&r.escuela){const c=document.getElementById('escuelaResultado');c.innerHTML='<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-top:0.5rem;"><strong>✅ '+r.escuela.nombre+'</strong><br>Código escuela: <strong>'+r.escuela.codigo_escuela+'</strong><br><br>📋 <strong>Códigos Docentes ('+r.escuela.num_docentes+'):</strong><br>'+r.escuela.codigos_docentes.map(c=>'<span class="badge badge-success">'+c+'</span>').join(' ')+'<br><br>🔑 <strong>Códigos Admin ('+r.escuela.num_admin+'):</strong><br>'+r.escuela.codigos_admin.map(c=>'<span class="badge badge-warning">'+c+'</span>').join(' ')+'</div>';}}
+async function listarEscuelas(){const c=document.getElementById('escuelasList');const d=await apiGet('/escuelas/lista');if(!d||!d.escuelas||d.escuelas.length===0){c.innerHTML='<p style="color:var(--muted);">No hay escuelas</p>';return;}c.innerHTML='<div class="entry-list">'+d.escuelas.map(e=>'<div class="entry-item"><strong>'+e.nombre+'</strong> <span class="badge badge-success">'+e.codigo_escuela+'</span><br>📋 Docentes: '+e.num_docentes+' | 🔑 Admin: '+e.num_admin+'<br>'+e.codigos_docentes.map(c=>'<span class="badge badge-success">'+c+'</span>').join(' ')+'<br>'+e.codigos_admin.map(c=>'<span class="badge badge-warning">'+c+'</span>').join(' ')+'</div>').join('')+'</div>';}
+
+// STATUS
+function updateStatus(){const d=document.getElementById('statusDot'),t=document.getElementById('statusText');if(navigator.onLine){d.style.background='var(--green)';d.style.boxShadow='0 0 8px var(--green)';t.textContent='🌐 Online';}else{d.style.background='var(--orange)';d.style.boxShadow='0 0 8px var(--orange)';t.textContent='📴 Offline';}}
+updateStatus();window.addEventListener('online',updateStatus);window.addEventListener('offline',updateStatus);
+</script>
 </body>
 </html>
