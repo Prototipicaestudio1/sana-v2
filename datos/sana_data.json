@@ -39,6 +39,18 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "88OafOFUOUTX": {
+      "id": "88OafOFUOUTX",
+      "nombre": "Leo",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-06T22:54:06.438385",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -71,5 +83,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T22:53:25.628183"
+  "fecha": "2026-07-06T22:54:06.438665"
 }
