@@ -1,0 +1,2 @@
+# SANA v2.0 - Dependencias
+requests>=2.28.0
