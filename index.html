@@ -2,335 +2,595 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌿 SANA v2.0 - Bienestar Emocional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>🌿 SANA - Tu espacio seguro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #08081a; --surface: rgba(22,22,44,0.75); --surface2: rgba(30,30,55,0.7);
-            --border: rgba(255,255,255,0.06); --text: #e8e8f5; --muted: #8888a8;
-            --purple: #a78bfa; --purple2: #8b5cf6; --purple-dark: #5b21b6;
-            --green: #6ee7b7; --green2: #34d399; --orange: #fbbf24;
-            --red: #fca5a5; --blue: #93c5fd; --pink: #f9a8d4;
-            --radius: 1.6rem; --radius-sm: 1rem; --radius-xs: 0.7rem;
-            --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+            --bg: #060613; --card: rgba(18,18,38,0.85); --card2: rgba(25,25,48,0.7);
+            --border: rgba(255,255,255,0.05); --text: #f0f0f8; --muted: #9090b0;
+            --purple: #a78bfa; --purple2: #7c3aed; --green: #6ee7b7; --green2: #34d399;
+            --orange: #fbbf24; --red: #fca5a5; --blue: #93c5fd; --pink: #f9a8d4;
+            --radius: 1.4rem; --radius-sm: 0.9rem; --nav-h: 72px;
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;-webkit-tap-highlight-color:transparent;}
+        body{
+            font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);
+            min-height:100vh;min-height:100dvh;overflow-x:hidden;
+            -webkit-tap-highlight-color:transparent;padding-bottom:var(--nav-h);
+            -webkit-font-smoothing:antialiased;
+        }
+
+        /* FONDO CÓSMICO */
         .cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
-        .nebula{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.25;animation:nebulaDrift 25s infinite ease-in-out;}
-        .nebula:nth-child(1){width:500px;height:500px;background:var(--purple-dark);top:-150px;left:-150px;}
-        .nebula:nth-child(2){width:400px;height:400px;background:var(--green2);bottom:-150px;right:-100px;animation-delay:-8s;}
-        .nebula:nth-child(3){width:300px;height:300px;background:var(--blue);top:50%;left:60%;animation-delay:-16s;}
-        .nebula:nth-child(4){width:350px;height:350px;background:var(--pink);bottom:30%;left:-100px;animation-delay:-20s;}
-        @keyframes nebulaDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(60px,-40px) scale(1.15)}50%{transform:translate(-30px,50px) scale(0.9)}75%{transform:translate(-50px,-30px) scale(1.1)}}
-        .app{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:1rem;min-height:100vh;display:flex;flex-direction:column;}
-        .app-header{text-align:center;padding:1.5rem 0 1rem;transition:all 0.5s;}
-        .app-header.compact{padding:0.5rem 0;}
-        .logo-icon{font-size:3rem;display:inline-block;animation:floatLogo 3s ease-in-out infinite;cursor:pointer;}
-        @keyframes floatLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-        .app-title{font-size:2.6rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--purple),var(--green),var(--purple));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
-        @keyframes shimmer{to{background-position:200% center}}
-        .app-subtitle{font-size:0.8rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
-        .nav-tabs{display:flex;gap:0.3rem;background:var(--surface);border-radius:3rem;padding:0.35rem;margin:1rem 0;border:1px solid var(--border);backdrop-filter:blur(20px);overflow-x:auto;scrollbar-width:none;}
-        .nav-tabs::-webkit-scrollbar{display:none;}
-        .nav-tab{flex:1;min-width:fit-content;padding:0.7rem 1rem;border-radius:3rem;border:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:600;font-size:0.8rem;white-space:nowrap;transition:var(--transition);display:flex;align-items:center;gap:0.4rem;justify-content:center;}
-        .nav-tab.active{background:var(--purple2);color:white;box-shadow:0 4px 15px rgba(139,92,246,0.4);}
-        .nav-tab:not(.active):hover{color:var(--text);background:rgba(255,255,255,0.05);}
-        .page{display:none;animation:pageIn 0.4s ease;flex:1;}
+        .cosmos .nebula{position:absolute;border-radius:50%;filter:blur(130px);opacity:0.18;animation:drift 28s infinite ease-in-out;}
+        .cosmos .nebula:nth-child(1){width:450px;height:450px;background:var(--purple2);top:-120px;left:-120px;}
+        .cosmos .nebula:nth-child(2){width:380px;height:380px;background:var(--green2);bottom:-130px;right:-100px;animation-delay:-9s;}
+        .cosmos .nebula:nth-child(3){width:280px;height:280px;background:var(--blue);top:55%;left:55%;animation-delay:-18s;}
+        .cosmos .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3.5s infinite;}
+        @keyframes drift{0%,100%{transform:translate(0,0)scale(1)}25%{transform:translate(50px,-35px)scale(1.12)}50%{transform:translate(-25px,45px)scale(0.92)}75%{transform:translate(-45px,-25px)scale(1.08)}}
+        @keyframes twinkle{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:1;transform:scale(2)}}
+
+        /* APP */
+        .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0.8rem;}
+
+        /* HEADER */
+        .main-header{text-align:center;padding:2.5rem 0 1.5rem;}
+        .main-header .logo-emote{font-size:3.5rem;display:inline-block;animation:levitate 3.5s ease-in-out infinite;cursor:pointer;filter:drop-shadow(0 0 25px rgba(167,139,250,0.4));}
+        @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .main-header h1{font-size:2.8rem;font-weight:900;letter-spacing:-3px;
+            background:linear-gradient(135deg,var(--purple) 0%,var(--green) 40%,var(--blue) 70%,var(--purple) 100%);
+            background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            background-clip:text;animation:shimmer 5s linear infinite;line-height:1;}
+        @keyframes shimmer{to{background-position:300% center}}
+        .main-header .tagline{font-size:0.7rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:0.3rem;}
+
+        /* NAV INFERIOR */
+        .bottom-nav{
+            position:fixed;bottom:0;left:0;right:0;z-index:100;
+            background:rgba(8,8,28,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            border-top:1px solid var(--border);display:flex;justify-content:space-around;
+            align-items:center;height:var(--nav-h);padding:0 0.3rem;padding-bottom:env(safe-area-inset-bottom,0);
+        }
+        .bottom-nav .nav-item{
+            background:none;border:none;color:var(--muted);font-size:0.6rem;font-weight:500;
+            display:flex;flex-direction:column;align-items:center;gap:0.25rem;
+            cursor:pointer;transition:var(--transition);padding:0.4rem 0.2rem;min-width:58px;
+            position:relative;
+        }
+        .bottom-nav .nav-item .nav-emoji{font-size:1.5rem;transition:transform 0.3s;}
+        .bottom-nav .nav-item.active{color:var(--purple);}
+        .bottom-nav .nav-item.active .nav-emoji{transform:scale(1.2);}
+        .bottom-nav .nav-item.active::after{content:'';position:absolute;top:-1px;width:30px;height:3px;background:var(--purple);border-radius:0 0 1rem 1rem;}
+        .bottom-nav .nav-item:active{transform:scale(0.88);}
+
+        /* PÁGINAS */
+        .page{display:none;animation:pageIn 0.35s ease;min-height:60vh;}
         .page.active{display:block;}
-        @keyframes pageIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;}
-        .home-card{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 1.2rem;cursor:pointer;transition:var(--transition);text-align:center;position:relative;overflow:hidden;}
-        .home-card:nth-child(1){border-top:3px solid var(--purple);}.home-card:nth-child(2){border-top:3px solid var(--green);}.home-card:nth-child(3){border-top:3px solid var(--orange);}.home-card:nth-child(4){border-top:3px solid var(--red);}
-        .home-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 50px rgba(0,0,0,0.5);}
-        .home-card:active{transform:scale(0.94);}
-        .home-card-icon{font-size:2.8rem;display:block;margin-bottom:0.8rem;transition:transform 0.3s;}
-        .home-card:hover .home-card-icon{transform:scale(1.2);}
-        .home-card-label{font-weight:700;font-size:1rem;margin-bottom:0.2rem;}
-        .home-card-hint{font-size:0.7rem;color:var(--muted);}
-        .section-title{font-size:1.4rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
-        .feature-card{background:var(--surface2);backdrop-filter:blur(15px);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;margin-bottom:0.8rem;transition:var(--transition);}
-        .feature-card-header{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;}
-        .feature-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-        .feature-icon.purple{background:rgba(167,139,250,0.2);}.feature-icon.green{background:rgba(110,231,183,0.2);}.feature-icon.blue{background:rgba(147,197,253,0.2);}.feature-icon.orange{background:rgba(251,191,36,0.2);}.feature-icon.pink{background:rgba(249,168,212,0.2);}
-        .feature-name{font-weight:700;font-size:0.95rem;}
-        .feature-desc{font-size:0.75rem;color:var(--muted);line-height:1.4;}
-        .chat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:200px;max-height:350px;overflow-y:auto;margin-bottom:0.8rem;display:flex;flex-direction:column;gap:0.6rem;}
-        .chat-msg{padding:0.7rem 1rem;border-radius:1.2rem;font-size:0.85rem;max-width:85%;animation:msgIn 0.3s ease;}
-        @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* HOME GRID */
+        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-top:0.5rem;}
+        .home-card{
+            background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);
+            border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem 1rem;
+            text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;
+        }
+        .home-card:nth-child(1){border-top:3px solid var(--purple);}
+        .home-card:nth-child(2){border-top:3px solid var(--green);}
+        .home-card:nth-child(3){border-top:3px solid var(--orange);}
+        .home-card:nth-child(4){border-top:3px solid var(--red);}
+        .home-card:active{transform:scale(0.93);}
+        .home-card .hc-emoji{font-size:3rem;display:block;margin-bottom:0.7rem;transition:transform 0.3s;}
+        .home-card:active .hc-emoji{transform:scale(1.2);}
+        .home-card .hc-title{font-weight:700;font-size:0.95rem;margin-bottom:0.2rem;}
+        .home-card .hc-sub{font-size:0.65rem;color:var(--muted);}
+
+        /* CARDS GENÉRICAS */
+        .card{
+            background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);
+            border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;
+            margin-bottom:0.8rem;transition:var(--transition);
+        }
+        .card:active{transform:scale(0.97);}
+        .card-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;}
+        .card-icon{
+            width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+            justify-content:center;font-size:1.2rem;flex-shrink:0;
+        }
+        .card-icon.c-purple{background:rgba(167,139,250,0.18);}
+        .card-icon.c-green{background:rgba(110,231,183,0.18);}
+        .card-icon.c-blue{background:rgba(147,197,253,0.18);}
+        .card-icon.c-orange{background:rgba(251,191,36,0.18);}
+        .card-icon.c-pink{background:rgba(249,168,212,0.18);}
+        .card-icon.c-red{background:rgba(252,165,165,0.18);}
+        .card-title{font-weight:700;font-size:0.9rem;}.card-sub{font-size:0.7rem;color:var(--muted);}
+
+        /* INPUTS Y BOTONES */
+        input,textarea,select{
+            width:100%;padding:0.75rem 1.1rem;border-radius:2.5rem;border:1px solid var(--border);
+            background:rgba(255,255,255,0.04);color:var(--text);font-size:0.85rem;
+            outline:none;transition:var(--transition);font-family:'Inter',sans-serif;
+            margin-bottom:0.5rem;-webkit-appearance:none;
+        }
+        input:focus,textarea:focus,select:focus{border-color:var(--purple);box-shadow:0 0 20px rgba(167,139,250,0.1);}
+        textarea{border-radius:var(--radius-sm);resize:vertical;min-height:80px;}
+        select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%239090b0'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
+
+        .btn{
+            padding:0.75rem 1.6rem;border-radius:2.5rem;border:none;font-weight:700;
+            cursor:pointer;transition:var(--transition);font-size:0.85rem;
+            display:inline-flex;align-items:center;justify-content:center;gap:0.3rem;
+            letter-spacing:-0.2px;
+        }
+        .btn:active{transform:scale(0.94);}
+        .btn-primary{background:var(--purple2);color:#fff;}
+        .btn-green{background:var(--green2);color:#0a0a1a;}
+        .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+        .btn-danger{background:rgba(252,165,165,0.12);color:var(--red);border:1px solid rgba(252,165,165,0.2);}
+        .btn-sm{padding:0.45rem 1rem;font-size:0.72rem;}
+        .btn-block{width:100%;}
+        .btn-xs{padding:0.3rem 0.7rem;font-size:0.65rem;border-radius:1.5rem;}
+
+        /* PROFILE BAR */
+        .profile-bar{
+            display:flex;align-items:center;gap:0.7rem;padding:0.6rem 1rem;
+            background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.15);
+            border-radius:3rem;margin-bottom:1rem;font-size:0.8rem;
+        }
+        .avatar{
+            width:38px;height:38px;border-radius:50%;display:flex;align-items:center;
+            justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;
+        }
+        .avatar.av-green{background:var(--green2);color:#0a0a1a;}
+        .avatar.av-purple{background:var(--purple2);color:#fff;}
+        .avatar.av-blue{background:var(--blue);color:#0a0a1a;}
+
+        /* CHAT */
+        .chat-box{background:rgba(0,0,0,0.25);border-radius:var(--radius-sm);padding:0.8rem;min-height:200px;max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.5rem;}
+        .chat-msg{padding:0.65rem 0.9rem;border-radius:1.2rem;font-size:0.8rem;max-width:82%;animation:msgPop 0.3s ease;line-height:1.4;}
+        @keyframes msgPop{from{opacity:0;transform:translateY(8px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
         .chat-msg.user{background:var(--purple2);align-self:flex-end;border-bottom-right-radius:0.3rem;}
-        .chat-msg.bot{background:var(--surface2);align-self:flex-start;border-bottom-left-radius:0.3rem;}
-        .chat-input-row{display:flex;gap:0.5rem;}
-        .chat-input{flex:1;padding:0.8rem 1.2rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.9rem;outline:none;transition:border-color 0.3s;width:100%;}
-        .chat-input:focus{border-color:var(--purple);}
-        .btn-send{width:44px;height:44px;border-radius:50%;border:none;background:var(--purple2);color:white;font-size:1.2rem;cursor:pointer;transition:var(--transition);flex-shrink:0;}
-        .btn-send:hover{background:var(--purple);transform:scale(1.05);}
-        .btn{padding:0.8rem 1.8rem;border-radius:3rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.9rem;display:inline-flex;align-items:center;gap:0.4rem;}
-        .btn-primary{background:var(--purple2);color:white;}.btn-primary:hover{background:var(--purple);transform:scale(1.03);}
-        .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-outline:hover{background:rgba(255,255,255,0.05);}
-        .btn-sm{padding:0.5rem 1rem;font-size:0.75rem;}
-        .btn-danger{background:rgba(252,165,165,0.2);color:var(--red);border:1px solid rgba(252,165,165,0.3);}
-        .btn-green{background:var(--green2);color:#000;}.btn-green:hover{background:var(--green);}
-        .breath-circle{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,var(--purple2),var(--purple-dark));margin:1.5rem auto;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;cursor:pointer;transition:all 0.1s;box-shadow:0 0 40px rgba(139,92,246,0.3);user-select:none;}
-        .breath-circle.inhale{transform:scale(1.5);box-shadow:0 0 60px rgba(110,231,183,0.5);}
-        .breath-circle.exhale{transform:scale(0.8);box-shadow:0 0 20px rgba(139,92,246,0.2);}
-        .breath-text{text-align:center;font-size:1.1rem;font-weight:600;margin-top:0.5rem;}
-        .diario-textarea{width:100%;min-height:120px;padding:1rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;resize:vertical;outline:none;}
-        .mood-selector{display:flex;gap:0.4rem;flex-wrap:wrap;margin:0.8rem 0;}
-        .mood-btn{padding:0.4rem 0.8rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:0.75rem;transition:var(--transition);}
-        .mood-btn:hover,.mood-btn.selected{border-color:var(--purple);background:rgba(167,139,250,0.2);}
-        .custom-select{padding:0.6rem 1rem;border-radius:3rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:0.85rem;outline:none;width:100%;margin-bottom:0.5rem;}
-        .custom-select:focus{border-color:var(--purple);}
-        .entry-list{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem;}
-        .entry-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.8rem 1rem;font-size:0.8rem;}
-        .entry-meta{display:flex;gap:0.5rem;flex-wrap:wrap;font-size:0.7rem;color:var(--muted);margin-top:0.3rem;}
-        .entry-tag{padding:0.15rem 0.5rem;border-radius:1rem;font-size:0.65rem;font-weight:600;}
-        .tag-observacion{background:rgba(147,197,253,0.2);color:var(--blue);}
-        .tag-reporte{background:rgba(252,165,165,0.2);color:var(--red);}
-        .tag-recomendacion{background:rgba(110,231,183,0.2);color:var(--green);}
-        .tag-calificacion{background:rgba(251,191,36,0.2);color:var(--orange);}
-        .stats-row{display:flex;justify-content:space-around;margin:1rem 0;flex-wrap:wrap;gap:0.5rem;}
-        .stat-item{text-align:center;}
-        .stat-value{font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-        .status-bar{text-align:center;font-size:0.7rem;color:var(--muted);padding:0.8rem 0;display:flex;align-items:center;justify-content:center;gap:0.4rem;}
-        .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite;}
-        @keyframes pulse-dot{0%,100%{box-shadow:0 0 3px var(--green)}50%{box-shadow:0 0 12px var(--green)}}
-        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface);border:1px solid var(--border);border-radius:3rem;padding:0.7rem 1.4rem;font-size:0.8rem;z-index:200;transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;backdrop-filter:blur(20px);white-space:nowrap;}
+        .chat-msg.bot{background:rgba(255,255,255,0.07);align-self:flex-start;border-bottom-left-radius:0.3rem;}
+        .chat-input-row{display:flex;gap:0.4rem;}
+        .chat-input-row input{margin-bottom:0;flex:1;}
+
+        /* RESPIRACIÓN */
+        .breath-circle{
+            width:130px;height:130px;border-radius:50%;margin:1rem auto;
+            background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.4rem;font-weight:700;cursor:pointer;
+            transition:all 0.12s ease;box-shadow:0 0 35px rgba(124,58,237,0.35);
+            user-select:none;
+        }
+        .breath-circle.inhale{transform:scale(1.45);box-shadow:0 0 55px rgba(110,231,183,0.5);}
+        .breath-circle.exhale{transform:scale(0.72);box-shadow:0 0 15px rgba(124,58,237,0.15);}
+
+        /* ENTRADAS */
+        .entry-list{display:flex;flex-direction:column;gap:0.4rem;max-height:320px;overflow-y:auto;}
+        .entry{
+            background:rgba(255,255,255,0.025);border:1px solid var(--border);
+            border-radius:var(--radius-sm);padding:0.7rem 0.9rem;font-size:0.76rem;
+            display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;
+        }
+        .entry .entry-info{flex:1;}
+        .entry .entry-meta{font-size:0.62rem;color:var(--muted);margin-top:0.25rem;display:flex;gap:0.4rem;flex-wrap:wrap;}
+        .badge{padding:0.12rem 0.45rem;border-radius:1rem;font-size:0.58rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+        .b-green{background:rgba(110,231,183,0.18);color:var(--green);}
+        .b-orange{background:rgba(251,191,36,0.18);color:var(--orange);}
+        .b-blue{background:rgba(147,197,253,0.18);color:var(--blue);}
+        .b-red{background:rgba(252,165,165,0.18);color:var(--red);}
+        .b-purple{background:rgba(167,139,250,0.18);color:var(--purple);}
+
+        /* TOAST */
+        .toast{
+            position:fixed;bottom:calc(var(--nav-h) + 1rem);left:50%;
+            transform:translateX(-50%) translateY(130px);
+            background:var(--card);border:1px solid var(--border);border-radius:3rem;
+            padding:0.65rem 1.3rem;font-size:0.78rem;z-index:200;
+            transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            pointer-events:none;backdrop-filter:blur(25px);white-space:nowrap;
+            box-shadow:0 10px 30px rgba(0,0,0,0.5);
+        }
         .toast.show{transform:translateX(-50%) translateY(0);}
-        .footer{text-align:center;font-size:0.65rem;color:var(--muted);padding:1rem 0;margin-top:auto;opacity:0.6;}
-        .footer a{color:var(--purple);text-decoration:none;}
-        .badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:1rem;font-size:0.7rem;font-weight:600;}
-        .badge-success{background:rgba(110,231,183,0.2);color:var(--green);}
-        .badge-warning{background:rgba(251,191,36,0.2);color:var(--orange);}
-        @media(max-width:420px){.home-grid{grid-template-columns:1fr;}.app-title{font-size:2rem;}.home-card{padding:1.5rem 1rem;}.nav-tab{font-size:0.7rem;padding:0.6rem 0.7rem;}}
+
+        .section-title{font-size:1.25rem;font-weight:800;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.4rem;}
+        .text-center{text-align:center;}.text-muted{color:var(--muted);font-size:0.7rem;}
+        .mt-1{margin-top:0.5rem;}.mt-2{margin-top:1rem;}.mb-1{margin-bottom:0.5rem;}
+        .divider{height:1px;background:var(--border);margin:1rem 0;}
+        .flex{display:flex;gap:0.5rem;}
+        .flex-wrap{flex-wrap:wrap;}
+        .emoji-sm{font-size:1.2rem;}
+
+        @media(max-width:400px){
+            .home-grid{grid-template-columns:1fr;gap:0.6rem;}
+            .main-header h1{font-size:2.2rem;}
+            .home-card{padding:1.4rem 1rem;}
+        }
     </style>
 </head>
 <body>
-<div class="cosmos"><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div></div>
-<div class="app">
-<header class="app-header" id="appHeader"><div class="logo-icon" onclick="navigateTo('home')">🌿</div><h1 class="app-title">SANA</h1><p class="app-subtitle">Bienestar Emocional</p></header>
-<nav class="nav-tabs" id="navTabs">
-<button class="nav-tab active" data-page="home">🏠 Inicio</button>
-<button class="nav-tab" data-page="alumnos">🎓 Alumnos</button>
-<button class="nav-tab" data-page="docentes">👨‍🏫 Docentes</button>
-<button class="nav-tab" data-page="regularizacion">📚 Regularización</button>
-<button class="nav-tab" data-page="admin">🔑 Admin</button>
-</nav>
 
-<!-- HOME -->
+<!-- FONDO CÓSMICO -->
+<div class="cosmos" id="cosmos"><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div></div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+<!-- HEADER PRINCIPAL -->
+<div class="main-header" id="mainHeader">
+    <div class="logo-emote" onclick="nav('home')">🌿</div>
+    <h1>SANA</h1>
+    <p class="tagline">Tu espacio seguro</p>
+</div>
+
+<!-- ═══════════ PÁGINA HOME ═══════════ -->
 <div class="page active" id="page-home">
-<div class="home-grid">
-<div class="home-card" onclick="navigateTo('alumnos')"><span class="home-card-icon">🎓</span><span class="home-card-label">Alumnos</span><span class="home-card-hint">Chat IA · Respiración · Diario</span></div>
-<div class="home-card" onclick="navigateTo('docentes')"><span class="home-card-icon">👨‍🏫</span><span class="home-card-label">Docentes</span><span class="home-card-hint">Login · Bitácora · Planes</span></div>
-<div class="home-card" onclick="navigateTo('regularizacion')"><span class="home-card-icon">📚</span><span class="home-card-label">Regularización</span><span class="home-card-hint">Material · Guías</span></div>
-<div class="home-card" onclick="navigateTo('admin')"><span class="home-card-icon">🔑</span><span class="home-card-label">Admin</span><span class="home-card-hint">Escuelas · Códigos</span></div>
-</div>
-<div class="stats-row"><div class="stat-item"><span class="stat-value">983</span><span class="stat-label">Tests</span></div><div class="stat-item"><span class="stat-value">27</span><span class="stat-label">Módulos</span></div><div class="stat-item"><span class="stat-value">11</span><span class="stat-label">Emociones</span></div><div class="stat-item"><span class="stat-value">45+</span><span class="stat-label">Líneas</span></div></div>
+    <div class="home-grid">
+        <div class="home-card" onclick="nav('alumnos')"><span class="hc-emoji">🎓</span><span class="hc-title">Alumnos</span><span class="hc-sub">Chat · Respira · Diario</span></div>
+        <div class="home-card" onclick="nav('docentes')"><span class="hc-emoji">👨‍🏫</span><span class="hc-title">Docentes</span><span class="hc-sub">Bitácora · Guías · Planes</span></div>
+        <div class="home-card" onclick="nav('biblioteca')"><span class="hc-emoji">📚</span><span class="hc-title">Biblioteca</span><span class="hc-sub">Guías de estudio</span></div>
+        <div class="home-card" onclick="nav('admin')"><span class="hc-emoji">⚙️</span><span class="hc-title">Admin</span><span class="hc-sub">Escuelas · Códigos</span></div>
+    </div>
+    <div class="card mt-2">
+        <div style="display:flex;justify-content:space-around;text-align:center;">
+            <div><div style="font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">983</div><div style="font-size:0.55rem;color:var(--muted);">Tests</div></div>
+            <div><div style="font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">11</div><div style="font-size:0.55rem;color:var(--muted);">Emociones</div></div>
+            <div><div style="font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">45+</div><div style="font-size:0.55rem;color:var(--muted);">Líneas</div></div>
+            <div><div style="font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="usersCount">-</div><div style="font-size:0.55rem;color:var(--muted);">Usuarios</div></div>
+        </div>
+    </div>
 </div>
 
-<!-- ALUMNOS -->
+<!-- ═══════════ PÁGINA ALUMNOS ═══════════ -->
 <div class="page" id="page-alumnos">
-<div class="section-title">🎓 Zona Alumnos</div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🤖</div><div><div class="feature-name">Chat con Sana</div><div class="feature-desc">Habla conmigo, IA real</div></div></div>
-<div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes hoy?</div></div>
-<div class="chat-input-row"><input type="text" class="chat-input" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMessage()"><button class="btn-send" onclick="sendMessage()">➤</button></div></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">🫁</div><div><div class="feature-name">Respiración Guiada</div><div class="feature-desc">7 ejercicios</div></div></div>
-<select class="custom-select" id="breathSelect" onchange="loadBreathInfo()"><option value="">Selecciona ejercicio...</option></select>
-<div id="breathInfo" style="display:none;"><div id="breathDetails" style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem;"></div>
-<div class="breath-circle" id="breathCircle" onclick="toggleBreathing()">🌿</div><div class="breath-text" id="breathText">Toca para empezar</div></div></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon pink">📝</div><div><div class="feature-name">Diario Emocional</div><div class="feature-desc">Guardado en servidor</div></div></div>
-<div class="mood-selector" id="moodSelector">
-<button class="mood-btn" onclick="selectMood('😊 Feliz',this)">😊 Feliz</button><button class="mood-btn" onclick="selectMood('😢 Triste',this)">😢 Triste</button><button class="mood-btn" onclick="selectMood('😰 Ansioso',this)">😰 Ansioso</button><button class="mood-btn" onclick="selectMood('😠 Enojado',this)">😠 Enojado</button><button class="mood-btn" onclick="selectMood('😌 Calma',this)">😌 Calma</button>
-</div>
-<textarea class="diario-textarea" id="diarioEntry" placeholder="Hoy me siento..."></textarea>
-<button class="btn btn-primary" style="margin-top:0.5rem;" onclick="saveDiary()">💾 Guardar</button>
-<button class="btn btn-outline btn-sm" style="margin-top:0.3rem;" onclick="loadDiaryEntries()">📋 Ver entradas</button>
-<div id="diaryEntries"></div></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon blue">🆘</div><div><div class="feature-name">Líneas de Ayuda</div><div class="feature-desc">45+ contactos en 8 países</div></div></div>
-<select class="custom-select" id="paisSelect" onchange="loadLineasAyuda()"><option value="">Selecciona país...</option></select>
-<div id="lineasAyudaList"></div></div>
+
+<!-- LOGIN ALUMNO -->
+<div id="alumnoLogin">
+<div class="section-title">🎓 Alumnos</div>
+<div class="card">
+<div class="card-row"><div class="card-icon c-purple">✨</div><div><div class="card-title">Crear cuenta</div><div class="card-sub">Es gratis, anónimo y seguro</div></div></div>
+<input type="text" id="alumnoNombre" placeholder="Tu nombre o apodo">
+<button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear mi espacio</button>
+<div class="divider"></div>
+<p class="text-muted text-center mb-1">¿Ya tienes cuenta?</p>
+<input type="text" id="alumnoId" placeholder="Pega tu ID de acceso">
+<button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar</button>
+</div></div>
+
+<!-- PANEL ALUMNO -->
+<div id="alumnoPanel" style="display:none;">
+<div class="profile-bar"><div class="avatar av-purple" id="aluAvatar">A</div><div><strong id="aluName">Alumno</strong><br><span class="text-muted" id="aluId"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAlu()">🚪</button></div>
+
+<!-- CHAT -->
+<div class="card">
+<div class="card-row"><div class="card-icon c-purple">🤖</div><div><div class="card-title">Sana IA</div><div class="card-sub">Tu amiga virtual 24/7</div></div></div>
+<div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. Estoy aquí para ti. ¿Cómo te sientes hoy? 💜</div></div>
+<div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe lo que sientas..." onkeypress="if(event.key==='Enter')sendMsg()"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div>
 </div>
 
-<!-- DOCENTES -->
+<!-- RESPIRACIÓN -->
+<div class="card">
+<div class="card-row"><div class="card-icon c-green">🫁</div><div><div class="card-title">Respiración Guiada</div><div class="card-sub">7 ejercicios científicos</div></div></div>
+<select id="breathSelect" onchange="loadBreath()"><option value="">Elige un ejercicio...</option></select>
+<div id="breathInfo" style="display:none;">
+<div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div>
+<p class="text-center text-muted" id="breathText" style="margin-top:0.5rem;">Toca el círculo para empezar</p>
+</div></div>
+
+<!-- DIARIO -->
+<div class="card">
+<div class="card-row"><div class="card-icon c-pink">📝</div><div><div class="card-title">Diario Personal</div><div class="card-sub">Solo tú lo ves, 100% privado</div></div></div>
+<div class="flex flex-wrap" id="moodSel">
+<button class="btn btn-outline btn-xs" onclick="setMood('😊 Feliz',this)">😊</button>
+<button class="btn btn-outline btn-xs" onclick="setMood('😢 Triste',this)">😢</button>
+<button class="btn btn-outline btn-xs" onclick="setMood('😰 Ansioso',this)">😰</button>
+<button class="btn btn-outline btn-xs" onclick="setMood('😠 Enojado',this)">😠</button>
+<button class="btn btn-outline btn-xs" onclick="setMood('😌 Calma',this)">😌</button>
+</div>
+<textarea id="diarioText" placeholder="Hoy me siento..."></textarea>
+<button class="btn btn-primary btn-block" onclick="saveDiary()">💾 Guardar entrada</button>
+<button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDiary()">📋 Ver mi diario</button>
+<div id="diaryList"></div></div>
+
+<!-- LÍNEAS DE AYUDA -->
+<div class="card">
+<div class="card-row"><div class="card-icon c-blue">🆘</div><div><div class="card-title">Líneas de Ayuda</div><div class="card-sub">45+ contactos en 8 países</div></div></div>
+<select id="paisSelect" onchange="loadLineas()"><option value="">Selecciona tu país...</option></select>
+<div id="lineasList"></div></div>
+</div></div>
+
+<!-- ═══════════ PÁGINA DOCENTES ═══════════ -->
 <div class="page" id="page-docentes">
-<div class="section-title">👨‍🏫 Zona Docentes</div>
-<div id="docenteLogin"><div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🔐</div><div><div class="feature-name">Acceso Docente</div><div class="feature-desc">Ingresa tu código de escuela</div></div></div>
-<input type="text" class="chat-input" id="codigoDocente" placeholder="Código (ej: DOC-XXXXXX)" style="margin-bottom:0.5rem;">
-<button class="btn btn-primary" onclick="loginDocente()">Ingresar</button><p id="loginError" style="color:var(--red);font-size:0.8rem;margin-top:0.5rem;display:none;"></p></div></div>
-<div id="docentePanel" style="display:none;">
-<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;"><span id="docenteInfo"></span> <button class="btn btn-danger btn-sm" onclick="logoutDocente()">Salir</button></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">📋</div><div><div class="feature-name">Bitácora</div><div class="feature-desc">Registra observaciones</div></div></div>
-<select class="custom-select" id="bitacoraTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select>
-<input type="text" class="chat-input" id="bitacoraAlumno" placeholder="Nombre alumno" style="margin-bottom:0.4rem;"><input type="text" class="chat-input" id="bitacoraGrupo" placeholder="Grupo (ej: 3A)" style="margin-bottom:0.4rem;">
-<textarea class="diario-textarea" id="bitacoraTexto" placeholder="Descripción..." style="min-height:60px;"></textarea>
-<button class="btn btn-primary btn-sm" style="margin-top:0.5rem;" onclick="agregarBitacora()">📝 Registrar</button>
-<button class="btn btn-outline btn-sm" onclick="cargarBitacora()">📋 Ver</button><div id="bitacoraEntries"></div></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon orange">📤</div><div><div class="feature-name">Subir Guía de Estudio</div><div class="feature-desc">Material para regularización</div></div></div>
-<select class="custom-select" id="guiaMateria"></select>
-<input type="text" class="chat-input" id="guiaTitulo" placeholder="Título de la guía" style="margin-bottom:0.4rem;">
-<textarea class="diario-textarea" id="guiaContenido" placeholder="Contenido..." style="min-height:60px;"></textarea>
-<button class="btn btn-green btn-sm" style="margin-top:0.5rem;" onclick="subirGuia()">📤 Subir guía</button></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon blue">🎯</div><div><div class="feature-name">Crear Plan Personalizado</div><div class="feature-desc">Para alumnos</div></div></div>
-<input type="text" class="chat-input" id="planNombre" placeholder="Nombre del plan" style="margin-bottom:0.4rem;">
-<input type="text" class="chat-input" id="planObjetivo" placeholder="Objetivo" style="margin-bottom:0.4rem;">
-<textarea class="diario-textarea" id="planActividades" placeholder="Actividades..." style="min-height:60px;"></textarea>
-<button class="btn btn-green btn-sm" style="margin-top:0.5rem;" onclick="crearPlan()">🎯 Crear plan</button></div></div></div>
 
-<!-- REGULARIZACIÓN -->
-<div class="page" id="page-regularizacion">
-<div class="section-title">📚 Regularización</div>
-<select class="custom-select" id="filtroMateria" onchange="cargarGuias()"><option value="">Todas las materias</option></select>
+<div id="docenteLogin">
+<div class="section-title">👨‍🏫 Docentes</div>
+<div class="card">
+<div class="card-row"><div class="card-icon c-green">🔐</div><div><div class="card-title">Acceso Docente</div><div class="card-sub">Usa tu código de profesor</div></div></div>
+<input type="text" id="docCodigo" placeholder="Código (DOC-XXXXXX)">
+<button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button>
+<p id="docError" style="color:var(--red);font-size:0.7rem;display:none;"></p>
+<div class="divider"></div>
+<p class="text-muted text-center mb-1">¿Primera vez? Registra tu perfil</p>
+<input type="text" id="docNombreReg" placeholder="Tu nombre completo">
+<button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar perfil</button>
+</div></div>
+
+<div id="docentePanel" style="display:none;">
+<div class="profile-bar"><div class="avatar av-green" id="docAvatar">D</div><div><strong id="docName">Docente</strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
+
+<div class="card">
+<div class="card-row"><div class="card-icon c-green">📋</div><div><div class="card-title">Bitácora Escolar</div><div class="card-sub">Compartida con docentes de tu escuela</div></div></div>
+<select id="bitTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select>
+<input type="text" id="bitAlumno" placeholder="Nombre del alumno"><input type="text" id="bitGrupo" placeholder="Grupo (ej: 3A)">
+<textarea id="bitTexto" placeholder="Descripción de la entrada..."></textarea>
+<button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar</button>
+<button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBit()">📋 Ver bitácora</button>
+<div id="bitList"></div></div>
+
+<div class="card">
+<div class="card-row"><div class="card-icon c-orange">📤</div><div><div class="card-title">Publicar Guía</div><div class="card-sub">Aparecerá en la Biblioteca pública</div></div></div>
+<select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título de la guía"><textarea id="guiaContenido" placeholder="Contenido de la guía..."></textarea>
+<button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar</button></div>
+
+<div class="card">
+<div class="card-row"><div class="card-icon c-blue">🎯</div><div><div class="card-title">Crear Plan</div><div class="card-sub">Plan personalizado para alumnos</div></div></div>
+<input type="text" id="planNombre" placeholder="Nombre del plan"><input type="text" id="planObjetivo" placeholder="Objetivo"><textarea id="planActividades" placeholder="Actividades..."></textarea>
+<button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear plan</button></div>
+</div></div>
+
+<!-- ═══════════ PÁGINA BIBLIOTECA ═══════════ -->
+<div class="page" id="page-biblioteca">
+<div class="section-title">📚 Biblioteca</div>
+<select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select>
 <div id="guiasList"></div></div>
 
-<!-- ADMIN -->
+<!-- ═══════════ PÁGINA ADMIN ═══════════ -->
 <div class="page" id="page-admin">
-<div class="section-title">🔑 Administrador</div>
-<div id="adminLock"><div class="feature-card" style="text-align:center;"><div style="font-size:3rem;">🔐</div><p style="margin:1rem;color:var(--muted);">Código de administrador</p>
-<input type="password" id="adminCode" class="chat-input" placeholder="Código" style="text-align:center;margin-bottom:0.8rem;" onkeypress="if(event.key==='Enter')verifyAdmin()">
-<button class="btn btn-primary" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
+<div id="adminLock">
+<div class="section-title">⚙️ Administración</div>
+<div class="card text-center"><div style="font-size:3.5rem;">🔐</div><p class="text-muted">Código de administrador</p>
+<input type="password" id="adminCode" placeholder="Código" style="text-align:center;">
+<button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);font-size:0.7rem;display:none;">❌ Código incorrecto</p></div></div>
 <div id="adminPanel" style="display:none;">
-<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;">✅ <strong>Panel Administrador</strong> <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">Salir</button></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon purple">🏫</div><div><div class="feature-name">Registrar Escuela</div><div class="feature-desc">Genera códigos para docentes y admin</div></div></div>
-<input type="text" class="chat-input" id="escuelaNombre" placeholder="Nombre de la escuela" style="margin-bottom:0.4rem;">
-<input type="number" class="chat-input" id="escuelaDocentes" placeholder="Número de docentes" style="margin-bottom:0.4rem;" min="1" value="3">
-<input type="number" class="chat-input" id="escuelaAdmin" placeholder="Número de administrativos" style="margin-bottom:0.4rem;" min="1" value="1">
-<button class="btn btn-primary" onclick="registrarEscuela()">🏫 Registrar</button>
-<div id="escuelaResultado"></div></div>
-<div class="feature-card"><div class="feature-card-header"><div class="feature-icon green">📋</div><div><div class="feature-name">Escuelas Registradas</div><div class="feature-desc">Ver códigos generados</div></div></div>
-<button class="btn btn-outline btn-sm" onclick="listarEscuelas()">📋 Listar escuelas</button><div id="escuelasList"></div></div></div></div>
+<div class="profile-bar"><div class="avatar av-purple">A</div><div><strong>Administrador</strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAdmin()">🚪</button></div>
+<div class="card">
+<div class="card-row"><div class="card-icon c-purple">🏫</div><div><div class="card-title">Registrar Escuela</div><div class="card-sub">Genera códigos para docentes y admin</div></div></div>
+<input type="text" id="escNombre" placeholder="Nombre de la escuela"><input type="number" id="escDocs" placeholder="Nº de docentes" value="3"><input type="number" id="escAdmins" placeholder="Nº de administrativos" value="1">
+<button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar escuela</button>
+<div id="escResult"></div></div>
+<button class="btn btn-outline btn-block btn-sm mt-1" onclick="listEsc()">📋 Ver todas las escuelas</button>
+<div id="escList"></div></div></div>
 
-<div class="status-bar"><span class="status-dot" id="statusDot"></span><span id="statusText"></span></div>
-<footer class="footer"><p>SANA v2.0 · <a href="https://github.com/Prototipicaestudio1/sana-v2" target="_blank">GitHub</a> · APIs reales 💜</p></footer></div>
+</div><!-- /app -->
+
+<!-- NAV INFERIOR -->
+<nav class="bottom-nav">
+<button class="nav-item active" data-page="home"><span class="nav-emoji">🏠</span>Inicio</button>
+<button class="nav-item" data-page="alumnos"><span class="nav-emoji">🎓</span>Alumnos</button>
+<button class="nav-item" data-page="docentes"><span class="nav-emoji">👨‍🏫</span>Docentes</button>
+<button class="nav-item" data-page="biblioteca"><span class="nav-emoji">📚</span>Biblioteca</button>
+<button class="nav-item" data-page="admin"><span class="nav-emoji">⚙️</span>Admin</button>
+</nav>
+
 <div class="toast" id="toast"></div>
 
+<!-- ⚡ JAVASCRIPT COMPLETO ⚡ -->
 <script>
+// ═══════════════════════════════════════
+// SANA v2.0 - Motor JavaScript
+// ═══════════════════════════════════════
+
 const API='/api';
-const state={currentPage:'home',isBreathing:false,breathTimer:null,breathCycles:0,breathMaxCycles:4,selectedMood:null,isAdmin:false,isDocente:false,docenteData:null,currentBreathExercise:null};
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
-async function apiGet(e){try{const r=await fetch(API+e);return await r.json();}catch(e){showToast('📴 Error de conexión');return null;}}
-async function apiPost(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');const r=await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b});return await r.json();}catch(e){showToast('📴 Error');return null;}}
+const $=id=>document.getElementById(id);
+const S={
+    page:'home',mood:null,breathing:false,breathTimer:null,breathCycles:0,breathMax:4,
+    alu:null,doc:null,admin:false,exercise:null
+};
 
-function navigateTo(p){
-state.currentPage=p;
-document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.page===p));
-document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
-const tg=document.getElementById('page-'+p);if(tg)tg.classList.add('active');
-document.getElementById('appHeader').classList.toggle('compact',p!=='home');
-window.scrollTo({top:0,behavior:'smooth'});
-if(p==='alumnos'){loadBreathExercises();loadPaises();}
-if(p==='regularizacion'){cargarMateriasFiltro();cargarGuias();}
-if(p==='admin'&&state.isAdmin){document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';}
-}
-document.getElementById('navTabs').addEventListener('click',e=>{const t=e.target.closest('.nav-tab');if(t)navigateTo(t.dataset.page);});
+// Estrellas
+(function(){
+    const c=$('cosmos');
+    for(let i=0;i<70;i++){
+        const s=document.createElement('div');s.className='star';
+        s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;animation-delay:${Math.random()*4}s`;
+        c.appendChild(s);
+    }
+})();
 
-// CHAT
-async function sendMessage(){
-const i=document.getElementById('chatInput');const m=i.value.trim();if(!m)return;
-addChatMsg(m,'user');i.value='';i.focus();
-const d=await apiPost('/chat',{mensaje:m});
-if(d)addChatMsg(d.respuesta+(d.modo==='ia'?' 🧠':''),'bot');
-}
-function addChatMsg(t,ty){const b=document.getElementById('chatBox');const d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+// Toast
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
 
-// RESPIRACIÓN
-async function loadBreathExercises(){
-const s=document.getElementById('breathSelect');
-const d=await apiGet('/respiracion/lista');
-if(!d)return;s.innerHTML='<option value="">Selecciona ejercicio...</option>';
-d.ejercicios.forEach(e=>{const o=document.createElement('option');o.value=e.clave;o.textContent=e.nombre+' ('+e.nivel+')';s.appendChild(o);});
-}
-async function loadBreathInfo(){
-const c=document.getElementById('breathSelect').value;
-if(!c){document.getElementById('breathInfo').style.display='none';return;}
-const d=await apiGet('/respiracion/info?ejercicio='+c);
-if(!d)return;state.currentBreathExercise=d;
-document.getElementById('breathInfo').style.display='block';
-document.getElementById('breathDetails').innerHTML='<strong>'+d.nombre+'</strong><br>'+d.descripcion+'<br><em>'+d.beneficio+'</em><br>Ciclos: '+d.ciclos;
-document.getElementById('breathText').textContent='Toca para empezar';
-document.getElementById('breathCircle').className='breath-circle';document.getElementById('breathCircle').textContent='🌿';stopBreathing();
-}
-function toggleBreathing(){if(state.isBreathing){stopBreathing();return;}if(!state.currentBreathExercise){showToast('⚠️ Selecciona ejercicio');return;}startBreathing();}
-function startBreathing(){
-state.isBreathing=true;state.breathCycles=0;state.breathMaxCycles=state.currentBreathExercise.ciclos||4;
-const pasos=state.currentBreathExercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;
-function cycle(){
-if(!state.isBreathing)return;
-if(pi>=pasos.length){state.breathCycles++;pi=0;if(state.breathCycles>=state.breathMaxCycles){stopBreathing();document.getElementById('breathCircle').textContent='✨';document.getElementById('breathText').textContent=state.currentBreathExercise.frase_cierre||'¡Listo!';return;}}
-const p=pasos[pi];const c=document.getElementById('breathCircle');const t=document.getElementById('breathText');
-if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}
-else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}
-else{c.classList.remove('inhale','exhale');c.textContent='✋';}
-t.textContent=p.texto+' ('+p.segundos+'s) · Ciclo '+(state.breathCycles+1)+'/'+state.breathMaxCycles;pi++;state.breathTimer=setTimeout(cycle,p.segundos*1000);
-}
-document.getElementById('breathCircle').onclick=stopBreathing;cycle();
-}
-function stopBreathing(){state.isBreathing=false;if(state.breathTimer){clearTimeout(state.breathTimer);state.breathTimer=null;}}
+// API
+async function GET(e){try{return await(await fetch(API+e)).json();}catch{toast('📴 Sin conexión');return null;}}
+async function POST(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');return await(await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b})).json();}catch{toast('📴 Error');return null;}}
 
-// DIARIO
-function selectMood(m,btn){state.selectedMood=m;document.querySelectorAll('#moodSelector .mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+// Navegación
+function nav(p){
+    S.page=p;
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));
+    document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+    const t=$('page-'+p);if(t)t.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(p==='alumnos'){loadBreaths();loadPaises();}
+    if(p==='biblioteca'){loadMatsFiltro();loadGuias();}
+    if(p==='home')loadStats();
+}
+document.querySelector('.bottom-nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b)nav(b.dataset.page);});
+
+// Stats
+async function loadStats(){const d=await GET('/stats');if(d&&d.usuarios!==undefined){$('usersCount').textContent=d.usuarios;}}
+
+// ═══════════ ALUMNO ═══════════
+async function regAlumno(){
+    const n=$('alumnoNombre').value.trim();if(!n)return toast('⚠️ Pon tu nombre');
+    const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=alumno');
+    if(d&&d.user){S.alu=d.user;showAluPanel();toast('✅ ¡Registrado! Guarda tu ID: '+d.user.id);navigator.clipboard.writeText(d.user.id);}
+}
+async function loginAlumno(){
+    const id=$('alumnoId').value.trim();if(!id)return;
+    const d=await GET('/login?user_id='+id);
+    if(d&&d.valido){S.alu=d.user;showAluPanel();toast('✅ ¡Bienvenido '+d.user.nombre+'!');}
+    else toast('❌ ID no encontrado');
+}
+function showAluPanel(){
+    $('alumnoLogin').style.display='none';$('alumnoPanel').style.display='block';
+    $('aluAvatar').textContent=(S.alu.nombre||'A')[0].toUpperCase();
+    $('aluName').textContent=S.alu.nombre;$('aluId').textContent='ID: '+S.alu.id;
+}
+function logoutAlu(){S.alu=null;$('alumnoLogin').style.display='block';$('alumnoPanel').style.display='none';toast('👋 Hasta luego');}
+
+// Chat IA
+async function sendMsg(){
+    const i=$('chatInput'),m=i.value.trim();if(!m)return;
+    addChat(m,'user');i.value='';i.focus();
+    const d=await POST('/chat',{mensaje:m});
+    if(d)addChat(d.respuesta+(d.modo==='ia'?' ⚡':''),'bot');
+}
+function addChat(t,ty){const b=$('chatBox'),d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+// Respiración
+async function loadBreaths(){
+    const d=await GET('/respiracion/lista');if(!d)return;
+    $('breathSelect').innerHTML='<option value="">Elige ejercicio...</option>'+d.ejercicios.map(e=>`<option value="${e.clave}">${e.nombre}</option>`).join('');
+}
+async function loadBreath(){
+    const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}
+    const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;
+    S.exercise=d;$('breathInfo').style.display='block';
+    $('breathText').textContent='Toca el círculo';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';stopBreath();
+}
+function toggleBreath(){if(S.breathing){stopBreath();return;}if(!S.exercise)return toast('⚠️ Elige un ejercicio');startBreath();}
+function startBreath(){
+    S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;
+    const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;
+    function cycle(){
+        if(!S.breathing)return;
+        if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Completado!';return;}}
+        const p=pasos[pi],c=$('breathCircle'),t=$('breathText');
+        if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}
+        else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}
+        else{c.classList.remove('inhale','exhale');c.textContent='✋';}
+        t.textContent=`${p.texto} (${p.segundos}s) · ${S.breathCycles+1}/${S.breathMax}`;pi++;
+        S.breathTimer=setTimeout(cycle,p.segundos*1000);
+    }
+    $('breathCircle').onclick=stopBreath;cycle();
+}
+function stopBreath(){S.breathing=false;if(S.breathTimer){clearTimeout(S.breathTimer);S.breathTimer=null;}}
+
+// Diario
+function setMood(m,btn){S.mood=m;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));btn.classList.add('btn-primary');}
 async function saveDiary(){
-const t=document.getElementById('diarioEntry').value.trim();if(!t&&!state.selectedMood){showToast('⚠️ Escribe algo');return;}
-const d=await apiPost('/diario/guardar',{texto:t||'Sin descripción',emocion:state.selectedMood||'No especificado'});
-if(d&&d.guardado){document.getElementById('diarioEntry').value='';document.querySelectorAll('#moodSelector .mood-btn').forEach(b=>b.classList.remove('selected'));state.selectedMood=null;showToast('✅ Guardado');loadDiaryEntries();}
+    if(!S.alu)return toast('⚠️ Inicia sesión primero');
+    const t=$('diarioText').value.trim();if(!t&&!S.mood)return toast('⚠️ Escribe algo');
+    const d=await POST('/diario/guardar',{user_id:S.alu.id,texto:t||'Sin texto',emocion:S.mood||'😶'});
+    if(d&&d.guardado){$('diarioText').value='';S.mood=null;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));toast('✅ Guardado');loadDiary();}
 }
-async function loadDiaryEntries(){
-const c=document.getElementById('diaryEntries');const d=await apiGet('/diario/entradas');
-if(!d||!d.entradas||d.entradas.length===0){c.innerHTML='<p style="font-size:0.8rem;color:var(--muted);">📖 Sin entradas</p>';return;}
-c.innerHTML='<div class="entry-list">'+d.entradas.slice(0,10).map(e=>'<div class="entry-item"><strong>'+(e.emocion||'Sin emoción')+'</strong><p>'+(e.texto||'')+'</p><div class="entry-meta">'+(e.fecha||'')+'</div></div>').join('')+'</div>';
+async function loadDiary(){
+    if(!S.alu)return;
+    const d=await GET('/diario/entradas?user_id='+S.alu.id);
+    const c=$('diaryList');
+    if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📖 Tu diario está vacío</p>';return;}
+    c.innerHTML='<div class="entry-list">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.emocion||'😶'}</strong> ${e.texto||''}<div class="entry-meta">${e.fecha?new Date(e.fecha).toLocaleString():''}</div></div><button class="btn btn-danger btn-xs" onclick="delDiary(${e.id})">🗑️</button></div>`).join('')+'</div>';
 }
+async function delDiary(id){if(!S.alu)return;await GET('/diario/borrar?user_id='+S.alu.id+'&id='+id);loadDiary();toast('🗑️ Entrada eliminada');}
 
-// LÍNEAS AYUDA
-async function loadPaises(){const s=document.getElementById('paisSelect');const d=await apiGet('/lineas-ayuda/paises');if(!d)return;s.innerHTML='<option value="">Selecciona país...</option>';d.paises.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;s.appendChild(o);});}
-async function loadLineasAyuda(){const p=document.getElementById('paisSelect').value;if(!p)return;const d=await apiGet('/lineas-ayuda?pais='+encodeURIComponent(p));if(!d)return;const c=document.getElementById('lineasAyudaList');c.innerHTML='<p style="font-weight:700;">📞 '+d.pais+' ('+d.prefijo+')</p><div class="entry-list">'+d.lineas.map(l=>'<div class="entry-item"><strong>'+l.nombre+'</strong>: '+l.numero+'<div class="entry-meta"><span>'+l.descripcion+'</span><span class="entry-tag tag-'+l.categoria+'">'+l.categoria+'</span></div></div>').join('')+'</div>';}
-
-// BITÁCORA
-async function agregarBitacora(){
-const t=document.getElementById('bitacoraTipo').value,a=document.getElementById('bitacoraAlumno').value.trim(),g=document.getElementById('bitacoraGrupo').value.trim(),tx=document.getElementById('bitacoraTexto').value.trim();
-if(!a||!tx){showToast('⚠️ Completa alumno y descripción');return;}
-const d=await apiGet('/bitacora/agregar?tipo='+t+'&alumno='+encodeURIComponent(a)+'&grupo='+encodeURIComponent(g)+'&texto='+encodeURIComponent(tx)+'&autor=Docente&escuela='+(state.docenteData?state.docenteData.codigo_escuela:'general'));
-if(d&&d.guardado){document.getElementById('bitacoraAlumno').value='';document.getElementById('bitacoraTexto').value='';showToast('✅ Registrado');cargarBitacora();}
-}
-async function cargarBitacora(){const c=document.getElementById('bitacoraEntries');const esc=state.docenteData?state.docenteData.codigo_escuela:'';const d=await apiGet('/bitacora/entradas?escuela='+esc);if(!d||!d.entradas||d.entradas.length===0){c.innerHTML='<p style="font-size:0.8rem;color:var(--muted);">📋 Sin entradas</p>';return;}c.innerHTML='<div class="entry-list">'+d.entradas.slice(-10).reverse().map(e=>'<div class="entry-item"><strong>'+e.alumno+'</strong> ('+(e.grupo||'N/A')+') <span class="entry-tag tag-'+e.tipo+'">'+e.tipo+'</span><p>'+e.texto+'</p><div class="entry-meta"><span>'+e.autor+'</span><span>'+(e.fecha?new Date(e.fecha).toLocaleDateString():'')+'</span></div></div>').join('')+'</div>';}
-
-// DOCENTE LOGIN
-async function loginDocente(){
-const c=document.getElementById('codigoDocente').value.trim();if(!c){showToast('⚠️ Ingresa código');return;}
-const d=await apiGet('/login?codigo='+c);
-if(d&&d.valido){state.isDocente=true;state.docenteData=d;document.getElementById('docenteLogin').style.display='none';document.getElementById('docentePanel').style.display='block';document.getElementById('docenteInfo').innerHTML='✅ '+d.escuela+' ('+d.tipo+')';cargarMateriasParaDocente();cargarBitacora();showToast('✅ Bienvenido, '+d.tipo);}
-else{document.getElementById('loginError').textContent='❌ Código inválido';document.getElementById('loginError').style.display='block';}
-}
-function logoutDocente(){state.isDocente=false;state.docenteData=null;document.getElementById('docenteLogin').style.display='block';document.getElementById('docentePanel').style.display='none';document.getElementById('codigoDocente').value='';document.getElementById('loginError').style.display='none';showToast('👋 Sesión cerrada');}
-async function cargarMateriasParaDocente(){const s=document.getElementById('guiaMateria');const d=await apiGet('/regularizacion/materias');if(!d)return;s.innerHTML='<option value="">Selecciona materia</option>';d.materias.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);});}
-async function subirGuia(){
-if(!state.isDocente){showToast('⚠️ Inicia sesión primero');return;}
-const mat=document.getElementById('guiaMateria').value,tit=document.getElementById('guiaTitulo').value.trim(),con=document.getElementById('guiaContenido').value.trim();
-if(!mat||!tit||!con){showToast('⚠️ Completa todos los campos');return;}
-const d=await apiPost('/regularizacion/agregar',{materia:mat,titulo:tit,contenido:con,autor:'Docente',escuela:state.docenteData.codigo_escuela});
-if(d&&d.guardado){document.getElementById('guiaTitulo').value='';document.getElementById('guiaContenido').value='';showToast('✅ Guía subida');}
-}
-async function crearPlan(){
-if(!state.isDocente){showToast('⚠️ Inicia sesión primero');return;}
-const n=document.getElementById('planNombre').value.trim(),o=document.getElementById('planObjetivo').value.trim(),a=document.getElementById('planActividades').value.trim();
-if(!n||!o||!a){showToast('⚠️ Completa todos los campos');return;}
-const d=await apiPost('/organizador/crear-plan',{nombre:n,materia:'General',objetivo:o,actividades:a,escuela:state.docenteData.codigo_escuela,autor:'Docente'});
-if(d&&d.guardado){document.getElementById('planNombre').value='';document.getElementById('planObjetivo').value='';document.getElementById('planActividades').value='';showToast('✅ Plan creado');}
+// Líneas de ayuda
+async function loadPaises(){const d=await GET('/lineas-ayuda/paises');if(d)$('paisSelect').innerHTML='<option value="">Selecciona país...</option>'+d.paises.map(p=>`<option value="${p}">${p}</option>`).join('');}
+async function loadLineas(){
+    const p=$('paisSelect').value;if(!p)return;
+    const d=await GET('/lineas-ayuda?pais='+encodeURIComponent(p));if(!d)return;
+    $('lineasList').innerHTML='<div class="entry-list mt-1">'+d.lineas.map(l=>`<div class="entry"><div class="entry-info"><strong>${l.nombre}</strong><br>📞 ${l.numero}<div class="entry-meta"><span class="badge b-blue">${l.categoria}</span></div></div></div>`).join('')+'</div>';
 }
 
-// REGULARIZACIÓN
-async function cargarMateriasFiltro(){const s=document.getElementById('filtroMateria');const d=await apiGet('/regularizacion/materias');if(!d)return;s.innerHTML='<option value="">Todas las materias</option>';d.materias.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);});}
-async function cargarGuias(){const m=document.getElementById('filtroMateria')?.value||'';const d=await apiGet('/regularizacion/guias?materia='+(m||''));const c=document.getElementById('guiasList');if(!d||!d.guias||d.guias.length===0){c.innerHTML='<p style="color:var(--muted);">📚 No hay guías aún</p>';return;}c.innerHTML='<div class="entry-list">'+d.guias.map(g=>'<div class="entry-item"><strong>'+g.materia+'</strong>: '+g.titulo+'<p>'+g.contenido+'</p><div class="entry-meta"><span>'+g.autor+'</span><span>'+(g.fecha?new Date(g.fecha).toLocaleDateString():'')+'</span></div></div>').join('')+'</div>';}
+// ═══════════ DOCENTE ═══════════
+async function loginDoc(){
+    const c=$('docCodigo').value.trim();if(!c)return;
+    const d=await GET('/login?codigo='+c);
+    if(d&&d.valido){S.doc=d;$('docenteLogin').style.display='none';$('docentePanel').style.display='block';
+        $('docAvatar').textContent='D';$('docName').textContent=d.escuela||'Docente';
+        $('docInfo').textContent='Código: '+c;loadMats();loadBit();toast('✅ Bienvenido');}
+    else{$('docError').textContent='❌ Código inválido';$('docError').style.display='block';}
+}
+async function regDoc(){
+    const c=$('docCodigo').value.trim(),n=$('docNombreReg').value.trim();
+    if(!c||!n)return toast('⚠️ Completa código y nombre');
+    const dv=await GET('/login?codigo='+c);if(!dv||!dv.valido)return toast('❌ Código inválido');
+    const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=docente&codigo='+c);
+    if(d&&d.user){toast('✅ Perfil creado! ID: '+d.user.id);loginDoc();}
+}
+function logoutDoc(){S.doc=null;$('docenteLogin').style.display='block';$('docentePanel').style.display='none';$('docCodigo').value='';$('docError').style.display='none';toast('👋 Hasta luego');}
 
-// ADMIN
-function verifyAdmin(){const c=document.getElementById('adminCode').value.trim();if(c==='SANA-ADMIN-2025'||c.startsWith('ADM-')){if(c.startsWith('ADM-')){apiGet('/login?codigo='+c).then(d=>{if(d&&d.valido&&d.tipo==='admin'){state.isAdmin=true;document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';showToast('✅ Bienvenido Admin - '+d.escuela);}else{document.getElementById('adminError').style.display='block';}});}else{state.isAdmin=true;document.getElementById('adminLock').style.display='none';document.getElementById('adminPanel').style.display='block';showToast('✅ Admin maestro');}}else{document.getElementById('adminError').style.display='block';}}
-function logoutAdmin(){state.isAdmin=false;document.getElementById('adminLock').style.display='block';document.getElementById('adminPanel').style.display='none';document.getElementById('adminCode').value='';document.getElementById('adminError').style.display='none';showToast('👋 Sesión cerrada');}
-async function registrarEscuela(){const n=document.getElementById('escuelaNombre').value.trim(),d=parseInt(document.getElementById('escuelaDocentes').value)||3,a=parseInt(document.getElementById('escuelaAdmin').value)||1;if(!n){showToast('⚠️ Pon nombre');return;}const r=await apiGet('/escuelas/registrar?nombre='+encodeURIComponent(n)+'&docentes='+d+'&admin='+a);if(r&&r.escuela){const c=document.getElementById('escuelaResultado');c.innerHTML='<div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;margin-top:0.5rem;"><strong>✅ '+r.escuela.nombre+'</strong><br>Código escuela: <strong>'+r.escuela.codigo_escuela+'</strong><br><br>📋 <strong>Códigos Docentes ('+r.escuela.num_docentes+'):</strong><br>'+r.escuela.codigos_docentes.map(c=>'<span class="badge badge-success">'+c+'</span>').join(' ')+'<br><br>🔑 <strong>Códigos Admin ('+r.escuela.num_admin+'):</strong><br>'+r.escuela.codigos_admin.map(c=>'<span class="badge badge-warning">'+c+'</span>').join(' ')+'</div>';}}
-async function listarEscuelas(){const c=document.getElementById('escuelasList');const d=await apiGet('/escuelas/lista');if(!d||!d.escuelas||d.escuelas.length===0){c.innerHTML='<p style="color:var(--muted);">No hay escuelas</p>';return;}c.innerHTML='<div class="entry-list">'+d.escuelas.map(e=>'<div class="entry-item"><strong>'+e.nombre+'</strong> <span class="badge badge-success">'+e.codigo_escuela+'</span><br>📋 Docentes: '+e.num_docentes+' | 🔑 Admin: '+e.num_admin+'<br>'+e.codigos_docentes.map(c=>'<span class="badge badge-success">'+c+'</span>').join(' ')+'<br>'+e.codigos_admin.map(c=>'<span class="badge badge-warning">'+c+'</span>').join(' ')+'</div>').join('')+'</div>';}
+// Bitácora
+async function addBit(){
+    if(!S.doc)return toast('⚠️ Inicia sesión');
+    const d=await GET('/bitacora/agregar?tipo='+$('bitTipo').value+'&alumno='+encodeURIComponent($('bitAlumno').value)+'&grupo='+encodeURIComponent($('bitGrupo').value)+'&texto='+encodeURIComponent($('bitTexto').value)+'&autor=Docente&escuela='+(S.doc.codigo_escuela||''));
+    if(d&&d.guardado){$('bitAlumno').value='';$('bitTexto').value='';toast('✅ Registrado');loadBit();}
+}
+async function loadBit(){
+    const esc=S.doc?S.doc.codigo_escuela:'';
+    const d=await GET('/bitacora/entradas?escuela='+esc);
+    const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Sin entradas</p>';return;}
+    c.innerHTML='<div class="entry-list mt-1">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.alumno||''}</strong> (${e.grupo||''}) <span class="badge b-${e.tipo==='observacion'?'blue':e.tipo==='reporte'?'red':e.tipo==='recomendacion'?'green':'orange'}">${e.tipo}</span><br>${e.texto||''}<div class="entry-meta">${e.autor||''} · ${e.fecha?new Date(e.fecha).toLocaleDateString():''}</div></div></div>`).join('')+'</div>';
+}
 
-// STATUS
-function updateStatus(){const d=document.getElementById('statusDot'),t=document.getElementById('statusText');if(navigator.onLine){d.style.background='var(--green)';d.style.boxShadow='0 0 8px var(--green)';t.textContent='🌐 Online';}else{d.style.background='var(--orange)';d.style.boxShadow='0 0 8px var(--orange)';t.textContent='📴 Offline';}}
-updateStatus();window.addEventListener('online',updateStatus);window.addEventListener('offline',updateStatus);
+// Guías
+async function loadMats(){const d=await GET('/regularizacion/materias');if(d)$('guiaMateria').innerHTML='<option value="">Selecciona materia</option>'+d.materias.map(m=>`<option value="${m}">${m}</option>`).join('');}
+async function loadMatsFiltro(){const d=await GET('/regularizacion/materias');if(d)$('filtroMateria').innerHTML='<option value="">Todas las materias</option>'+d.materias.map(m=>`<option value="${m}">${m}</option>`).join('');}
+async function addGuia(){
+    if(!S.doc)return toast('⚠️ Inicia sesión');
+    const m=$('guiaMateria').value,t=$('guiaTitulo').value.trim(),c=$('guiaContenido').value.trim();
+    if(!m||!t||!c)return toast('⚠️ Completa todo');
+    await POST('/regularizacion/agregar',{materia:m,titulo:t,contenido:c,autor:$('docName').textContent,escuela:S.doc.codigo_escuela||''});
+    $('guiaTitulo').value='';$('guiaContenido').value='';toast('✅ Guía publicada');
+}
+async function loadGuias(){
+    const m=$('filtroMateria')?.value||'';
+    const d=await GET('/regularizacion/guias?materia='+(m||''));
+    const c=$('guiasList');if(!d||!d.guias||!d.guias.length){c.innerHTML='<p class="text-muted text-center mt-1">📚 No hay guías aún</p>';return;}
+    c.innerHTML='<div class="entry-list mt-1">'+d.guias.slice(-20).reverse().map(g=>`<div class="entry"><div class="entry-info"><strong>${g.materia}</strong>: ${g.titulo}<br>${g.contenido||''}<div class="entry-meta"><span>👤 ${g.autor||''}</span><span>📅 ${g.fecha?new Date(g.fecha).toLocaleDateString():''}</span></div></div>${S.doc?`<button class="btn btn-danger btn-xs" onclick="delGuia(${g.id})">🗑️</button>`:''}</div>`).join('')+'</div>';
+}
+async function delGuia(id){await POST('/regularizacion/borrar',{id:id});loadGuias();toast('🗑️ Guía eliminada');}
+
+// Planes
+async function addPlan(){
+    if(!S.doc)return toast('⚠️ Inicia sesión');
+    const n=$('planNombre').value.trim(),o=$('planObjetivo').value.trim(),a=$('planActividades').value.trim();
+    if(!n||!o||!a)return toast('⚠️ Completa todo');
+    await POST('/organizador/crear-plan',{nombre:n,materia:'General',objetivo:o,actividades:a,escuela:S.doc.codigo_escuela||'',autor:$('docName').textContent});
+    $('planNombre').value='';$('planObjetivo').value='';$('planActividades').value='';toast('✅ Plan creado');
+}
+
+// ═══════════ ADMIN ═══════════
+function verifyAdmin(){
+    const c=$('adminCode').value.trim();
+    if(c==='SANA-ADMIN-2025'||c.startsWith('ADM-')){
+        S.admin=true;$('adminLock').style.display='none';$('adminPanel').style.display='block';toast('✅ Bienvenido Admin');
+    }else{$('adminError').style.display='block';}
+}
+function logoutAdmin(){S.admin=false;$('adminLock').style.display='block';$('adminPanel').style.display='none';$('adminCode').value='';$('adminError').style.display='none';}
+async function regEsc(){
+    const n=$('escNombre').value.trim(),d=parseInt($('escDocs').value)||3,a=parseInt($('escAdmins').value)||1;
+    if(!n)return toast('⚠️ Pon nombre');
+    const r=await GET('/escuelas/registrar?nombre='+encodeURIComponent(n)+'&docentes='+d+'&admin='+a);
+    if(r&&r.escuela){
+        $('escResult').innerHTML=`<div class="card mt-1" style="background:rgba(110,231,183,0.08);border-color:rgba(110,231,183,0.2);"><strong>✅ ${r.escuela.nombre}</strong><br>🏫 Código: <span class="badge b-green">${r.escuela.codigo_escuela}</span><br>📋 Docentes: ${r.escuela.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}<br>🔑 Admin: ${r.escuela.codigos_admin.map(c=>'<span class="badge b-purple">'+c+'</span>').join(' ')}</div>`;
+    }
+}
+async function listEsc(){
+    const d=await GET('/escuelas/lista');const c=$('escList');
+    if(!d||!d.escuelas||!d.escuelas.length){c.innerHTML='<p class="text-muted mt-1">No hay escuelas</p>';return;}
+    c.innerHTML='<div class="entry-list mt-1">'+d.escuelas.map(e=>`<div class="entry"><div class="entry-info"><strong>${e.nombre}</strong> <span class="badge b-green">${e.codigo_escuela}</span><br>📋 ${e.num_docentes} docs | 🔑 ${e.num_admin} admins<div class="entry-meta">${e.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div></div></div>`).join('')+'</div>';
+}
+
+// Init
+loadStats();
 </script>
 </body>
 </html>
