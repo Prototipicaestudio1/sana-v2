@@ -17,12 +17,6 @@ class GitHubSync:
             }
             self.api_base = 'https://api.github.com'
 
-    def _github_request(self, method, url, json_data=None):
-        if method == 'GET':
-            return requests.get(url, headers=self.headers)
-        elif method == 'PUT':
-            return requests.put(url, headers=self.headers, json=json_data)
-
     def obtener_datos(self):
         if self.modo_local:
             if os.path.exists(self.data_path):
@@ -49,35 +43,36 @@ class GitHubSync:
             content = json.dumps(datos, indent=2, ensure_ascii=False)
             encoded = base64.b64encode(content.encode('utf-8')).decode('utf-8')
             url = f"{self.api_base}/repos/{self.owner}/{self.repo_name}/contents/{self.data_path}"
-            
             r = requests.get(url, headers=self.headers)
             sha = r.json().get('sha') if r.status_code == 200 else None
-            
             body = {
                 'message': f'💾 SANA - {datetime.now().strftime("%Y-%m-%d %H:%M")}',
                 'content': encoded,
                 'branch': 'main'
             }
-            if sha:
-                body['sha'] = sha
-
+            if sha: body['sha'] = sha
             r = requests.put(url, headers=self.headers, json=body)
             return r.status_code in [200, 201]
         except Exception as e:
             print(f"⚠️ Error guardando: {e}")
         return False
 
-    def sync_all(self, escuelas_obj, usuarios_obj):
-        """Sincroniza todos los datos a GitHub"""
+    def sync_all(self, escuelas_obj, usuarios_obj, bitacora_obj, regularizacion_obj, organizador_obj, alertas_obj):
+        """Sincroniza TODOS los datos a GitHub"""
         datos = {
             "escuelas": escuelas_obj.escuelas,
             "usuarios": usuarios_obj.usuarios,
+            "bitacoras": bitacora_obj.entradas,
+            "regularizacion": regularizacion_obj.material,
+            "planes": organizador_obj.planes,
+            "tareas": organizador_obj.tareas,
+            "red_apoyo": alertas_obj.red_apoyo,
             "fecha": datetime.now().isoformat()
         }
         return self.guardar_datos(datos)
 
-    def load_all(self, escuelas_obj, usuarios_obj):
-        """Carga todos los datos desde GitHub"""
+    def load_all(self, escuelas_obj, usuarios_obj, bitacora_obj, regularizacion_obj, organizador_obj, alertas_obj):
+        """Carga TODOS los datos desde GitHub"""
         datos = self.obtener_datos()
         if datos:
             if "escuelas" in datos:
@@ -86,5 +81,19 @@ class GitHubSync:
             if "usuarios" in datos:
                 usuarios_obj.usuarios = datos["usuarios"]
                 usuarios_obj._guardar()
+            if "bitacoras" in datos:
+                bitacora_obj.entradas = datos["bitacoras"]
+                bitacora_obj.guardar()
+            if "regularizacion" in datos:
+                regularizacion_obj.material = datos["regularizacion"]
+                regularizacion_obj._guardar()
+            if "planes" in datos:
+                organizador_obj.planes = datos["planes"]
+            if "tareas" in datos:
+                organizador_obj.tareas = datos["tareas"]
+            if "red_apoyo" in datos:
+                alertas_obj.red_apoyo = datos["red_apoyo"]
+                alertas_obj._guardar()
+            organizador_obj._guardar()
             return True
         return False

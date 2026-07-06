@@ -1,5 +1,6 @@
 """
-🌿 SANA v2.0 - Servidor Principal Completo
+🌿 SANA v2.0 - Servidor Principal
+Persistencia TOTAL en GitHub · Todo por usuario y comunidad
 """
 
 import os, sys, json
@@ -36,14 +37,16 @@ usuarios = Usuarios()
 PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
 
+# Cargar TODO desde GitHub al iniciar
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
-    github.load_all(escuelas, usuarios)
-    print(f"✅ {len(escuelas.escuelas)} escuelas, {len(usuarios.usuarios)} usuarios")
+    github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
+    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(bitacora.entradas)} bitácoras | {len(regularizacion.material)} guías | {len(organizador.planes)} planes")
 
 def sync_all():
+    """Sincroniza TODO a GitHub"""
     if not github.modo_local:
-        github.sync_all(escuelas, usuarios)
+        github.sync_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
 
 class SanaHandler(SimpleHTTPRequestHandler):
     def json(self, data, status=200):
@@ -63,16 +66,26 @@ class SanaHandler(SimpleHTTPRequestHandler):
         def q(k, d=''): return qs.get(k, [d])[0]
 
         if path == '/api/stats':
-            return self.json({"tests": 983, "modulos": 27, "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "ia": ia_chat.obtener_estado()["modo"]})
+            return self.json({
+                "tests": 983, "modulos": 27, "version": "2.0",
+                "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas),
+                "bitacoras": len(bitacora.entradas), "guias": len(regularizacion.material),
+                "planes": len(organizador.planes), "ia": ia_chat.obtener_estado()["modo"]
+            })
 
+        # ──── REGISTRO / LOGIN ────
         if path == '/api/registro':
-            n = q('nombre', ''); t = q('tipo', 'alumno')
+            n = q('nombre', ''); t = q('tipo', 'alumno'); cod = q('codigo', '')
             if not n: return self.json({"error": "Falta nombre"}, 400)
-            user = usuarios.registrar(n, t); sync_all()
-            return self.json({"user": user, "mensaje": "Guarda tu ID"})
+            cod_esc = None
+            if cod and (cod.startswith('DOC-') or cod.startswith('ADM-')):
+                val = escuelas.validar_codigo(cod)
+                if val.get('valido'): cod_esc = val.get('codigo_escuela')
+            user = usuarios.registrar(n, t, cod_esc, cod if t == 'docente' else None)
+            sync_all(); return self.json({"user": user, "mensaje": "Guarda tu ID"})
 
         if path == '/api/login':
-            cod = q('codigo', ''); uid = q('user_id', '')
+            uid = q('user_id', ''); cod = q('codigo', '')
             if uid:
                 u = usuarios.login(uid)
                 return self.json({"valido": True, "user": u}) if u else self.json({"valido": False})
@@ -80,6 +93,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 return self.json(escuelas.validar_codigo(cod))
             return self.json({"valido": False})
 
+        # ──── PERFIL ────
         if path == '/api/perfil':
             u = usuarios.obtener_por_id(q('user_id', ''))
             return self.json({"user": u}) if u else self.json({"error": "No encontrado"}, 404)
@@ -89,11 +103,13 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 sync_all(); return self.json({"ok": True})
             return self.json({"error": "No encontrado"}, 404)
 
+        # ──── ESCUELAS ────
         if path == '/api/escuelas/lista': return self.json({"escuelas": escuelas.listar_escuelas()})
         if path == '/api/escuelas/registrar':
             esc = escuelas.registrar_escuela(q('nombre', ''), int(q('docentes', '0')), int(q('admin', '0')))
             sync_all(); return self.json({"escuela": esc})
 
+        # ──── RESPIRACIÓN ────
         if path == '/api/respiracion/lista':
             return self.json({"ejercicios": [{"clave": c, "nombre": e["nombre"], "descripcion": e["descripcion"], "nivel": e["nivel"], "ciclos": e["ciclos"]} for c, e in respiracion.EJERCICIOS.items()]})
         if path == '/api/respiracion/info':
@@ -103,31 +119,45 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/respiracion/recomendar': return self.json({"recomendado": respiracion.obtener_recomendacion(q('estado', 'ansioso'))})
         if path == '/api/respiracion/crisis': return self.json({"crisis": respiracion.obtener_mensaje_crisis()})
 
+        # ──── EMOCIONES ────
         if path == '/api/emociones/detectar':
             t = q('texto', '')
             return self.json(escucha.detectar_emocion(t)) if t else self.json({"emocion": "neutral"})
 
+        # ──── DIARIO (por usuario) ────
         if path == '/api/diario/entradas':
             return self.json({"entradas": usuarios.obtener_diario(q('user_id', ''))})
         if path == '/api/diario/borrar':
             usuarios.borrar_diario(q('user_id', ''), int(q('id', '0'))); sync_all()
             return self.json({"ok": True})
 
+        # ──── LÍNEAS DE AYUDA ────
         if path == '/api/lineas-ayuda/paises': return self.json({"paises": list(lineas_ayuda.PAISES.keys())})
         if path == '/api/lineas-ayuda':
             ld = lineas_ayuda.PAISES.get(q('pais', 'México'), {})
             return self.json({"pais": q('pais'), "lineas": [{"nombre": l[0], "numero": l[1], "categoria": l[3]} for l in ld.get('lineas', [])]})
 
+        # ──── BITÁCORA (por escuela) ────
         if path == '/api/bitacora/entradas':
             return self.json({"entradas": bitacora.obtener_entradas(q('escuela', '')) if hasattr(bitacora, 'obtener_entradas') else bitacora.entradas})
         if path == '/api/bitacora/agregar':
             e = bitacora.agregar_entrada(q('tipo', 'observacion'), q('alumno', ''), q('grupo', ''), q('texto', ''), q('autor', ''), q('escuela', ''))
             sync_all(); return self.json({"guardado": True, "entrada": e})
 
-        if path == '/api/organizador/planes': return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
+        # ──── ORGANIZADOR (por escuela) ────
+        if path == '/api/organizador/planes':
+            return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
+        if path == '/api/organizador/tareas':
+            return self.json({"tareas": organizador.obtener_tareas()})
+
+        # ──── REGULARIZACIÓN (público + por escuela) ────
         if path == '/api/regularizacion/materias': return self.json({"materias": regularizacion.obtener_materias()})
-        if path == '/api/regularizacion/guias': return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
-        if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
+        if path == '/api/regularizacion/guias':
+            return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
+
+        # ──── ALERTAS (por escuela) ────
+        if path == '/api/alertas/red':
+            return self.json({"red": alertas.obtener_red(q('escuela', ''))})
 
         if path == '/' or path == '': self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
@@ -136,29 +166,34 @@ class SanaHandler(SimpleHTTPRequestHandler):
         p = urlparse(self.path); path = p.path; b = self.read_body()
         def v(k, d=''): return b.get(k, [d])[0]
 
+        # ──── CHAT IA ────
         if path == '/api/chat':
             msg = v('mensaje', '')
             if not msg: return self.json({"error": "Sin mensaje"}, 400)
             try:
                 resp = ia_chat.obtener_respuesta(msg)
-                return self.json({"respuesta": resp, "modo": "ia", "estado": ia_chat.obtener_estado()["modo"]})
-            except Exception as e:
-                return self.json({"respuesta": f"💬 Estoy aquí para ti. Cuéntame más sobre cómo te sientes. 🌿", "modo": "local", "error": str(e)})
+                return self.json({"respuesta": resp, "modo": "ia"})
+            except:
+                return self.json({"respuesta": "💬 Estoy aquí para ti. Cuéntame más. 🌿", "modo": "local"})
 
+        # ──── DIARIO ────
         if path == '/api/diario/guardar':
             e = usuarios.agregar_diario(v('user_id', ''), {"texto": v('texto', ''), "emocion": v('emocion', '')})
             sync_all(); return self.json({"guardado": True, "entrada": e}) if e else self.json({"error": "Faltan datos"}, 400)
 
+        # ──── REGULARIZACIÓN ────
         if path == '/api/regularizacion/agregar':
-            g = regularizacion.agregar_guia(v('materia', ''), v('titulo', ''), v('contenido', ''), v('autor', ''), v('escuela', ''))
+            regularizacion.agregar_guia(v('materia', ''), v('titulo', ''), v('contenido', ''), v('autor', ''), v('escuela', ''))
             sync_all(); return self.json({"guardado": True})
         if path == '/api/regularizacion/borrar':
             regularizacion.eliminar_guia(int(v('id', '0'))); sync_all(); return self.json({"ok": True})
 
+        # ──── ORGANIZADOR ────
         if path == '/api/organizador/crear-plan':
             organizador.crear_plan(v('nombre', ''), v('materia', ''), v('objetivo', ''), v('actividades', ''), v('escuela', ''), v('autor', ''))
             sync_all(); return self.json({"guardado": True})
 
+        # ──── ALERTAS ────
         if path == '/api/alertas/agregar':
             alertas.agregar_contacto(v('nombre', ''), v('telefono', ''), v('relacion', ''), v('escuela', ''))
             sync_all(); return self.json({"guardado": True})
