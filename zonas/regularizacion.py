@@ -1,8 +1,8 @@
 """
-🌿 Sana - Material de Regularización por Materia
+🌿 Sana - Material de Regularización con soporte PDF e imágenes
 """
 
-import json, os
+import json, os, base64
 from datetime import datetime
 
 class Regularizacion:
@@ -27,9 +27,9 @@ class Regularizacion:
     def _guardar(self):
         os.makedirs("datos", exist_ok=True)
         with open("datos/regularizacion.json", "w") as f:
-            json.dump(self.material, f, indent=2)
+            json.dump(self.material, f, indent=2, ensure_ascii=False)
 
-    def agregar_guia(self, materia, titulo, contenido, autor, escuela):
+    def agregar_guia(self, materia, titulo, contenido, autor, escuela, archivo_base64=None, tipo_archivo=None, nombre_archivo=None):
         guia = {
             "id": len(self.material) + 1,
             "materia": materia,
@@ -37,7 +37,11 @@ class Regularizacion:
             "contenido": contenido,
             "autor": autor,
             "escuela": escuela,
-            "fecha": datetime.now().isoformat()
+            "fecha": datetime.now().isoformat(),
+            "tiene_archivo": bool(archivo_base64),
+            "tipo_archivo": tipo_archivo,
+            "nombre_archivo": nombre_archivo,
+            "archivo_base64": archivo_base64
         }
         self.material.append(guia)
         self._guardar()
@@ -58,3 +62,9 @@ class Regularizacion:
         self.material = [g for g in self.material if g["id"] != id_guia]
         self._guardar()
         return True
+
+    def obtener_guia(self, id_guia):
+        for g in self.material:
+            if g["id"] == id_guia:
+                return g
+        return None
