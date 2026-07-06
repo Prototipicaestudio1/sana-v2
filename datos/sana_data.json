@@ -27,11 +27,24 @@
       "planes": []
     }
   },
-  "usuarios": {},
+  "usuarios": {
+    "zeARi3LQw6Qe": {
+      "id": "zeARi3LQw6Qe",
+      "nombre": "Prueba",
+      "tipo": "docente",
+      "codigo_escuela": "ESC-PARNHB",
+      "codigo_docente": "DOC-H07PTY",
+      "fecha_registro": "2026-07-06T22:51:19.206950",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    }
+  },
   "bitacoras": [],
   "regularizacion": [],
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-06T22:50:48.934566"
+  "fecha": "2026-07-06T22:51:19.207219"
 }
