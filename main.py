@@ -17,8 +17,8 @@ from zonas.alertas import Alertas
 from zonas.bitacora import Bitacora
 from zonas.organizador import Organizador
 from zonas.escuelas import Escuelas
-from backend.github_sync import GitHubSync
 from zonas.regularizacion import Regularizacion
+from backend.github_sync import GitHubSync
 
 respiracion = Respiracion()
 escucha = Escucha()
@@ -44,6 +44,7 @@ if not github.modo_local:
             escuelas._guardar()
             print(f"✅ {len(datos_github['escuelas'])} escuelas cargadas")
 
+
 class SanaHandler(SimpleHTTPRequestHandler):
 
     def json(self, data, status=200):
@@ -65,6 +66,17 @@ class SanaHandler(SimpleHTTPRequestHandler):
         qs = parse_qs(p.query)
         def q(k, d=''): return qs.get(k, [d])[0]
 
+        # ──── SINCRONIZAR ────
+        if path == '/api/sync/guardar':
+            if not github.modo_local:
+                datos = {
+                    "escuelas": escuelas.escuelas,
+                    "fecha": __import__('datetime').datetime.now().isoformat()
+                }
+                github.guardar_datos(datos)
+                return self.json({"sync": True})
+            return self.json({"sync": False, "error": "modo local"})
+
         # ──── STATS ────
         if path == '/api/stats':
             return self.json({"tests": 983, "modulos": 27, "emociones": 11, "ejercicios": 7, "lineas_ayuda": 45, "version": "2.0"})
@@ -72,10 +84,8 @@ class SanaHandler(SimpleHTTPRequestHandler):
         # ──── LOGIN DOCENTE/ADMIN ────
         if path == '/api/login':
             codigo = q('codigo', '')
-            if not codigo:
-                return self.json({"valido": False, "error": "Sin código"}, 400)
-            resultado = escuelas.validar_codigo(codigo)
-            return self.json(resultado)
+            if not codigo: return self.json({"valido": False, "error": "Sin código"}, 400)
+            return self.json(escuelas.validar_codigo(codigo))
 
         # ──── ESCUELAS ────
         if path == '/api/escuelas/lista':
@@ -85,9 +95,11 @@ class SanaHandler(SimpleHTTPRequestHandler):
             nombre = q('nombre', '')
             docs = int(q('docentes', '0'))
             admins = int(q('admin', '0'))
-            if not nombre:
-                return self.json({"error": "Falta nombre"}, 400)
+            if not nombre: return self.json({"error": "Falta nombre"}, 400)
             escuela = escuelas.registrar_escuela(nombre, docs, admins)
+            # Guardar en GitHub después de registrar
+            if not github.modo_local:
+                github.guardar_datos({"escuelas": escuelas.escuelas, "fecha": __import__('datetime').datetime.now().isoformat()})
             return self.json({"escuela": escuela})
 
         # ──── RESPIRACIÓN ────
@@ -112,8 +124,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
         # ──── EMOCIONES ────
         if path == '/api/emociones/detectar':
             texto = q('texto', '')
-            if texto:
-                return self.json(escucha.detectar_emocion(texto))
+            if texto: return self.json(escucha.detectar_emocion(texto))
             return self.json({"emocion": "neutral"})
 
         # ──── DIARIO ────
@@ -187,19 +198,17 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 return self.json({"guardado": True})
             return self.json({"error": "Sin texto"}, 400)
 
-        # ──── REGULARIZACIÓN: Agregar guía ────
+        # ──── REGULARIZACIÓN ────
         if path == '/api/regularizacion/agregar':
             guia = regularizacion.agregar_guia(b('materia', ''), b('titulo', ''), b('contenido', ''), b('autor', ''), b('escuela', ''))
-            escuelas.agregar_material(b('escuela', ''), {"materia": b('materia', ''), "titulo": b('titulo', ''), "contenido": b('contenido', '')})
             return self.json({"guardado": True, "guia": guia})
 
-        # ──── ORGANIZADOR: Crear plan ────
+        # ──── ORGANIZADOR ────
         if path == '/api/organizador/crear-plan':
             plan = organizador.crear_plan(b('nombre', ''), b('materia', ''), b('objetivo', ''), b('actividades', ''), b('escuela', ''), b('autor', ''))
-            escuelas.agregar_plan(b('escuela', ''), {"nombre": b('nombre', ''), "materia": b('materia', ''), "objetivo": b('objetivo', '')})
             return self.json({"guardado": True, "plan": plan})
 
-        # ──── ALERTAS: Agregar contacto ────
+        # ──── ALERTAS ────
         if path == '/api/alertas/agregar':
             contacto = alertas.agregar_contacto(b('nombre', ''), b('telefono', ''), b('relacion', ''), b('escuela', ''))
             return self.json({"guardado": True, "contacto": contacto})
