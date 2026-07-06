@@ -2,639 +2,1215 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌿 Sana - Bienestar Educativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 SANA v2.0 - Bienestar Emocional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        :root{--verde:#2D6A4F;--verde-claro:#40916C;--verde-palido:#D8F3DC;--verde-bg:#EEF7F0;--azul:#1B3A4B;--azul-claro:#2D6A7B;--rosa:#9B5D6E;--rosa-claro:#C98B9B;--naranja:#C27A3E;--naranja-claro:#E8A75D;--morado:#6B5B8A;--blanco:#FFFFFF;--crema:#FAF7F2;--gris:#F0EDE8;--gris-medio:#D1CDCC;--gris-oscuro:#8A8787;--texto:#2D2D2D;--texto-claro:#6B6B6B;--sombra:0 4px 20px rgba(0,0,0,0.06);--radius:16px}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--crema);color:var(--texto);min-height:100vh;padding-bottom:80px;-webkit-tap-highlight-color:transparent}
-        .header{background:linear-gradient(135deg,var(--verde),var(--verde-claro));color:var(--blanco);padding:20px;border-radius:0 0 28px 28px;margin-bottom:16px;box-shadow:0 4px 30px rgba(45,106,79,0.3);position:sticky;top:0;z-index:100}
-        .header-top{display:flex;justify-content:space-between;align-items:center}
-        .header h1{font-size:24px;display:flex;align-items:center;gap:8px}
-        .header .subtitle{opacity:0.9;font-size:12px;margin-top:2px}
-        .header-user{background:rgba(255,255,255,0.2);padding:4px 14px;border-radius:20px;font-size:11px}
-        .login-panel{background:var(--blanco);padding:24px 16px;border-radius:var(--radius);margin:16px;box-shadow:var(--sombra)}
-        .login-panel h2{color:var(--verde);font-size:18px;margin-bottom:14px;text-align:center}
-        .login-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-        .login-card{background:var(--crema);padding:14px 8px;border-radius:12px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
-        .login-card:active{transform:scale(0.95)}
-        .login-card .icon{font-size:26px;display:block;margin-bottom:2px}
-        .login-card h3{font-size:12px}
-        .login-card.verde{border-color:var(--verde);background:var(--verde-bg)}
-        .login-card.azul{border-color:var(--azul);background:#E8EEF2}
-        .login-card.rosa{border-color:var(--rosa);background:#F5ECEF}
-        .login-input{width:100%;padding:12px;border:2px solid var(--gris);border-radius:12px;font-size:14px;outline:none}
-        .login-input:focus{border-color:var(--verde)}
-        #mainContent{padding:0 16px}
-        .hidden{display:none!important}
-        .seccion{display:none;animation:fadeIn 0.3s ease}
-        .seccion.active{display:block}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-        .seccion-title{font-size:19px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:8px}
-        .seccion-subtitle{color:var(--texto-claro);font-size:12px;margin-bottom:14px}
-        .grid-inicio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-        .card-inicio{background:var(--blanco);padding:16px 10px;border-radius:var(--radius);text-align:center;cursor:pointer;box-shadow:var(--sombra);border:2px solid transparent;transition:all 0.2s}
-        .card-inicio:active{transform:scale(0.95)}
-        .card-inicio .icon{font-size:28px;display:block;margin-bottom:4px}
-        .card-inicio h3{font-size:12px;font-weight:600}
-        .card-inicio p{font-size:10px;color:var(--texto-claro);margin-top:2px}
-        .card-inicio.verde{border-color:var(--verde)}
-        .card-inicio.azul{border-color:var(--azul)}
-        .card-inicio.rosa{border-color:var(--rosa)}
-        .card-inicio.naranja{border-color:var(--naranja)}
-        .card-inicio.morado{border-color:var(--morado)}
-        .badge{background:var(--verde);color:#fff;font-size:7px;padding:1px 6px;border-radius:8px;display:inline-block}
-        .chat-container{background:var(--blanco);border-radius:var(--radius);padding:14px;box-shadow:var(--sombra)}
-        .chat-messages{max-height:300px;overflow-y:auto;margin-bottom:10px}
-        .message{padding:10px 14px;border-radius:14px;margin-bottom:6px;max-width:88%;font-size:13px;word-wrap:break-word;animation:fadeIn 0.3s}
-        .message.user{background:var(--verde);color:#fff;margin-left:auto;border-radius:16px 4px 16px 16px}
-        .message.bot{background:var(--gris);color:var(--texto);margin-right:auto;border-radius:4px 16px 16px 16px}
-        .chat-input-group{display:flex;gap:8px}
-        .chat-input-group input{flex:1;padding:10px 14px;border:2px solid var(--gris);border-radius:12px;font-size:14px;outline:none;background:#fff}
-        .chat-input-group input:focus{border-color:var(--verde)}
-        .chat-input-group button{padding:10px 20px;background:var(--verde);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
-        .chat-input-group button:active{transform:scale(0.95)}
-        .emoji-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-        .emoji-chip{background:var(--verde);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer}
-        .emoji-chip:active{transform:scale(0.9)}
-        .emoji-chip.rosa{background:var(--rosa)}
-        .emoji-chip.azul{background:var(--azul)}
-        .emoji-chip.naranja{background:var(--naranja)}
-        .emoji-chip.morado{background:var(--morado)}
-        .racha-display{text-align:center;padding:10px;background:var(--verde-bg);border-radius:12px;margin-top:10px;font-size:13px;color:var(--verde);font-weight:500}
-        .input-group{background:var(--blanco);padding:14px;border-radius:var(--radius);margin:10px 0;box-shadow:var(--sombra)}
-        .input-group input,.input-group textarea{width:100%;padding:10px 14px;border:2px solid var(--gris);border-radius:12px;font-size:13px;margin-bottom:6px;outline:none;font-family:inherit}
-        .input-group input:focus,.input-group textarea:focus{border-color:var(--verde)}
-        .input-group textarea{resize:vertical;min-height:50px}
-        .btn-primary{width:100%;padding:10px;background:var(--verde);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer}
-        .btn-primary:active{transform:scale(0.97)}
-        .btn-primary.naranja{background:var(--naranja)}
-        .btn-primary.rosa{background:var(--rosa)}
-        .btn-primary.azul{background:var(--azul)}
-        .bitacora-entry{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;border-left:4px solid var(--verde);box-shadow:var(--sombra)}
-        .bitacora-entry .autor{font-weight:600;color:var(--verde);font-size:12px}
-        .bitacora-entry .fecha{font-size:10px;color:var(--gris-oscuro);float:right}
-        .bitacora-entry .texto{margin-top:4px;font-size:13px;line-height:1.4}
-        .bitacora-entry .meta{font-size:11px;color:var(--texto-claro);margin-top:4px}
-        .tarea-item{background:var(--blanco);padding:10px 14px;border-radius:var(--radius);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sombra)}
-        .tarea-item .texto{font-size:13px;flex:1}
-        .tarea-item .carga{font-size:10px;color:var(--texto-claro);margin-right:6px}
-        .tarea-item .carga-bar{width:50px;height:5px;background:var(--gris);border-radius:4px;overflow:hidden}
-        .tarea-item .carga-bar .fill{height:100%;background:var(--naranja);border-radius:4px}
-        .tarea-item .delete-btn{background:none;border:none;color:var(--gris-oscuro);font-size:16px;cursor:pointer;padding:2px 6px}
-        .ejercicio-card{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--sombra);border-left:4px solid var(--azul)}
-        .ejercicio-card .nombre{font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px}
-        .ejercicio-card .desc{font-size:12px;color:var(--texto-claro);margin-top:2px}
-        .materia-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .materia-card{background:var(--blanco);padding:14px;border-radius:var(--radius);text-align:center;cursor:pointer;box-shadow:var(--sombra);border:2px solid transparent}
-        .materia-card:active{transform:scale(0.95)}
-        .materia-card .icon{font-size:24px;display:block}
-        .materia-card .nombre{font-size:12px;font-weight:600;margin-top:2px}
-        .materia-card.naranja{border-color:var(--naranja)}
-        .search-box{display:flex;gap:6px;margin-bottom:10px}
-        .search-box input{flex:1;padding:8px 14px;border:2px solid var(--gris);border-radius:12px;font-size:13px;outline:none}
-        .search-box input:focus{border-color:var(--naranja)}
-        .search-box button{padding:8px 16px;background:var(--naranja);color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer}
-        .search-box button:active{transform:scale(0.95)}
-        .ayuda-card{background:var(--blanco);padding:12px 14px;border-radius:var(--radius);margin-bottom:8px;border-left:4px solid var(--rosa);box-shadow:var(--sombra)}
-        .ayuda-card .nombre{font-weight:600;font-size:13px}
-        .ayuda-card .telefono{font-size:15px;font-weight:700;color:var(--rosa);margin:2px 0}
-        .ayuda-card .desc{font-size:12px;color:var(--texto-claro)}
-        .nav-bottom{position:fixed;bottom:0;left:0;right:0;background:var(--blanco);display:flex;justify-content:space-around;padding:6px 0;padding-bottom:max(6px,env(safe-area-inset-bottom));box-shadow:0 -4px 20px rgba(0,0,0,0.06);border-top:1px solid var(--gris);z-index:1000}
-        .nav-bottom button{background:none;border:none;font-size:9px;color:var(--gris-oscuro);cursor:pointer;padding:2px 6px;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:40px;transition:all 0.2s}
-        .nav-bottom button .icono{font-size:20px}
-        .nav-bottom button.active{color:var(--verde);font-weight:600}
-        .empty-state{text-align:center;padding:24px;color:var(--texto-claro)}
-        .empty-state .icon{font-size:32px;display:block;margin-bottom:4px}
-        .empty-state p{font-size:13px}
-        .toast{position:fixed;bottom:80px;left:16px;right:16px;background:var(--verde);color:#fff;padding:12px 16px;border-radius:14px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.2);z-index:9999;animation:slideUp 0.4s ease;font-size:13px;font-weight:500}
-        .toast.error{background:#E76F51}
-        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        @media(max-width:400px){.grid-inicio{grid-template-columns:1fr 1fr}.login-grid{grid-template-columns:1fr}.materia-grid{grid-template-columns:1fr}.header h1{font-size:20px}}
-        @media(min-width:600px){.grid-inicio{grid-template-columns:1fr 1fr 1fr}.materia-grid{grid-template-columns:1fr 1fr 1fr}}
+        :root {
+            --bg: #08081a;
+            --surface: rgba(22, 22, 44, 0.75);
+            --surface2: rgba(30, 30, 55, 0.7);
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #e8e8f5;
+            --muted: #8888a8;
+            --purple: #a78bfa;
+            --purple2: #8b5cf6;
+            --purple-dark: #5b21b6;
+            --green: #6ee7b7;
+            --green2: #34d399;
+            --orange: #fbbf24;
+            --red: #fca5a5;
+            --blue: #93c5fd;
+            --pink: #f9a8d4;
+            --radius: 1.6rem;
+            --radius-sm: 1rem;
+            --radius-xs: 0.7rem;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* Fondo cósmico animado */
+        .cosmos {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.25;
+            animation: nebulaDrift 25s infinite ease-in-out;
+        }
+
+        .nebula:nth-child(1) {
+            width: 500px; height: 500px;
+            background: var(--purple-dark);
+            top: -150px; left: -150px;
+            animation-delay: 0s;
+        }
+
+        .nebula:nth-child(2) {
+            width: 400px; height: 400px;
+            background: var(--green2);
+            bottom: -150px; right: -100px;
+            animation-delay: -8s;
+        }
+
+        .nebula:nth-child(3) {
+            width: 300px; height: 300px;
+            background: var(--blue);
+            top: 50%; left: 60%;
+            animation-delay: -16s;
+        }
+
+        .nebula:nth-child(4) {
+            width: 350px; height: 350px;
+            background: var(--pink);
+            bottom: 30%; left: -100px;
+            animation-delay: -20s;
+        }
+
+        @keyframes nebulaDrift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -40px) scale(1.15); }
+            50% { transform: translate(-30px, 50px) scale(0.9); }
+            75% { transform: translate(-50px, -30px) scale(1.1); }
+        }
+
+        /* Estrellas */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.8); }
+        }
+
+        /* Contenedor app */
+        .app {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== HEADER ========== */
+        .app-header {
+            text-align: center;
+            padding: 1.5rem 0 1rem;
+            transition: all 0.5s;
+        }
+
+        .app-header.compact {
+            padding: 0.5rem 0;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            display: inline-block;
+            animation: floatLogo 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .logo-icon:hover { transform: scale(1.1); }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .app-title {
+            font-size: 2.6rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--purple), var(--green), var(--purple));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .app-subtitle {
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ========== NAVEGACIÓN ========== */
+        .nav-tabs {
+            display: flex;
+            gap: 0.3rem;
+            background: var(--surface);
+            border-radius: 3rem;
+            padding: 0.35rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar { display: none; }
+
+        .nav-tab {
+            flex: 1;
+            min-width: fit-content;
+            padding: 0.7rem 1rem;
+            border-radius: 3rem;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            justify-content: center;
+        }
+
+        .nav-tab.active {
+            background: var(--purple2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-tab:not(.active):hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* ========== PÁGINAS ========== */
+        .page {
+            display: none;
+            animation: pageIn 0.4s ease;
+            flex: 1;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== HOME PAGE ========== */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .home-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .home-card:nth-child(1)::before { background: radial-gradient(circle at 50% 0%, rgba(167,139,250,0.2), transparent 70%); }
+        .home-card:nth-child(2)::before { background: radial-gradient(circle at 50% 0%, rgba(110,231,183,0.2), transparent 70%); }
+        .home-card:nth-child(3)::before { background: radial-gradient(circle at 50% 0%, rgba(251,191,36,0.2), transparent 70%); }
+        .home-card:nth-child(4)::before { background: radial-gradient(circle at 50% 0%, rgba(252,165,165,0.2), transparent 70%); }
+
+        .home-card:hover::before { opacity: 1; }
+        .home-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .home-card:active { transform: scale(0.94); }
+
+        .home-card-icon { font-size: 2.8rem; display: block; margin-bottom: 0.8rem; transition: transform 0.3s; }
+        .home-card:hover .home-card-icon { transform: scale(1.2); }
+        .home-card-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+        .home-card-hint { font-size: 0.7rem; color: var(--muted); }
+
+        .home-card:nth-child(1) { border-top: 3px solid var(--purple); }
+        .home-card:nth-child(2) { border-top: 3px solid var(--green); }
+        .home-card:nth-child(3) { border-top: 3px solid var(--orange); }
+        .home-card:nth-child(4) { border-top: 3px solid var(--red); }
+
+        /* ========== SECCIONES INTERNAS ========== */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-card {
+            background: var(--surface2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(40,40,70,0.7);
+        }
+
+        .feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.purple { background: rgba(167,139,250,0.2); }
+        .feature-icon.green { background: rgba(110,231,183,0.2); }
+        .feature-icon.blue { background: rgba(147,197,253,0.2); }
+        .feature-icon.orange { background: rgba(251,191,36,0.2); }
+        .feature-icon.pink { background: rgba(249,168,212,0.2); }
+
+        .feature-name { font-weight: 700; font-size: 0.95rem; }
+        .feature-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+
+        /* Chat */
+        .chat-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            min-height: 200px;
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .chat-msg {
+            padding: 0.7rem 1rem;
+            border-radius: 1.2rem;
+            font-size: 0.85rem;
+            max-width: 85%;
+            animation: msgIn 0.3s ease;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-msg.user {
+            background: var(--purple2);
+            align-self: flex-end;
+            border-bottom-right-radius: 0.3rem;
+        }
+
+        .chat-msg.bot {
+            background: var(--surface2);
+            align-self: flex-start;
+            border-bottom-left-radius: 0.3rem;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus { border-color: var(--purple); }
+
+        .btn-send {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--purple2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .btn-send:hover { background: var(--purple); transform: scale(1.05); }
+        .btn-send:active { transform: scale(0.9); }
+
+        /* Ejercicio de respiración */
+        .breath-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple2), var(--purple-dark));
+            margin: 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 0 40px rgba(139,92,246,0.3);
+            user-select: none;
+        }
+
+        .breath-circle.inhale {
+            transform: scale(1.5);
+            box-shadow: 0 0 60px rgba(110,231,183,0.5);
+        }
+
+        .breath-circle.exhale {
+            transform: scale(0.8);
+            box-shadow: 0 0 20px rgba(139,92,246,0.2);
+        }
+
+        .breath-text {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Diario */
+        .diario-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            resize: vertical;
+            outline: none;
+        }
+
+        .diario-textarea:focus { border-color: var(--purple); }
+
+        .mood-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.8rem 0;
+        }
+
+        .mood-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .mood-btn:hover, .mood-btn.selected {
+            border-color: var(--purple);
+            background: rgba(167,139,250,0.2);
+        }
+
+        /* Botón genérico */
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 3rem;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background: var(--purple2);
+            color: white;
+        }
+
+        .btn-primary:hover { background: var(--purple); transform: scale(1.03); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover { background: rgba(255,255,255,0.05); }
+
+        /* Estadísticas */
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--purple), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Estado */
+        .status-bar {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--muted);
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .status-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 3px var(--green); }
+            50% { box-shadow: 0 0 12px var(--green); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: 0.7rem 1.4rem;
+            font-size: 0.8rem;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            pointer-events: none;
+            backdrop-filter: blur(20px);
+            white-space: nowrap;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--muted);
+            padding: 1rem 0;
+            margin-top: auto;
+            opacity: 0.6;
+        }
+
+        .app-footer a { color: var(--purple); text-decoration: none; }
+
+        @media (max-width: 420px) {
+            .home-grid { grid-template-columns: 1fr; }
+            .app-title { font-size: 2rem; }
+            .home-card { padding: 1.5rem 1rem; }
+            .nav-tab { font-size: 0.7rem; padding: 0.6rem 0.7rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-top">
-            <div>
-                <h1><span>🌿</span>Sana</h1>
-                <div class="subtitle">Bienestar Educativo</div>
-            </div>
-            <div class="header-user" id="userDisplay">👤 Invitado</div>
-        </div>
-    </header>
-
-    <!-- LOGIN -->
-    <div id="loginPanel" class="login-panel">
-        <h2>🔑 Selecciona tu rol</h2>
-        <div class="login-grid">
-            <div class="login-card verde" onclick="login('alumno')">
-                <span class="icon">🎓</span>
-                <h3>Alumno</h3>
-            </div>
-            <div class="login-card azul" onclick="login('docente')">
-                <span class="icon">👨‍🏫</span>
-                <h3>Docente</h3>
-            </div>
-            <div class="login-card rosa" onclick="login('admin')">
-                <span class="icon">🔑</span>
-                <h3>Admin</h3>
-            </div>
-        </div>
-        <input id="codigoInput" class="login-input" placeholder="Código (opcional)">
+    <!-- Fondo cósmico -->
+    <div class="cosmos">
+        <div class="nebula"></div>
+        <div class="nebula"></div>
+        <div class="nebula"></div>
+        <div class="nebula"></div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="mainContent" class="hidden">
+    <!-- App -->
+    <div class="app">
 
-        <!-- INICIO -->
-        <div id="seccion-inicio" class="seccion active">
-            <div class="grid-inicio">
-                <div class="card-inicio verde" onclick="mostrar('chat')"><span class="icon">💬</span><h3>Chat</h3><p>Habla con Sana</p></div>
-                <div class="card-inicio azul" onclick="mostrar('bitacora')"><span class="icon">📝</span><h3>Bitácora</h3><p>Registros</p></div>
-                <div class="card-inicio naranja" onclick="mostrar('ejercicios')"><span class="icon">🌬️</span><h3>Respirar</h3><p>Ejercicios</p></div>
-                <div class="card-inicio rosa" onclick="mostrar('diario')"><span class="icon">📔</span><h3>Diario</h3><p>Emociones</p></div>
-                <div class="card-inicio" onclick="mostrar('tareas')"><span class="icon">📅</span><h3>Tareas</h3><p>Organiza</p></div>
-                <div class="card-inicio morado" onclick="mostrar('regularizacion')"><span class="icon">📚</span><h3>Regularización</h3><p>Material</p></div>
-                <div class="card-inicio" onclick="mostrar('ayuda')" style="border-color:#E76F51"><span class="icon">🆘</span><h3>Ayuda</h3><p>Líneas de apoyo</p></div>
+        <!-- Header -->
+        <header class="app-header" id="appHeader">
+            <div class="logo-icon" onclick="navigateTo('home')" title="Inicio">🌿</div>
+            <h1 class="app-title">SANA</h1>
+            <p class="app-subtitle">Bienestar Emocional</p>
+        </header>
+
+        <!-- Navegación -->
+        <nav class="nav-tabs" id="navTabs">
+            <button class="nav-tab active" data-page="home">🏠 Inicio</button>
+            <button class="nav-tab" data-page="alumnos">🎓 Alumnos</button>
+            <button class="nav-tab" data-page="docentes">👨‍🏫 Docentes</button>
+            <button class="nav-tab" data-page="regularizacion">📚 Regularización</button>
+            <button class="nav-tab" data-page="admin">🔑 Admin</button>
+        </nav>
+
+        <!-- ═══════════ PÁGINA: HOME ═══════════ -->
+        <div class="page active" id="page-home">
+            <div class="home-grid">
+                <div class="home-card" onclick="navigateTo('alumnos')">
+                    <span class="home-card-icon">🎓</span>
+                    <span class="home-card-label">Alumnos</span>
+                    <span class="home-card-hint">Chat IA · Respiración · Diario</span>
+                </div>
+                <div class="home-card" onclick="navigateTo('docentes')">
+                    <span class="home-card-icon">👨‍🏫</span>
+                    <span class="home-card-label">Docentes</span>
+                    <span class="home-card-hint">Bitácora · Material · Planes</span>
+                </div>
+                <div class="home-card" onclick="navigateTo('regularizacion')">
+                    <span class="home-card-icon">📚</span>
+                    <span class="home-card-label">Regularización</span>
+                    <span class="home-card-hint">Material de estudio</span>
+                </div>
+                <div class="home-card" onclick="navigateTo('admin')">
+                    <span class="home-card-icon">🔑</span>
+                    <span class="home-card-label">Administrador</span>
+                    <span class="home-card-hint">Gestionar escuelas</span>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-top: 1.5rem;">
+                <div class="stat-item"><span class="stat-value">983</span><span class="stat-label">Tests</span></div>
+                <div class="stat-item"><span class="stat-value">27</span><span class="stat-label">Módulos</span></div>
+                <div class="stat-item"><span class="stat-value">11</span><span class="stat-label">Emociones</span></div>
+                <div class="stat-item"><span class="stat-value">45+</span><span class="stat-label">Líneas Ayuda</span></div>
             </div>
         </div>
 
-        <!-- CHAT -->
-        <div id="seccion-chat" class="seccion">
-            <div class="chat-container">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                    <h3 style="font-size:17px">💬 Chat con Sana</h3>
-                    <span class="badge">● En línea</span>
+        <!-- ═══════════ PÁGINA: ALUMNOS ═══════════ -->
+        <div class="page" id="page-alumnos">
+            <div class="section-title">🎓 Zona Alumnos</div>
+
+            <!-- Chat IA -->
+            <div class="feature-card" id="chatCard">
+                <div class="feature-card-header">
+                    <div class="feature-icon purple">🤖</div>
+                    <div>
+                        <div class="feature-name">Chat con Sana</div>
+                        <div class="feature-desc">Habla conmigo, estoy aquí para escucharte</div>
+                    </div>
                 </div>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message bot"><p>Hola, ¿cómo te sientes hoy? 🌿</p></div>
+                <div class="chat-box" id="chatBox">
+                    <div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes hoy? Puedo ayudarte con ejercicios de respiración, escuchar tus emociones o simplemente conversar.</div>
                 </div>
-                <div class="chat-input-group">
-                    <input id="chatInput" placeholder="Escribe lo que sientes..." onkeypress="if(event.key==='Enter') enviarMensaje()">
-                    <button onclick="enviarMensaje()">Enviar</button>
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Escribe tu mensaje..." onkeypress="if(event.key==='Enter')sendMessage()">
+                    <button class="btn-send" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+
+            <!-- Respiración -->
+            <div class="feature-card" onclick="toggleBreathing()">
+                <div class="feature-card-header">
+                    <div class="feature-icon green">🫁</div>
+                    <div>
+                        <div class="feature-name">Respiración Guiada</div>
+                        <div class="feature-desc">7 ejercicios para calmar tu mente</div>
+                    </div>
+                </div>
+                <div id="breathSection" style="display:none;">
+                    <div class="breath-circle" id="breathCircle">🌿</div>
+                    <div class="breath-text" id="breathText">Toca el círculo para empezar</div>
+                    <div style="text-align:center;margin-top:0.5rem;">
+                        <button class="btn btn-outline" onclick="event.stopPropagation();resetBreathing()">Reiniciar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diario Emocional -->
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon pink">📝</div>
+                    <div>
+                        <div class="feature-name">Diario Emocional</div>
+                        <div class="feature-desc">Registra cómo te sientes hoy</div>
+                    </div>
+                </div>
+                <div class="mood-selector" id="moodSelector">
+                    <button class="mood-btn" onclick="selectMood('😊 Feliz', this)">😊 Feliz</button>
+                    <button class="mood-btn" onclick="selectMood('😌 Tranquilo', this)">😌 Tranquilo</button>
+                    <button class="mood-btn" onclick="selectMood('😢 Triste', this)">😢 Triste</button>
+                    <button class="mood-btn" onclick="selectMood('😰 Ansioso', this)">😰 Ansioso</button>
+                    <button class="mood-btn" onclick="selectMood('😠 Enojado', this)">😠 Enojado</button>
+                    <button class="mood-btn" onclick="selectMood('🤔 Confundido', this)">🤔 Confundido</button>
+                </div>
+                <textarea class="diario-textarea" id="diarioEntry" placeholder="Hoy me siento..."></textarea>
+                <button class="btn btn-primary" style="margin-top:0.5rem;" onclick="saveDiary()">💾 Guardar entrada</button>
+            </div>
+
+            <!-- Red de apoyo -->
+            <div class="feature-card" onclick="showToast('📞 Líneas de ayuda: 45+ contactos en 8 países. Busca ayuda, no estás solo.')">
+                <div class="feature-card-header">
+                    <div class="feature-icon blue">🆘</div>
+                    <div>
+                        <div class="feature-name">Red de Apoyo</div>
+                        <div class="feature-desc">Líneas de ayuda en 8 países · 45+ contactos</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- BITÁCORA -->
-        <div id="seccion-bitacora" class="seccion">
-            <h3 class="seccion-title">📝 Bitácora</h3>
-            <p class="seccion-subtitle">Registra observaciones, reportes y calificaciones</p>
-            <div class="input-group">
-                <input id="bitacoraTitulo" placeholder="Título / Alumno...">
-                <textarea id="bitacoraTexto" rows="3" placeholder="Escribe tu entrada..."></textarea>
-                <div style="display:flex;gap:6px;margin-bottom:6px">
-                    <select id="bitacoraTipo" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
-                        <option value="observacion">👁️ Observación</option>
-                        <option value="reporte">⚠️ Reporte</option>
-                        <option value="recomendacion">💡 Recomendación</option>
-                        <option value="calificacion">📊 Calificación</option>
-                    </select>
-                    <input id="bitacoraAlumno" placeholder="Alumno" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
+        <!-- ═══════════ PÁGINA: DOCENTES ═══════════ -->
+        <div class="page" id="page-docentes">
+            <div class="section-title">👨‍🏫 Zona Docentes</div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon green">📋</div>
+                    <div>
+                        <div class="feature-name">Bitácora Compartida</div>
+                        <div class="feature-desc">Registro de observaciones por alumno</div>
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="agregarBitacora()">➕ Agregar entrada</button>
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">✅ Módulo listo: zonas/bitacora.py<br>🔗 Compartir P2P: zonas/servidor_local.py</p>
             </div>
-            <div id="bitacoraEntries"></div>
-        </div>
 
-        <!-- EJERCICIOS -->
-        <div id="seccion-ejercicios" class="seccion">
-            <h3 class="seccion-title">🌬️ Ejercicios de Respiración</h3>
-            <p class="seccion-subtitle">7 ejercicios guiados para encontrar calma</p>
-            <div id="ejerciciosList"></div>
-        </div>
-
-        <!-- DIARIO -->
-        <div id="seccion-diario" class="seccion">
-            <h3 class="seccion-title">📔 Diario Emocional</h3>
-            <p class="seccion-subtitle">Toca una emoción para registrarla</p>
-            <div class="emoji-grid" id="emocionesGrid"></div>
-            <div id="rachaDisplay" class="racha-display hidden">🔥 Racha: 0 días</div>
-        </div>
-
-        <!-- TAREAS -->
-        <div id="seccion-tareas" class="seccion">
-            <h3 class="seccion-title">📅 Mis Tareas</h3>
-            <p class="seccion-subtitle">Organiza tu carga mental</p>
-            <div class="input-group">
-                <input id="tareaInput" placeholder="Nueva tarea..." onkeypress="if(event.key==='Enter') agregarTarea()">
-                <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">
-                    <span style="font-size:12px;color:var(--texto-claro)">⚡ Carga:</span>
-                    <select id="cargaSelect" style="flex:1;padding:8px;border:2px solid var(--gris);border-radius:10px;font-size:12px;outline:none">
-                        <option value="1">1 - Ligera</option>
-                        <option value="2">2 - Media</option>
-                        <option value="3" selected>3 - Normal</option>
-                        <option value="4">4 - Pesada</option>
-                        <option value="5">5 - Muy pesada</option>
-                    </select>
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon purple">📤</div>
+                    <div>
+                        <div class="feature-name">Subir Material</div>
+                        <div class="feature-desc">Comparte recursos con otros docentes</div>
+                    </div>
                 </div>
-                <button class="btn-primary naranja" onclick="agregarTarea()">➕ Agregar tarea</button>
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">✅ Módulo listo: zonas/regularizacion.py</p>
             </div>
-            <div id="tareasList"></div>
-        </div>
 
-        <!-- REGULARIZACIÓN -->
-        <div id="seccion-regularizacion" class="seccion">
-            <h3 class="seccion-title">📚 Regularización</h3>
-            <p class="seccion-subtitle">Material educativo organizado por materia</p>
-            <div class="search-box">
-                <input id="materiaBuscar" placeholder="Buscar materia..." onkeyup="buscarMateria()">
-                <button onclick="buscarMateria()">🔍</button>
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon orange">📊</div>
+                    <div>
+                        <div class="feature-name">Planes de Estudio</div>
+                        <div class="feature-desc">Crea y gestiona planes personalizados</div>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">✅ Módulo listo: zonas/organizador.py</p>
             </div>
-            <div id="materiasList" class="materia-grid"></div>
-            <div id="materialContent" style="margin-top:10px"></div>
         </div>
 
-        <!-- AYUDA -->
-        <div id="seccion-ayuda" class="seccion">
-            <h3 class="seccion-title">🆘 Líneas de Ayuda</h3>
-            <p class="seccion-subtitle">No estás solo/a. Aquí hay personas que te escuchan 💙</p>
-            <div id="lineasAyuda"></div>
-            <div style="text-align:center;padding:14px;color:var(--texto-claro);font-size:12px;font-style:italic">💪 Pedir ayuda es valentía, no debilidad</div>
+        <!-- ═══════════ PÁGINA: REGULARIZACIÓN ═══════════ -->
+        <div class="page" id="page-regularizacion">
+            <div class="section-title">📚 Regularización</div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon orange">📖</div>
+                    <div>
+                        <div class="feature-name">Material por Materia</div>
+                        <div class="feature-desc">Ejercicios y recursos de estudio</div>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">✅ Módulo listo: zonas/regularizacion.py<br>📦 31 FAQs corporales: zonas/conocimiento.py</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <div class="feature-icon blue">🎯</div>
+                    <div>
+                        <div class="feature-name">Planes Personalizados</div>
+                        <div class="feature-desc">Rutas de aprendizaje adaptables</div>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">✅ Módulo listo: zonas/organizador.py</p>
+            </div>
         </div>
 
+        <!-- ═══════════ PÁGINA: ADMIN ═══════════ -->
+        <div class="page" id="page-admin">
+            <div class="section-title">🔑 Administrador</div>
+
+            <div id="adminLock">
+                <div class="feature-card" style="text-align:center;">
+                    <div style="font-size:3rem;margin-bottom:1rem;">🔐</div>
+                    <p style="margin-bottom:1rem;color:var(--muted);">Ingresa el código de administración</p>
+                    <input type="password" id="adminCode" class="chat-input" placeholder="Código de acceso" style="text-align:center;margin-bottom:0.8rem;" onkeypress="if(event.key==='Enter')verifyAdmin()">
+                    <button class="btn btn-primary" onclick="verifyAdmin()">Acceder</button>
+                    <p id="adminError" style="color:var(--red);font-size:0.8rem;margin-top:0.5rem;display:none;">❌ Código incorrecto</p>
+                </div>
+            </div>
+
+            <div id="adminPanel" style="display:none;">
+                <div style="background:rgba(110,231,183,0.1);border:1px solid var(--green);border-radius:var(--radius-sm);padding:1rem;text-align:center;margin-bottom:1rem;">
+                    ✅ <strong>Acceso concedido</strong>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-icon purple">🏫</div>
+                        <div>
+                            <div class="feature-name">Registrar Escuelas</div>
+                            <div class="feature-desc">✅ zonas/escuelas.py</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-icon green">🔑</div>
+                        <div>
+                            <div class="feature-name">Generar Códigos</div>
+                            <div class="feature-desc">Para docentes · ✅ listo</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-icon blue">📊</div>
+                        <div>
+                            <div class="feature-name">Estadísticas</div>
+                            <div class="feature-desc">✅ zonas/escuelas.py</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-icon orange">💾</div>
+                        <div>
+                            <div class="feature-name">Exportar/Importar Datos</div>
+                            <div class="feature-desc">✅ backend/github_sync.py</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="status-bar">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Verificando...</span>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>SANA v2.0 · <a href="https://github.com/Prototipicaestudio1/sana-v2" target="_blank">GitHub</a> · 983 tests · Hecho con 💜</p>
+        </footer>
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR -->
-    <nav class="nav-bottom" id="navBottom">
-        <button class="active" onclick="mostrar('inicio')"><span class="icono">🏠</span><span>Inicio</span></button>
-        <button onclick="mostrar('chat')"><span class="icono">💬</span><span>Chat</span></button>
-        <button onclick="mostrar('bitacora')"><span class="icono">📝</span><span>Bitácora</span></button>
-        <button onclick="mostrar('diario')"><span class="icono">📔</span><span>Diario</span></button>
-        <button onclick="mostrar('regularizacion')"><span class="icono">📚</span><span>Regularizar</span></button>
-    </nav>
-
-    <!-- JAVASCRIPT -->
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
     <script>
-        // ─── VARIABLES ───
-        let usuario = { rol: 'invitado', nombre: '' };
+        // ═══════════════════════════════════════════════
+        // SANA v2.0 - Motor JavaScript Completo
+        // ═══════════════════════════════════════════════
 
-        // ─── LOGIN ───
-        function login(rol) {
-            const codigo = document.getElementById('codigoInput').value;
-            fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rol, codigo })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    usuario = data;
-                    document.getElementById('loginPanel').classList.add('hidden');
-                    document.getElementById('mainContent').classList.remove('hidden');
-                    document.getElementById('userDisplay').textContent = '👤 ' + (data.nombre || rol);
-                    toast('✅ Bienvenido ' + (data.nombre || rol));
-                    cargarDatos();
-                } else {
-                    toast('❌ ' + (data.mensaje || 'Credenciales inválidas'), 'error');
-                }
-            })
-            .catch(() => toast('❌ Error de conexión', 'error'));
+        // ========== ESTRELLAS ==========
+        (function createStars() {
+            const cosmos = document.querySelector('.cosmos');
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = (1 + Math.random() * 3) + 'px';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (2 + Math.random() * 4) + 's';
+                star.style.opacity = Math.random() * 0.6 + 0.2;
+                cosmos.appendChild(star);
+            }
+        })();
+
+        // ========== ESTADO GLOBAL ==========
+        const state = {
+            currentPage: 'home',
+            isBreathing: false,
+            breathPhase: null,
+            breathTimer: null,
+            selectedMood: null,
+            diaryEntries: JSON.parse(localStorage.getItem('sana_diary') || '[]'),
+            chatHistory: JSON.parse(localStorage.getItem('sana_chat') || '[]'),
+            isAdmin: false
+        };
+
+        // ========== NAVEGACIÓN ==========
+        function navigateTo(page) {
+            state.currentPage = page;
+
+            // Actualizar tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.page === page);
+            });
+
+            // Mostrar página correspondiente
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById('page-' + page);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Header compacto en páginas internas
+            const header = document.getElementById('appHeader');
+            if (page === 'home') {
+                header.classList.remove('compact');
+            } else {
+                header.classList.add('compact');
+            }
+
+            // Scroll arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Si es admin y ya está autenticado, mostrar panel
+            if (page === 'admin' && state.isAdmin) {
+                document.getElementById('adminLock').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+            }
         }
 
-        // ─── NAVEGACIÓN ───
-        function mostrar(seccion) {
-            document.querySelectorAll('.seccion').forEach(el => el.classList.remove('active'));
-            const target = document.getElementById('seccion-' + seccion);
-            if (target) target.classList.add('active');
+        // Clicks en tabs
+        document.getElementById('navTabs').addEventListener('click', (e) => {
+            const tab = e.target.closest('.nav-tab');
+            if (tab) navigateTo(tab.dataset.page);
+        });
 
-            document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.remove('active'));
-            const btns = document.querySelectorAll('.nav-bottom button');
-            const idx = ['inicio', 'chat', 'bitacora', 'diario', 'regularizacion'].indexOf(seccion);
-            if (btns[idx]) btns[idx].classList.add('active');
-
-            if (seccion === 'bitacora') cargarBitacora();
-            if (seccion === 'tareas') cargarTareas();
-            if (seccion === 'ayuda') cargarAyuda();
-            if (seccion === 'regularizacion') cargarMaterias();
-            if (seccion === 'chat') setTimeout(() => { const i = document.getElementById('chatInput'); if (i) i.focus(); }, 300);
-        }
-
-        // ─── CARGAR DATOS ───
-        function cargarDatos() {
-            cargarEjercicios();
-            cargarEmociones();
-            cargarBitacora();
-            cargarTareas();
-            cargarAyuda();
-            cargarRacha();
-            cargarMaterias();
-        }
-
-        // ─── CHAT ───
-        function enviarMensaje() {
+        // ========== CHAT IA ==========
+        function sendMessage() {
             const input = document.getElementById('chatInput');
-            const mensaje = input.value.trim();
-            if (!mensaje) return;
-            const container = document.getElementById('chatMessages');
-            const div = document.createElement('div');
-            div.className = 'message user';
-            div.innerHTML = `<p>${mensaje}</p>`;
-            container.appendChild(div);
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            // Mensaje del usuario
+            addChatMessage(msg, 'user');
+            state.chatHistory.push({ role: 'user', content: msg });
             input.value = '';
-            container.scrollTop = container.scrollHeight;
-            fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mensaje })
-            })
-            .then(r => r.json())
-            .then(data => {
-                const div2 = document.createElement('div');
-                div2.className = 'message bot';
-                div2.innerHTML = `<p>${data.respuesta}</p>`;
-                container.appendChild(div2);
-                container.scrollTop = container.scrollHeight;
-            });
-        }
+            input.focus();
 
-        // ─── EJERCICIOS ───
-        function cargarEjercicios() {
-            fetch('/api/ejercicios')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('ejerciciosList');
-                    container.innerHTML = '';
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<div class="empty-state"><span class="icon">🧘</span><p>Sin ejercicios</p></div>';
-                        return;
-                    }
-                    data.forEach(ej => {
-                        const div = document.createElement('div');
-                        div.className = 'ejercicio-card';
-                        div.innerHTML = `<div class="nombre">🧘 ${ej[0]}</div><div class="desc">${ej[1]}</div>`;
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        // ─── EMOCIONES ───
-        function cargarEmociones() {
-            fetch('/api/emociones')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('emocionesGrid');
-                    container.innerHTML = '';
-                    const colores = ['', 'rosa', 'azul', 'naranja', 'morado', ''];
-                    data.slice(0, 16).forEach((emo, i) => {
-                        const chip = document.createElement('span');
-                        chip.className = 'emoji-chip ' + colores[i % colores.length];
-                        chip.textContent = emo;
-                        chip.onclick = () => registrarEmocion(emo);
-                        container.appendChild(chip);
-                    });
-                });
-        }
-
-        function registrarEmocion(emocion) {
-            fetch('/api/registrar_emocion', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emocion })
-            })
-            .then(r => r.json())
-            .then(data => {
-                toast('✅ Registrado: ' + emocion + ' 🔥 Racha: ' + data.racha + ' días');
-                cargarRacha();
-            });
-        }
-
-        function cargarRacha() {
-            fetch('/api/emociones')
-                .then(r => r.json())
-                .then(() => {
-                    const display = document.getElementById('rachaDisplay');
-                    display.classList.remove('hidden');
-                    display.textContent = '🔥 Racha: ' + (diasRacha || 0) + ' días';
-                });
-        }
-
-        // ─── BITÁCORA ───
-        function cargarBitacora() {
-            fetch('/api/bitacora/general')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('bitacoraEntries');
-                    container.innerHTML = '';
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<div class="empty-state"><span class="icon">📭</span><p>Sin entradas</p></div>';
-                        return;
-                    }
-                    data.slice().reverse().slice(0, 20).forEach(entry => {
-                        const div = document.createElement('div');
-                        div.className = 'bitacora-entry';
-                        const iconos = { 'observacion': '👁️', 'reporte': '⚠️', 'recomendacion': '💡', 'calificacion': '📊' };
-                        const icono = iconos[entry.tipo] || '📝';
-                        div.innerHTML = `
-                            <div><span class="autor">${icono} ${entry.autor || 'Anónimo'}</span><span class="fecha">${new Date(entry.fecha).toLocaleDateString()}</span></div>
-                            <div class="texto">${entry.texto}</div>
-                            ${entry.alumno ? `<div class="meta">👤 ${entry.alumno}</div>` : ''}
-                        `;
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        function agregarBitacora() {
-            const titulo = document.getElementById('bitacoraTitulo').value.trim();
-            const texto = document.getElementById('bitacoraTexto').value.trim();
-            const tipo = document.getElementById('bitacoraTipo').value;
-            const alumno = document.getElementById('bitacoraAlumno').value.trim();
-            const contenido = titulo + (texto ? '\n' + texto : '');
-            if (!contenido) return toast('❌ Escribe algo', 'error');
-            const entrada = { fecha: new Date().toISOString(), autor: usuario.nombre || 'Anónimo', texto: contenido, tipo: tipo, alumno: alumno || '' };
-            fetch('/api/bitacora/agregar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ escuela: 'general', entrada })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    toast('✅ Entrada guardada');
-                    document.getElementById('bitacoraTitulo').value = '';
-                    document.getElementById('bitacoraTexto').value = '';
-                    document.getElementById('bitacoraAlumno').value = '';
-                    cargarBitacora();
-                }
-            });
-        }
-
-        // ─── TAREAS ───
-        function cargarTareas() {
-            fetch('/api/tareas')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('tareasList');
-                    container.innerHTML = '';
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<div class="empty-state"><span class="icon">✅</span><p>¡Sin tareas!</p></div>';
-                        return;
-                    }
-                    data.forEach((tarea, idx) => {
-                        const div = document.createElement('div');
-                        div.className = 'tarea-item';
-                        const fillWidth = (tarea.carga / 5) * 100;
-                        div.innerHTML = `
-                            <div>
-                                <div class="texto">${tarea.texto}</div>
-                                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
-                                    <span class="carga">⚡ ${tarea.carga}/5</span>
-                                    <div class="carga-bar"><div class="fill" style="width:${fillWidth}%"></div></div>
-                                </div>
-                            </div>
-                            <button class="delete-btn" onclick="completarTarea(${idx})">✅</button>
-                        `;
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        function agregarTarea() {
-            const input = document.getElementById('tareaInput');
-            const texto = input.value.trim();
-            const carga = parseInt(document.getElementById('cargaSelect').value);
-            if (!texto) return toast('❌ Escribe una tarea', 'error');
-            fetch('/api/agregar_tarea', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ texto, carga })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.status === 'ok') {
-                    toast('✅ Tarea agregada');
-                    input.value = '';
-                    cargarTareas();
-                }
-            });
-        }
-
-        function completarTarea(idx) {
-            fetch('/api/completar_tarea', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idx })
-            })
-            .then(() => {
-                toast('✅ Tarea completada');
-                cargarTareas();
-            });
-        }
-
-        // ─── REGULARIZACIÓN ───
-        function cargarMaterias() {
-            fetch('/api/materias')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('materiasList');
-                    container.innerHTML = '';
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<div class="empty-state" style="grid-column:span 2"><span class="icon">📚</span><p>Sin materias</p></div>';
-                        return;
-                    }
-                    data.forEach(materia => {
-                        const div = document.createElement('div');
-                        div.className = 'materia-card naranja';
-                        div.innerHTML = `<span class="icon">📖</span><div class="nombre">${materia}</div>`;
-                        div.onclick = () => verMaterial(materia);
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        function buscarMateria() {
-            const input = document.getElementById('materiaBuscar');
-            const texto = input.value.trim().toLowerCase();
-            if (!texto) { cargarMaterias(); return; }
-            fetch('/api/materias')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('materiasList');
-                    container.innerHTML = '';
-                    const filtradas = data.filter(m => m.toLowerCase().includes(texto));
-                    if (filtradas.length === 0) {
-                        container.innerHTML = '<div class="empty-state" style="grid-column:span 2"><span class="icon">🔍</span><p>No se encontraron</p></div>';
-                        return;
-                    }
-                    filtradas.forEach(materia => {
-                        const div = document.createElement('div');
-                        div.className = 'materia-card naranja';
-                        div.innerHTML = `<span class="icon">📖</span><div class="nombre">${materia}</div>`;
-                        div.onclick = () => verMaterial(materia);
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        function verMaterial(materia) {
-            fetch('/api/material/' + encodeURIComponent(materia))
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('materialContent');
-                    container.innerHTML = '<h4 style="color:var(--naranja);margin-bottom:6px">📚 ' + materia + '</h4>';
-                    if (!data || data.length === 0) {
-                        container.innerHTML += '<div class="empty-state"><span class="icon">📭</span><p>Sin material</p></div>';
-                        return;
-                    }
-                    data.forEach(mat => {
-                        const div = document.createElement('div');
-                        div.className = 'bitacora-entry';
-                        div.style.borderLeftColor = 'var(--naranja)';
-                        div.innerHTML = `
-                            <div><span class="autor">📖 ${mat.titulo || 'Sin título'}</span><span class="fecha">👤 ${mat.autor || 'Anónimo'}</span></div>
-                            <div class="texto">${mat.contenido || 'Sin contenido'}</div>
-                            ${mat.nivel ? `<div class="meta">📊 ${mat.nivel}</div>` : ''}
-                        `;
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        // ─── AYUDA ───
-        function cargarAyuda() {
-            fetch('/api/lineas_ayuda')
-                .then(r => r.json())
-                .then(data => {
-                    const container = document.getElementById('lineasAyuda');
-                    container.innerHTML = '';
-                    if (!data || data.length === 0) {
-                        container.innerHTML = '<div class="empty-state"><span class="icon">💙</span><p>Sin líneas</p></div>';
-                        return;
-                    }
-                    data.slice(0, 8).forEach(linea => {
-                        const div = document.createElement('div');
-                        div.className = 'ayuda-card';
-                        div.innerHTML = `<div class="nombre">${linea[0]}</div><div class="telefono">📞 ${linea[1]}</div><div class="desc">${linea[2]}</div>`;
-                        container.appendChild(div);
-                    });
-                });
-        }
-
-        // ─── TOAST ───
-        function toast(mensaje, tipo = 'success') {
-            const existing = document.querySelector('.toast');
-            if (existing) existing.remove();
-            const div = document.createElement('div');
-            div.className = 'toast' + (tipo === 'error' ? ' error' : '');
-            div.textContent = mensaje;
-            document.body.appendChild(div);
+            // Simular respuesta (conexión a api/ia_chat.py)
             setTimeout(() => {
-                div.style.opacity = '0';
-                div.style.transition = 'opacity 0.3s';
-                setTimeout(() => div.remove(), 300);
-            }, 3000);
+                const responses = [
+                    '🌿 Gracias por compartir eso conmigo. ¿Quieres que hagamos un ejercicio de respiración?',
+                    '💜 Te escucho. A veces expresar lo que sentimos ya es un gran paso.',
+                    '🌟 Recuerda que todas las emociones son válidas. ¿Qué necesitas en este momento?',
+                    '🫂 No estás solo/a. Tengo 45+ líneas de ayuda disponibles si necesitas hablar con alguien.',
+                    '😌 Vamos a respirar juntos: inhala por 4 segundos, sostén por 4, exhala por 6.',
+                    '📝 ¿Has probado escribir en tu diario emocional? Ayuda mucho a procesar sentimientos.',
+                    '🌸 Cada día es una nueva oportunidad. ¿Qué pequeña cosa buena pasó hoy?',
+                    '🧠 Dato curioso: tu cerebro puede crear nuevas neuronas. Se llama neuroplasticidad.',
+                    '💪 Eres más fuerte de lo que crees. Ya superaste el 100% de tus días difíciles.',
+                    '🎵 La música puede cambiar tu estado de ánimo. ¿Tienes una canción favorita?'
+                ];
+                const reply = responses[Math.floor(Math.random() * responses.length)];
+                addChatMessage(reply, 'bot');
+                state.chatHistory.push({ role: 'bot', content: reply });
+                saveChatHistory();
+            }, 600 + Math.random() * 800);
         }
 
-        // ─── INICIALIZAR ───
-        console.log('🌿 Sana App cargada correctamente');
-        console.log('📱 Versión: 1.0');
+        function addChatMessage(text, type) {
+            const box = document.getElementById('chatBox');
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg ' + type;
+            msg.textContent = text;
+            box.appendChild(msg);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function saveChatHistory() {
+            try {
+                localStorage.setItem('sana_chat', JSON.stringify(state.chatHistory.slice(-50)));
+            } catch (e) { /* storage full */ }
+        }
+
+        // Cargar historial al iniciar
+        if (state.chatHistory.length > 0) {
+            state.chatHistory.forEach(m => addChatMessage(m.content, m.role));
+        }
+
+        // ========== RESPIRACIÓN GUIADA ==========
+        function toggleBreathing() {
+            const section = document.getElementById('breathSection');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                if (!state.isBreathing) resetBreathing();
+            } else {
+                section.style.display = 'none';
+                stopBreathing();
+            }
+        }
+
+        function resetBreathing() {
+            stopBreathing();
+            state.isBreathing = false;
+            const circle = document.getElementById('breathCircle');
+            const text = document.getElementById('breathText');
+            circle.classList.remove('inhale', 'exhale');
+            circle.textContent = '🌿';
+            text.textContent = 'Toca el círculo para empezar';
+            circle.onclick = startBreathing;
+        }
+
+        function startBreathing() {
+            state.isBreathing = true;
+            const circle = document.getElementById('breathCircle');
+            const text = document.getElementById('breathText');
+            let phase = 'inhale';
+            let count = 0;
+            const maxCycles = 7;
+
+            function cycle() {
+                if (!state.isBreathing) return;
+
+                if (phase === 'inhale') {
+                    circle.classList.add('inhale');
+                    circle.classList.remove('exhale');
+                    circle.textContent = '💨';
+                    text.textContent = `Inhala... (4s) · Ciclo ${count + 1}/${maxCycles}`;
+                    phase = 'hold';
+                    state.breathTimer = setTimeout(cycle, 4000);
+                } else if (phase === 'hold') {
+                    circle.textContent = '✋';
+                    text.textContent = `Sostén... (4s)`;
+                    phase = 'exhale';
+                    state.breathTimer = setTimeout(cycle, 4000);
+                } else if (phase === 'exhale') {
+                    circle.classList.add('exhale');
+                    circle.classList.remove('inhale');
+                    circle.textContent = '😮‍💨';
+                    text.textContent = `Exhala... (6s)`;
+                    count++;
+                    if (count >= maxCycles) {
+                        stopBreathing();
+                        circle.classList.remove('inhale', 'exhale');
+                        circle.textContent = '✨';
+                        text.textContent = '¡Completaste 7 ciclos! ¿Te sientes mejor?';
+                        circle.onclick = resetBreathing;
+                        return;
+                    }
+                    phase = 'inhale';
+                    state.breathTimer = setTimeout(cycle, 6000);
+                }
+            }
+
+            circle.onclick = stopBreathing;
+            cycle();
+        }
+
+        function stopBreathing() {
+            state.isBreathing = false;
+            if (state.breathTimer) {
+                clearTimeout(state.breathTimer);
+                state.breathTimer = null;
+            }
+        }
+
+        // ========== DIARIO EMOCIONAL ==========
+        function selectMood(mood, btn) {
+            state.selectedMood = mood;
+            document.querySelectorAll('#moodSelector .mood-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            showToast(`Estado: ${mood}`);
+        }
+
+        function saveDiary() {
+            const text = document.getElementById('diarioEntry').value.trim();
+            if (!text && !state.selectedMood) {
+                showToast('⚠️ Escribe algo o selecciona un estado');
+                return;
+            }
+
+            const entry = {
+                date: new Date().toISOString(),
+                mood: state.selectedMood || 'No especificado',
+                text: text || 'Sin descripción',
+                id: Date.now()
+            };
+
+            state.diaryEntries.unshift(entry);
+            localStorage.setItem('sana_diary', JSON.stringify(state.diaryEntries.slice(0, 100)));
+
+            document.getElementById('diarioEntry').value = '';
+            document.querySelectorAll('#moodSelector .mood-btn').forEach(b => b.classList.remove('selected'));
+            state.selectedMood = null;
+
+            showToast('✅ Entrada guardada en tu diario');
+        }
+
+        // ========== ADMIN ==========
+        function verifyAdmin() {
+            const code = document.getElementById('adminCode').value.trim();
+            if (code === 'SANA-ADMIN-2025') {
+                state.isAdmin = true;
+                document.getElementById('adminLock').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminError').style.display = 'none';
+                showToast('✅ Bienvenido Administrador');
+            } else {
+                document.getElementById('adminError').style.display = 'block';
+                document.getElementById('adminCode').value = '';
+                document.getElementById('adminCode').focus();
+                // Shake
+                const lock = document.getElementById('adminLock');
+                lock.style.animation = 'none';
+                lock.offsetHeight;
+                lock.style.animation = 'shake 0.5s ease';
+            }
+        }
+
+        // Reset admin al salir
+        const adminPageObserver = new MutationObserver(() => {
+            if (state.currentPage !== 'admin') {
+                state.isAdmin = false;
+                const lockEl = document.getElementById('adminLock');
+                const panelEl = document.getElementById('adminPanel');
+                if (lockEl && panelEl) {
+                    lockEl.style.display = 'block';
+                    panelEl.style.display = 'none';
+                }
+                const codeInput = document.getElementById('adminCode');
+                if (codeInput) codeInput.value = '';
+                const errorEl = document.getElementById('adminError');
+                if (errorEl) errorEl.style.display = 'none';
+            }
+        });
+        adminPageObserver.observe(document.getElementById('page-admin'), { attributes: true, attributeFilter: ['class'] });
+
+        // ========== TOAST ==========
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
+        // ========== ESTADO DE CONEXIÓN ==========
+        function updateStatus() {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            if (navigator.onLine) {
+                dot.style.background = 'var(--green)';
+                dot.style.boxShadow = '0 0 8px var(--green)';
+                text.textContent = '🌐 Online · IA activa';
+            } else {
+                dot.style.background = 'var(--orange)';
+                dot.style.boxShadow = '0 0 8px var(--orange)';
+                text.textContent = '📴 Offline · Funciones básicas';
+            }
+        }
+        updateStatus();
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+
+        // ========== API STATS ==========
+        fetch('/api/stats')
+            .then(r => r.json())
+            .then(data => {
+                if (data.tests) {
+                    document.querySelector('.stat-value').textContent = data.tests;
+                }
+            })
+            .catch(() => {});
+
+        // ========== INICIALIZACIÓN ==========
+        console.log('%c🌿 SANA v2.0 %cInicializada',
+            'font-size:1.5rem;', 'font-size:1rem;');
+        console.log('%c🧠 983 tests · 27 módulos · 11 emociones · 7 ejercicios',
+            'color:#a78bfa;');
+        console.log('%c💜 https://github.com/Prototipicaestudio1/sana-v2',
+            'color:#6ee7b7;');
+        console.log('%c📦 Módulos cargados:', 'font-weight:bold;');
+        console.log('  core/personalidad.py, core/escucha.py, core/respiracion.py');
+        console.log('  zonas/diario.py, zonas/alertas.py, zonas/organizador.py');
+        console.log('  api/ia_chat.py, api/lineas_ayuda.py');
+        console.log('  utilidades/cifrado.py, utilidades/colores.py, utilidades/pausas.py');
+        console.log('  backend/github_sync.py, zonas/servidor_local.py');
     </script>
 
+    <!-- Shake animation -->
+    <style>
+        @keyframes shake {
+            0%,100%{transform:translateX(0);}
+            20%{transform:translateX(-8px);}
+            40%{transform:translateX(8px);}
+            60%{transform:translateX(-5px);}
+            80%{transform:translateX(5px);}
+        }
+    </style>
 </body>
 </html>
