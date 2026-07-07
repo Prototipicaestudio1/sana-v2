@@ -147,5 +147,10 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-07T00:04:05.646092"
+  "fecha": "2026-07-07T00:04:05.646092",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  }
 }
