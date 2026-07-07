@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 SANA - Despertando...</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{
+            font-family:'Inter',system-ui,sans-serif;
+            background:#060613;color:#f0f0f8;
+            display:flex;align-items:center;justify-content:center;
+            min-height:100vh;min-height:100dvh;
+            overflow:hidden;
+        }
+        .loader-container{text-align:center;z-index:1;}
+        .loader-logo{font-size:5rem;animation:float 2s ease-in-out infinite;}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+        .loader-title{font-size:2.5rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#6ee7b7,#a78bfa);
+            background-size:200% auto;-webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;}
+        @keyframes shimmer{to{background-position:200% center}}
+        .loader-sub{color:#9090b0;margin-top:0.5rem;font-size:0.9rem;}
+        .spinner{
+            width:60px;height:60px;margin:2rem auto;
+            border:3px solid rgba(167,139,250,0.2);
+            border-top-color:#a78bfa;border-radius:50%;
+            animation:spin 1s linear infinite;
+        }
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .progress-bar{
+            width:200px;height:4px;background:rgba(255,255,255,0.1);
+            border-radius:1rem;margin:1rem auto;overflow:hidden;
+        }
+        .progress-fill{
+            height:100%;background:linear-gradient(90deg,#7c3aed,#6ee7b7);
+            border-radius:1rem;animation:fill 30s ease-in-out infinite;
+            width:0%;
+        }
+        @keyframes fill{0%{width:0%}50%{width:70%}100%{width:95%}}
+        .dots::after{content:'';animation:dots 1.5s infinite;}
+        @keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+        .nebula{position:fixed;border-radius:50%;filter:blur(120px);opacity:0.15;pointer-events:none;}
+        .nebula:nth-child(1){width:400px;height:400px;background:#7c3aed;top:-100px;left:-100px;animation:drift 20s infinite;}
+        .nebula:nth-child(2){width:350px;height:350px;background:#34d399;bottom:-100px;right:-100px;animation:drift 25s infinite reverse;}
+        @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+    </style>
+</head>
+<body>
+    <div class="nebula"></div><div class="nebula"></div>
+    <div class="loader-container">
+        <div class="loader-logo">🌿</div>
+        <h1 class="loader-title">SANA</h1>
+        <p class="loader-sub">Preparando tu espacio seguro<span class="dots"></span></p>
+        <div class="spinner"></div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <p style="font-size:0.7rem;color:#9090b0;margin-top:1rem;">Esto solo toma unos segundos ✨</p>
+    </div>
+    <script>
+        // Verificar si el servidor ya despertó
+        let intentos=0;
+        function verificar(){
+            fetch('/api/stats')
+            .then(r=>r.json())
+            .then(d=>{
+                if(d&&d.status!==undefined||d&&d.tests){
+                    window.location.href='/';
+                }
+            })
+            .catch(()=>{});
+            intentos++;
+            if(intentos<60)setTimeout(verificar,1000);
+        }
+        verificar();
+    </script>
+</body>
+</html>

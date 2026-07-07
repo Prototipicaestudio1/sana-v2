@@ -47,13 +47,11 @@ if not github.modo_local:
 def sync_all():
     if not github.modo_local:
         github.sync_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
-        # También guardar datos del director
         datos_director = {
             "avisos": director.avisos,
             "bajas": director.bajas,
             "bitacora_director": director.bitacora_director
         }
-        # Añadir al sync principal
         data = github.obtener_datos()
         data["director"] = datos_director
         github.guardar_datos(data)
@@ -131,7 +129,6 @@ class SanaHandler(SimpleHTTPRequestHandler):
             return self.json({"bajas": director.obtener_bajas(q('escuela', ''))})
         if path == '/api/director/dar-baja':
             cod = q('codigo_docente', '')
-            # Eliminar código de la lista de docentes de la escuela
             escuela_data = escuelas.obtener_escuela(q('escuela', ''))
             if escuela_data and cod in escuela_data.get("codigos_docentes", []):
                 escuela_data["codigos_docentes"].remove(cod)
@@ -161,7 +158,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
             if ok: sync_all()
             return self.json({"ok": ok})
 
-        # ──── RESTO DE ENDPOINTS (respiración, diario, etc.) ────
+        # ──── RESPIRACIÓN ────
         if path == '/api/respiracion/lista':
             return self.json({"ejercicios": [{"clave": c, "nombre": e["nombre"], "descripcion": e["descripcion"], "nivel": e["nivel"], "ciclos": e["ciclos"]} for c, e in respiracion.EJERCICIOS.items()]})
         if path == '/api/respiracion/info':
@@ -170,20 +167,30 @@ class SanaHandler(SimpleHTTPRequestHandler):
             return self.json({"clave": q('ejercicio'), "nombre": ej["nombre"], "descripcion": ej["descripcion"], "pasos": [{"texto": t, "segundos": s} for t, s in ej["pasos"]], "ciclos": ej["ciclos"], "frase_inicio": respiracion.obtener_frase_inicio(), "frase_cierre": respiracion.obtener_frase_cierre()})
         if path == '/api/respiracion/recomendar': return self.json({"recomendado": respiracion.obtener_recomendacion(q('estado', 'ansioso'))})
         if path == '/api/respiracion/crisis': return self.json({"crisis": respiracion.obtener_mensaje_crisis()})
+
+        # ──── EMOCIONES ────
         if path == '/api/emociones/detectar':
             t = q('texto', ''); return self.json(escucha.detectar_emocion(t)) if t else self.json({"emocion": "neutral"})
+
+        # ──── DIARIO ────
         if path == '/api/diario/entradas': return self.json({"entradas": usuarios.obtener_diario(q('user_id', ''))})
         if path == '/api/diario/borrar': usuarios.borrar_diario(q('user_id', ''), int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── LÍNEAS DE AYUDA ────
         if path == '/api/lineas-ayuda/paises': return self.json({"paises": list(lineas_ayuda.PAISES.keys())})
         if path == '/api/lineas-ayuda':
             ld = lineas_ayuda.PAISES.get(q('pais', 'México'), {})
             return self.json({"pais": q('pais'), "lineas": [{"nombre": l[0], "numero": l[1], "categoria": l[3]} for l in ld.get('lineas', [])]})
+
+        # ──── BITÁCORA ────
         if path == '/api/bitacora/entradas': return self.json({"entradas": bitacora.obtener_entradas(q('escuela', ''))})
         if path == '/api/bitacora/agregar':
             e = bitacora.agregar_entrada(q('tipo', 'observacion'), q('alumno', ''), q('grupo', ''), q('texto', ''), q('autor', ''), q('escuela', ''))
             sync_all(); return self.json({"guardado": True, "entrada": e})
         if path == '/api/bitacora/compartir': ok = bitacora.compartir_entrada(int(q('id', '0')), q('codigo', '')); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/bitacora/compartidas': return self.json({"entradas": bitacora.obtener_compartidas(q('codigo', ''))})
+
+        # ──── ORGANIZADOR ────
         if path == '/api/organizador/planes': return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
         if path == '/api/organizador/planes-publicos': return self.json({"planes": organizador.obtener_planes_publicos()})
         if path == '/api/organizador/planes-alumno': return self.json({"planes": organizador.obtener_planes_alumno(q('alumno_id', ''))})
@@ -192,14 +199,20 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/organizador/compartir-plan': ok = organizador.compartir_plan(int(q('id', '0')), q('alumno_id', '')); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/hacer-publico': ok = organizador.hacer_publico(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/hacer-privado': ok = organizador.hacer_privado(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
+
+        # ──── REGULARIZACIÓN ────
         if path == '/api/regularizacion/materias': return self.json({"materias": regularizacion.obtener_materias()})
         if path == '/api/regularizacion/guias': return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
         if path == '/api/regularizacion/guia':
             guia = regularizacion.obtener_guia(int(q('id', '0')))
             return self.json({"guia": guia}) if guia else self.json({"error": "No encontrada"}, 404)
+
+        # ──── ALERTAS ────
         if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
 
-        if path == '/' or path == '': self.path = '/index.html'
+        # ──── ESTÁTICOS ────
+        if path == '/' or path == '':
+            self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
