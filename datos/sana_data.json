@@ -85,6 +85,27 @@
       "docentes_registrados": [],
       "material": [],
       "planes": []
+    },
+    "ESC-79ZBJ3": {
+      "nombre": "EPR José María Morelos xhaniro",
+      "codigo_escuela": "ESC-79ZBJ3",
+      "num_docentes": 6,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-TVNKB3",
+        "DOC-UI20OI",
+        "DOC-9XS8LO",
+        "DOC-UVPD8M",
+        "DOC-AUWIDC",
+        "DOC-E9W4FY"
+      ],
+      "codigos_admin": [
+        "ADM-TLWBNK"
+      ],
+      "fecha_creacion": "2026-07-08T03:26:55.092272",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
     }
   },
   "usuarios": {
@@ -231,10 +252,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-08T03:26:48.184662",
-  "director": {
-    "avisos": [],
-    "bajas": [],
-    "bitacora_director": []
-  }
+  "fecha": "2026-07-08T03:26:55.092782"
 }
