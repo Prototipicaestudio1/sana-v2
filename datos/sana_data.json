@@ -240,6 +240,18 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "rtwWwD36jrfj": {
+      "id": "rtwWwD36jrfj",
+      "nombre": "Bsj",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T14:20:19.788863",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -276,10 +288,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-09T04:32:27.355013",
-  "director": {
-    "avisos": [],
-    "bajas": [],
-    "bitacora_director": []
-  }
+  "fecha": "2026-07-09T14:20:19.789405"
 }
