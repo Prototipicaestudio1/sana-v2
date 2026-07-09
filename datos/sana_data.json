@@ -252,6 +252,18 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "ykxoDdUR9GHk": {
+      "id": "ykxoDdUR9GHk",
+      "nombre": "Daniel",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T14:21:30.056169",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -288,10 +300,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-09T14:20:19.789405",
-  "director": {
-    "avisos": [],
-    "bajas": [],
-    "bitacora_director": []
-  }
+  "fecha": "2026-07-09T14:21:30.071254"
 }
