@@ -252,5 +252,29 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-09T02:41:46.341177"
+  "fecha": "2026-07-09T02:41:46.341177",
+  "director": {
+    "avisos": [
+      {
+        "id": 1,
+        "escuela": "ESC-79ZBJ3",
+        "titulo": "Reunión de docentes",
+        "mensaje": "Nos reunimeros el próximo 14 de julio a las 9:00 am en la escuela José Ma Morelos para tratar asuntos de los alumnos.",
+        "autor": "Director",
+        "fecha": "2026-07-09T02:41:39.488864",
+        "activo": true
+      },
+      {
+        "id": 2,
+        "escuela": "ESC-79ZBJ3",
+        "titulo": "Reunión de docentes",
+        "mensaje": "Nos reunimeros el próximo 14 de julio a las 9:00 am en la escuela José Ma Morelos para tratar asuntos de los alumnos.",
+        "autor": "Director",
+        "fecha": "2026-07-09T02:41:46.340900",
+        "activo": true
+      }
+    ],
+    "bajas": [],
+    "bitacora_director": []
+  }
 }
