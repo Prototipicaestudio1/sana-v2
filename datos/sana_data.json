@@ -43,6 +43,69 @@
       "docentes_registrados": [],
       "material": [],
       "planes": []
+    },
+    "ESC-XGQ7KG": {
+      "nombre": "EPR José María Morelos xhaniro",
+      "codigo_escuela": "ESC-XGQ7KG",
+      "num_docentes": 6,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-NRMVE7",
+        "DOC-KWV9SB",
+        "DOC-TT12HG",
+        "DOC-USO7UM",
+        "DOC-Q9CNIN",
+        "DOC-WKBEDT"
+      ],
+      "codigos_admin": [
+        "ADM-XGK869"
+      ],
+      "fecha_creacion": "2026-07-08T03:26:41.030537",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
+    },
+    "ESC-67S85D": {
+      "nombre": "EPR José María Morelos xhaniro",
+      "codigo_escuela": "ESC-67S85D",
+      "num_docentes": 6,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-ZXKI0F",
+        "DOC-XOCZT2",
+        "DOC-BVBYBK",
+        "DOC-3B4YFG",
+        "DOC-T34YJE",
+        "DOC-VE38DQ"
+      ],
+      "codigos_admin": [
+        "ADM-2RQHOT"
+      ],
+      "fecha_creacion": "2026-07-08T03:26:48.184270",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
+    },
+    "ESC-79ZBJ3": {
+      "nombre": "EPR José María Morelos xhaniro",
+      "codigo_escuela": "ESC-79ZBJ3",
+      "num_docentes": 6,
+      "num_admin": 1,
+      "codigos_docentes": [
+        "DOC-TVNKB3",
+        "DOC-UI20OI",
+        "DOC-9XS8LO",
+        "DOC-UVPD8M",
+        "DOC-AUWIDC",
+        "DOC-E9W4FY"
+      ],
+      "codigos_admin": [
+        "ADM-TLWBNK"
+      ],
+      "fecha_creacion": "2026-07-08T03:26:55.092272",
+      "docentes_registrados": [],
+      "material": [],
+      "planes": []
     }
   },
   "usuarios": {
@@ -129,6 +192,54 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "HuvnXDzVpkSl": {
+      "id": "HuvnXDzVpkSl",
+      "nombre": "Leo",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-08T02:59:37.780906",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "k0wQ2I2Ca0SQ": {
+      "id": "k0wQ2I2Ca0SQ",
+      "nombre": "Leo1",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-08T02:59:44.910270",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "KayewNKsypoN": {
+      "id": "KayewNKsypoN",
+      "nombre": "Daniel",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T04:32:20.753892",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "l5j5OWlLUcFK": {
+      "id": "l5j5OWlLUcFK",
+      "nombre": "Daniel",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T04:32:27.354510",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -165,7 +276,7 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-07T00:06:42.055362",
+  "fecha": "2026-07-09T04:32:27.355013",
   "director": {
     "avisos": [],
     "bajas": [],
