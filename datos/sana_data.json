@@ -279,7 +279,7 @@
       "fecha_edicion": null
     },
     {
-      "id": 3,
+      "id": 2,
       "tipo": "recomendacion",
       "alumno": "Vhu",
       "grupo": "Vhu",
@@ -288,7 +288,7 @@
       "escuela": "ESC-XGQ7KG",
       "publico": false,
       "calificacion": null,
-      "fecha": "2026-07-10T07:54:38.185901",
+      "fecha": "2026-07-10T07:54:26.862056",
       "compartido_con": []
     }
   ],
@@ -310,5 +310,18 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:55:30.268587"
+  "fecha": "2026-07-10T07:55:25.096659",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {},
+    "anuncios_padres": [],
+    "muro_tareas": {},
+    "padres": {},
+    "fichas": {}
+  },
+  "juegos": []
 }
