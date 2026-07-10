@@ -290,19 +290,6 @@
       "calificacion": null,
       "fecha": "2026-07-10T07:54:26.862056",
       "compartido_con": []
-    },
-    {
-      "id": 3,
-      "tipo": "recomendacion",
-      "alumno": "Vhu",
-      "grupo": "Vhu",
-      "texto": "Hui",
-      "autor": "EPR José María Morelos xhaniro",
-      "escuela": "ESC-XGQ7KG",
-      "publico": false,
-      "calificacion": null,
-      "fecha": "2026-07-10T07:54:38.185901",
-      "compartido_con": []
     }
   ],
   "regularizacion": [
@@ -323,18 +310,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:54:38.186251",
-  "director": {
-    "avisos": [],
-    "bajas": [],
-    "bitacora_director": []
-  },
-  "primaria": {
-    "grupos": {},
-    "anuncios_padres": [],
-    "muro_tareas": {},
-    "padres": {},
-    "fichas": {}
-  },
-  "juegos": []
+  "fecha": "2026-07-10T07:55:25.096659"
 }
