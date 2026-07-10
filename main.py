@@ -1,6 +1,6 @@
 """
-🌿 SANA v2.0 - Servidor Principal Completo
-Primaria + Juegos + Borrado general + Admin mejorado + Persistencia
+🌿 SANA v2.1 - Servidor Principal Completo
+Primaria con padres + Economía de fichas + Juegos + Persistencia total
 """
 
 import os, sys, json
@@ -46,14 +46,14 @@ github = GitHubSync()
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
     github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
-    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(juegos.juegos)} juegos")
+    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(juegos.juegos)} juegos | {len(primaria.grupos)} grupos")
 
 def sync_all():
     if not github.modo_local:
         github.sync_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
         datos_extra = {
             "director": {"avisos": director.avisos, "bajas": director.bajas, "bitacora_director": director.bitacora_director},
-            "primaria": {"grupos": primaria.grupos, "anuncios_padres": primaria.anuncios_padres, "muro_tareas": primaria.muro_tareas},
+            "primaria": {"grupos": primaria.grupos, "anuncios_padres": primaria.anuncios_padres, "muro_tareas": primaria.muro_tareas, "padres": primaria.padres, "fichas": primaria.fichas},
             "juegos": juegos.juegos
         }
         data = github.obtener_datos()
@@ -78,7 +78,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
         def q(k, d=''): return qs.get(k, [d])[0]
 
         if path == '/api/stats':
-            return self.json({"tests": 983, "modulos": 27, "version": "2.1", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "juegos": len(juegos.juegos), "grupos": len(primaria.grupos)})
+            return self.json({"tests": 983, "modulos": 27, "version": "2.1", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "juegos": len(juegos.juegos), "grupos": len(primaria.grupos), "padres": len(primaria.padres)})
 
         # ──── REGISTRO / LOGIN ────
         if path == '/api/registro':
@@ -100,6 +100,9 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 esc = escuelas.obtener_escuela(cod)
                 if esc: return self.json({"valido": True, "tipo": "director", "escuela": esc["nombre"], "codigo_escuela": cod, "datos_escuela": esc})
                 return self.json({"valido": False})
+            if cod.startswith('PAD-'):
+                p = primaria.login_padre(cod)
+                return self.json({"valido": True, "tipo": "padre", "padre": p}) if p else self.json({"valido": False})
             if cod.startswith('DOC-') or cod.startswith('ADM-'):
                 return self.json(escuelas.validar_codigo(cod))
             return self.json({"valido": False})
@@ -176,10 +179,22 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/primaria/grupos':
             return self.json({"grupos": primaria.obtener_grupos(q('escuela', ''), q('docente', ''))})
         if path == '/api/primaria/crear-grupo':
-            g = primaria.crear_grupo(q('escuela', ''), q('nombre', ''), q('docente', ''))
+            padres_json = q('padres', '[]')
+            try: padres_lista = json.loads(padres_json)
+            except: padres_lista = []
+            g = primaria.crear_grupo(q('escuela', ''), q('nombre', ''), q('docente', ''), padres_lista)
             sync_all(); return self.json({"guardado": True, "grupo": g})
         if path == '/api/primaria/eliminar-grupo':
             primaria.eliminar_grupo(q('id', '')); sync_all(); return self.json({"ok": True})
+
+        # ──── PRIMARIA: Login Padre ────
+        if path == '/api/primaria/login-padre':
+            p = primaria.login_padre(q('codigo', ''))
+            return self.json({"valido": True, "padre": p}) if p else self.json({"valido": False})
+
+        # ──── PRIMARIA: Padres del grupo ────
+        if path == '/api/primaria/padres-grupo':
+            return self.json({"padres": primaria.obtener_padres_grupo(q('grupo', ''))})
 
         # ──── PRIMARIA: Anuncios padres ────
         if path == '/api/primaria/anuncios-padres':
@@ -199,6 +214,19 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/primaria/eliminar-tarea':
             primaria.eliminar_tarea(q('escuela', ''), q('grupo', ''), int(q('id', '0'))); sync_all()
             return self.json({"ok": True})
+
+        # ──── PRIMARIA: Economía de fichas ────
+        if path == '/api/primaria/fichas':
+            return self.json({"fichas": primaria.obtener_fichas(q('codigo_padre', ''))})
+        if path == '/api/primaria/fichas-agregar':
+            f = primaria.agregar_ficha_tarea(q('codigo_padre', ''), q('titulo', ''), int(q('puntos', '1')), q('recompensa', ''))
+            sync_all(); return self.json({"guardado": True})
+        if path == '/api/primaria/fichas-completar':
+            primaria.completar_ficha_tarea(q('codigo_padre', ''), int(q('id', '0')))
+            sync_all(); return self.json({"ok": True})
+        if path == '/api/primaria/fichas-eliminar':
+            primaria.eliminar_ficha_tarea(q('codigo_padre', ''), int(q('id', '0')))
+            sync_all(); return self.json({"ok": True})
 
         # ──── JUEGOS ────
         if path == '/api/juegos/lista':
