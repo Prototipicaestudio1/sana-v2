@@ -249,18 +249,6 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
-    },
-    "fr3NdMjMiNPp": {
-      "id": "fr3NdMjMiNPp",
-      "nombre": "G",
-      "tipo": "alumno",
-      "codigo_escuela": null,
-      "codigo_docente": null,
-      "fecha_registro": "2026-07-10T07:27:46.699356",
-      "diario": [],
-      "bitacoras": [],
-      "planes": [],
-      "guias": []
     }
   },
   "bitacoras": [
@@ -297,5 +285,16 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:27:46.699834"
+  "fecha": "2026-07-10T07:26:37.988466",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {},
+    "anuncios_padres": [],
+    "muro_tareas": {}
+  },
+  "juegos": []
 }
