@@ -302,9 +302,7 @@
       "publico": false,
       "calificacion": null,
       "fecha": "2026-07-10T07:54:38.185901",
-      "compartido_con": [
-        "12aEPfYvX5tu"
-      ]
+      "compartido_con": []
     }
   ],
   "regularizacion": [
@@ -325,5 +323,18 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:54:52.379466"
+  "fecha": "2026-07-10T07:54:38.186251",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {},
+    "anuncios_padres": [],
+    "muro_tareas": {},
+    "padres": {},
+    "fichas": {}
+  },
+  "juegos": []
 }
