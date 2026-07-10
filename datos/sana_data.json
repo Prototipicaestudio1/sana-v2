@@ -26,24 +26,6 @@
       "material": [],
       "planes": []
     },
-    "ESC-GSOMI9": {
-      "nombre": "Prueba",
-      "codigo_escuela": "ESC-GSOMI9",
-      "num_docentes": 3,
-      "num_admin": 1,
-      "codigos_docentes": [
-        "DOC-0ZM8XE",
-        "DOC-5UN16B",
-        "DOC-BVDTOA"
-      ],
-      "codigos_admin": [
-        "ADM-NY4JDK"
-      ],
-      "fecha_creacion": "2026-07-07T00:06:42.054972",
-      "docentes_registrados": [],
-      "material": [],
-      "planes": []
-    },
     "ESC-XGQ7KG": {
       "nombre": "EPR José María Morelos xhaniro",
       "codigo_escuela": "ESC-XGQ7KG",
@@ -324,10 +306,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T06:39:54.227010",
-  "director": {
-    "avisos": [],
-    "bajas": [],
-    "bitacora_director": []
-  }
+  "fecha": "2026-07-10T07:23:11.572508"
 }
