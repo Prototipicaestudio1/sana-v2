@@ -261,7 +261,25 @@ async function delFicha(id){if(!S.padre)return;await GET('/primaria/fichas-elimi
 // JUEGOS
 const ICONOS={general:'🎯',primaria:'🧒',secundaria:'🎓',respiracion:'🫁',emociones:'🧠'};
 async function loadJuegos(){const d=await GET('/juegos/lista');const c=$('juegosList');$('juegoFrame').style.display='none';$('juegosList').style.display='block';if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted text-center mt-1">🎮 No hay juegos aún</p>';return;}c.innerHTML='<div class="entry-list">'+d.juegos.map(j=>`<div class="game-card" onclick="verJuego(${j.id})"><div class="game-icon">${ICONOS[j.categoria]||'🎮'}</div><div style="flex:1;"><strong>${j.titulo}</strong><br><span class="text-muted">${j.descripcion||''} · ${j.categoria||'general'}</span></div></div>`).join('')+'</div>';}
-async function verJuego(id){const d=await GET('/juegos/ver?id='+id);if(!d||!d.juego)return;$('juegosList').style.display='none';$('juegoFrame').style.display='block';const c=$('juegoContainer');c.innerHTML='';const iframe=document.createElement('iframe');iframe.style.cssText='width:100%;height:70vh;border:none;border-radius:1rem;background:#fff;';iframe.sandbox='allow-scripts allow-same-origin';iframe.srcdoc=d.juego.html_code;c.appendChild(iframe);}
+async function verJuego(id){
+    const d=await GET('/juegos/ver?id='+id);
+    if(!d||!d.juego)return;
+    // Modo pantalla completa
+    const full=document.createElement('div');
+    full.id='juegoFullscreen';
+    full.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999;background:#000;';
+    full.innerHTML=`<button onclick="cerrarJuegoFull()" style="position:absolute;top:10px;right:10px;z-index:1000;background:var(--red);color:#fff;border:none;padding:0.5rem 1rem;border-radius:2rem;font-weight:700;cursor:pointer;font-size:0.9rem;">✕ Salir</button>`;
+    const iframe=document.createElement('iframe');
+    iframe.style.cssText='width:100%;height:100%;border:none;';
+    iframe.sandbox='allow-scripts allow-same-origin';
+    iframe.srcdoc=d.juego.html_code;
+    full.appendChild(iframe);
+    document.body.appendChild(full);
+}
+function cerrarJuegoFull(){
+    const full=document.getElementById('juegoFullscreen');
+    if(full)full.remove();
+}
 function cerrarJuego(){$('juegoFrame').style.display='none';$('juegosList').style.display='block';$('juegoContainer').innerHTML='';}
 
 // ADMIN
