@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#060613">
-    <title>🌿 SANA v2.1 - Tu espacio seguro</title>
+    <title>🌿 SANA v2.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #060613; --card: rgba(18,18,38,0.85); --card2: rgba(25,25,48,0.7);
-            --border: rgba(255,255,255,0.05); --text: #f0f0f8; --muted: #9090b0;
-            --purple: #a78bfa; --purple2: #7c3aed; --green: #6ee7b7; --green2: #34d399;
-            --orange: #fbbf24; --red: #fca5a5; --blue: #93c5fd; --pink: #f9a8d4; --gold: #fbbf24;
+            --bg: #060613; --card: rgba(18,18,38,0.85); --border: rgba(255,255,255,0.05);
+            --text: #f0f0f8; --muted: #9090b0; --purple: #a78bfa; --purple2: #7c3aed;
+            --green: #6ee7b7; --green2: #34d399; --orange: #fbbf24; --red: #fca5a5;
+            --blue: #93c5fd; --pink: #f9a8d4; --gold: #fbbf24;
             --radius: 1.4rem; --radius-sm: 0.9rem; --nav-h: 72px;
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-bottom:var(--nav-h);-webkit-font-smoothing:antialiased;}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-bottom:var(--nav-h);-webkit-font-smoothing:antialiased;}
         .cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
         .cosmos .nebula{position:absolute;border-radius:50%;filter:blur(130px);opacity:0.15;animation:drift 28s infinite ease-in-out;}
         .cosmos .nebula:nth-child(1){width:450px;height:450px;background:var(--purple2);top:-120px;left:-120px;}
@@ -25,68 +25,90 @@
         .cosmos .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3.5s infinite;}
         @keyframes drift{0%,100%{transform:translate(0,0)scale(1)}25%{transform:translate(50px,-35px)scale(1.12)}50%{transform:translate(-25px,45px)scale(0.92)}75%{transform:translate(-45px,-25px)scale(1.08)}}
         @keyframes twinkle{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:1;transform:scale(2)}}
-        .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0.8rem;}
-        .main-header{text-align:center;padding:2rem 0 1rem;}
-        .main-header .logo-emote{font-size:3.5rem;display:inline-block;animation:levitate 3.5s ease-in-out infinite;cursor:pointer;filter:drop-shadow(0 0 25px rgba(167,139,250,0.4));}
-        @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        .main-header h1{font-size:2.8rem;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,var(--purple),var(--green),var(--blue),var(--purple));background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;line-height:1;}
+        .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0.6rem;}
+        .main-header{text-align:center;padding:1.5rem 0 0.8rem;}
+        .main-header .logo-emote{font-size:3.2rem;display:inline-block;animation:levitate 3.5s ease-in-out infinite;cursor:pointer;filter:drop-shadow(0 0 20px rgba(167,139,250,0.4));}
+        @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .main-header h1{font-size:2.5rem;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,var(--purple),var(--green),var(--blue),var(--purple));background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;line-height:1;}
         @keyframes shimmer{to{background-position:300% center}}
-        .main-header .tagline{font-size:0.7rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:0.3rem;}
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(8,8,28,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:1px solid var(--border);display:flex;overflow-x:auto;align-items:center;height:var(--nav-h);padding:0 0.3rem;padding-bottom:env(safe-area-inset-bottom,0);scrollbar-width:none;}
+
+        /* NAV INFERIOR SCROLLABLE */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(8,8,28,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:1px solid var(--border);display:flex;overflow-x:auto;align-items:center;height:var(--nav-h);padding:0 0.2rem;padding-bottom:env(safe-area-inset-bottom,0);scrollbar-width:none;gap:0.1rem;}
         .bottom-nav::-webkit-scrollbar{display:none;}
-        .bottom-nav .nav-item{background:none;border:none;color:var(--muted);font-size:0.58rem;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:0.2rem;cursor:pointer;transition:var(--transition);padding:0.3rem 0.3rem;min-width:50px;flex-shrink:0;position:relative;}
-        .bottom-nav .nav-item .nav-emoji{font-size:1.3rem;transition:transform 0.2s;}
+        .bottom-nav .nav-item{background:none;border:none;color:var(--muted);font-size:0.56rem;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:0.15rem;cursor:pointer;transition:var(--transition);padding:0.3rem 0.4rem;min-width:48px;flex-shrink:0;position:relative;}
+        .bottom-nav .nav-item .nav-emoji{font-size:1.2rem;transition:transform 0.2s;}
         .bottom-nav .nav-item.active{color:var(--purple);}.bottom-nav .nav-item.active .nav-emoji{transform:scale(1.15);}
-        .bottom-nav .nav-item.active::after{content:'';position:absolute;top:-1px;width:20px;height:2px;background:var(--purple);border-radius:0 0 0.5rem 0.5rem;}
+        .bottom-nav .nav-item.active::after{content:'';position:absolute;top:-1px;width:18px;height:2px;background:var(--purple);border-radius:0 0 0.5rem 0.5rem;}
         .bottom-nav .nav-item:active{transform:scale(0.88);}
-        .page{display:none;animation:pageIn 0.25s ease;min-height:60vh;}.page.active{display:block;}
-        @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:0.5rem;}
-        .home-card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 0.7rem;text-align:center;cursor:pointer;transition:var(--transition);}
+
+        .page{display:none;animation:pageIn 0.2s ease;min-height:60vh;}.page.active{display:block;}
+        @keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+        /* HOME GRID */
+        .home-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem;margin-top:0.5rem;}
+        .home-card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 0.5rem;text-align:center;cursor:pointer;transition:var(--transition);}
         .home-card:nth-child(1){border-top:3px solid var(--purple);}.home-card:nth-child(2){border-top:3px solid var(--green);}.home-card:nth-child(3){border-top:3px solid var(--orange);}.home-card:nth-child(4){border-top:3px solid var(--red);}.home-card:nth-child(5){border-top:3px solid var(--gold);}.home-card:nth-child(6){border-top:3px solid var(--blue);}
-        .home-card:active{transform:scale(0.93);}.home-card .hc-emoji{font-size:2.3rem;display:block;margin-bottom:0.4rem;}.home-card .hc-title{font-weight:700;font-size:0.85rem;}.home-card .hc-sub{font-size:0.58rem;color:var(--muted);}
-        .card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.6rem;transition:var(--transition);}
-        .card-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;}
-        .card-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+        .home-card:active{transform:scale(0.93);}.home-card .hc-emoji{font-size:2rem;display:block;margin-bottom:0.3rem;}.home-card .hc-title{font-weight:700;font-size:0.75rem;}
+
+        /* CARDS */
+        .card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:0.9rem;margin-bottom:0.5rem;transition:var(--transition);}
+        .card-row{display:flex;align-items:center;gap:0.4rem;margin-bottom:0.3rem;}
+        .card-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
         .c-purple{background:rgba(167,139,250,0.18);}.c-green{background:rgba(110,231,183,0.18);}.c-blue{background:rgba(147,197,253,0.18);}.c-orange{background:rgba(251,191,36,0.18);}.c-pink{background:rgba(249,168,212,0.18);}.c-gold{background:rgba(251,191,36,0.2);}.c-red{background:rgba(252,165,165,0.18);}
-        .card-title{font-weight:700;font-size:0.85rem;}.card-sub{font-size:0.65rem;color:var(--muted);}
-        input,textarea,select{width:100%;padding:0.65rem 1rem;border-radius:2rem;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:0.82rem;outline:none;transition:var(--transition);font-family:'Inter',sans-serif;margin-bottom:0.4rem;-webkit-appearance:none;}
+        .card-title{font-weight:700;font-size:0.8rem;}.card-sub{font-size:0.62rem;color:var(--muted);}
+
+        /* INPUTS */
+        input,textarea,select{width:100%;padding:0.6rem 0.9rem;border-radius:2rem;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:0.8rem;outline:none;transition:var(--transition);font-family:'Inter',sans-serif;margin-bottom:0.35rem;-webkit-appearance:none;}
         input:focus,textarea:focus,select:focus{border-color:var(--purple);}
-        textarea{border-radius:var(--radius-sm);resize:vertical;min-height:70px;}
-        select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%239090b0'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
-        .btn{padding:0.65rem 1.4rem;border-radius:2rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:0.3rem;}
-        .btn:active{transform:scale(0.94);}.btn-primary{background:var(--purple2);color:#fff;}.btn-green{background:var(--green2);color:#0a0a1a;}.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-danger{background:rgba(252,165,165,0.12);color:var(--red);border:1px solid rgba(252,165,165,0.2);}.btn-gold{background:var(--gold);color:#0a0a1a;}.btn-sm{padding:0.4rem 0.8rem;font-size:0.7rem;}.btn-block{width:100%;}.btn-xs{padding:0.25rem 0.6rem;font-size:0.62rem;border-radius:1.5rem;}
-        .profile-bar{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.8rem;background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.15);border-radius:2.5rem;margin-bottom:0.8rem;font-size:0.75rem;}
-        .avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;}
-        .av-green{background:var(--green2);color:#0a0a1a;}.av-purple{background:var(--purple2);color:#fff;}.av-gold{background:var(--gold);color:#0a0a1a;}
-        .chat-box{background:rgba(0,0,0,0.25);border-radius:var(--radius-sm);padding:0.7rem;min-height:180px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.4rem;}
-        .chat-msg{padding:0.55rem 0.8rem;border-radius:1rem;font-size:0.78rem;max-width:82%;animation:msgPop 0.2s ease;line-height:1.3;}
-        @keyframes msgPop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        textarea{border-radius:var(--radius-sm);resize:vertical;min-height:60px;}
+        select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%239090b0'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.8rem center;}
+
+        /* BUTTONS */
+        .btn{padding:0.6rem 1.2rem;border-radius:2rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.78rem;display:inline-flex;align-items:center;justify-content:center;gap:0.2rem;}
+        .btn:active{transform:scale(0.94);}.btn-primary{background:var(--purple2);color:#fff;}.btn-green{background:var(--green2);color:#0a0a1a;}.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-danger{background:rgba(252,165,165,0.12);color:var(--red);border:1px solid rgba(252,165,165,0.2);}.btn-gold{background:var(--gold);color:#0a0a1a;}.btn-sm{padding:0.35rem 0.7rem;font-size:0.65rem;}.btn-block{width:100%;}.btn-xs{padding:0.2rem 0.5rem;font-size:0.58rem;border-radius:1.2rem;}
+
+        /* PROFILE BAR */
+        .profile-bar{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.7rem;background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.15);border-radius:2rem;margin-bottom:0.6rem;font-size:0.7rem;}
+        .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;}
+        .av-green{background:var(--green2);color:#0a0a1a;}.av-purple{background:var(--purple2);color:#fff;}.av-gold{background:var(--gold);color:#0a0a1a;}.av-blue{background:var(--blue);color:#0a0a1a;}
+
+        /* CHAT */
+        .chat-box{background:rgba(0,0,0,0.25);border-radius:var(--radius-sm);padding:0.6rem;min-height:160px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:0.3rem;margin-bottom:0.3rem;}
+        .chat-msg{padding:0.5rem 0.7rem;border-radius:0.9rem;font-size:0.75rem;max-width:82%;animation:msgPop 0.2s ease;}
+        @keyframes msgPop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
         .chat-msg.user{background:var(--purple2);align-self:flex-end;}.chat-msg.bot{background:rgba(255,255,255,0.07);align-self:flex-start;}
         .chat-input-row{display:flex;gap:0.3rem;}.chat-input-row input{margin-bottom:0;flex:1;}
-        .breath-circle{width:120px;height:120px;border-radius:50%;margin:1rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;cursor:pointer;transition:all 0.1s ease;box-shadow:0 0 30px rgba(124,58,237,0.35);}
-        .breath-circle.inhale{transform:scale(1.4);box-shadow:0 0 50px rgba(110,231,183,0.5);}.breath-circle.exhale{transform:scale(0.7);}
-        .entry-list{display:flex;flex-direction:column;gap:0.3rem;max-height:280px;overflow-y:auto;}
-        .entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.6rem 0.8rem;font-size:0.73rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.4rem;}
-        .entry .entry-info{flex:1;}.entry .entry-meta{font-size:0.6rem;color:var(--muted);margin-top:0.2rem;display:flex;gap:0.3rem;flex-wrap:wrap;}
-        .badge{padding:0.1rem 0.4rem;border-radius:1rem;font-size:0.55rem;font-weight:600;}
+
+        /* BREATH */
+        .breath-circle{width:110px;height:110px;border-radius:50%;margin:0.8rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;cursor:pointer;transition:all 0.1s ease;box-shadow:0 0 25px rgba(124,58,237,0.35);}
+        .breath-circle.inhale{transform:scale(1.35);box-shadow:0 0 45px rgba(110,231,183,0.5);}.breath-circle.exhale{transform:scale(0.7);}
+
+        /* ENTRIES */
+        .entry-list{display:flex;flex-direction:column;gap:0.25rem;max-height:250px;overflow-y:auto;}
+        .entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem 0.7rem;font-size:0.7rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.3rem;}
+        .entry .entry-info{flex:1;}.entry .entry-meta{font-size:0.55rem;color:var(--muted);margin-top:0.15rem;}
+        .badge{padding:0.08rem 0.35rem;border-radius:0.8rem;font-size:0.5rem;font-weight:600;}
         .b-green{background:rgba(110,231,183,0.18);color:var(--green);}.b-blue{background:rgba(147,197,253,0.18);color:var(--blue);}.b-red{background:rgba(252,165,165,0.18);color:var(--red);}.b-purple{background:rgba(167,139,250,0.18);color:var(--purple);}.b-gold{background:rgba(251,191,36,0.2);color:var(--gold);}
-        .toast{position:fixed;bottom:calc(var(--nav-h) + 1rem);left:50%;transform:translateX(-50%) translateY(130px);background:var(--card);border:1px solid var(--border);border-radius:2.5rem;padding:0.55rem 1.1rem;font-size:0.75rem;z-index:200;transition:transform 0.3s ease;pointer-events:none;backdrop-filter:blur(25px);white-space:nowrap;}
+
+        /* TOAST */
+        .toast{position:fixed;bottom:calc(var(--nav-h) + 0.8rem);left:50%;transform:translateX(-50%) translateY(130px);background:var(--card);border:1px solid var(--border);border-radius:2rem;padding:0.5rem 1rem;font-size:0.72rem;z-index:200;transition:transform 0.3s ease;pointer-events:none;backdrop-filter:blur(25px);white-space:nowrap;}
         .toast.show{transform:translateX(-50%) translateY(0);}
-        .section-title{font-size:1.15rem;font-weight:800;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.3rem;}
-        .text-center{text-align:center;}.text-muted{color:var(--muted);font-size:0.65rem;}.mt-1{margin-top:0.4rem;}.mb-1{margin-bottom:0.4rem;}
-        .divider{height:1px;background:var(--border);margin:0.8rem 0;}
-        .flex{display:flex;gap:0.4rem;}.flex-wrap{flex-wrap:wrap;}
-        .aviso-card{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius-sm);padding:0.7rem;margin-bottom:0.4rem;border-left:3px solid var(--gold);}
-        .game-card{background:rgba(147,197,253,0.05);border:1px solid rgba(147,197,253,0.2);border-radius:var(--radius-sm);padding:0.8rem;margin-bottom:0.4rem;cursor:pointer;transition:var(--transition);}
+
+        .section-title{font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.3rem;}
+        .text-center{text-align:center;}.text-muted{color:var(--muted);font-size:0.6rem;}.mt-1{margin-top:0.3rem;}.mb-1{margin-bottom:0.3rem;}
+        .divider{height:1px;background:var(--border);margin:0.6rem 0;}
+        .flex{display:flex;gap:0.3rem;}.flex-wrap{flex-wrap:wrap;}
+        .aviso-card{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius-sm);padding:0.6rem;margin-bottom:0.3rem;border-left:3px solid var(--gold);}
+        .game-card{background:rgba(147,197,253,0.05);border:1px solid rgba(147,197,253,0.2);border-radius:var(--radius-sm);padding:0.7rem;margin-bottom:0.3rem;cursor:pointer;transition:var(--transition);}
         .game-card:active{background:rgba(147,197,253,0.12);transform:scale(0.97);}
-        @media(max-width:400px){.home-grid{grid-template-columns:1fr;}.main-header h1{font-size:2.2rem;}}
+        .fichas-card{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.2);border-radius:var(--radius-sm);padding:0.7rem;margin-bottom:0.3rem;}
+        @media(max-width:400px){.home-grid{grid-template-columns:1fr 1fr;}}
     </style>
 </head>
 <body>
 <div class="cosmos" id="cosmos"><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div></div>
 <div class="app" id="app">
-<div class="main-header"><div class="logo-emote" onclick="nav('home')">🌿</div><h1>SANA</h1><p class="tagline">Tu espacio seguro</p></div>
+<div class="main-header"><div class="logo-emote" onclick="nav('home')">🌿</div><h1>SANA</h1></div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
@@ -99,90 +121,86 @@
 <div class="home-card" onclick="nav('biblioteca')"><span class="hc-emoji">📚</span><span class="hc-title">Biblioteca</span></div>
 </div></div>
 
-<!-- ALUMNOS (igual, compacto) -->
+<!-- ALUMNOS -->
 <div class="page" id="page-alumnos">
 <div id="alumnoLogin"><div class="section-title">🎓 Alumnos</div>
 <div class="card"><input type="text" id="alumnoNombre" placeholder="Tu nombre" autocomplete="off"><button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear cuenta</button>
 <div class="divider"></div><input type="text" id="alumnoId" placeholder="Tu ID" autocomplete="off"><button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar</button></div></div>
 <div id="alumnoPanel" style="display:none;">
-<div class="profile-bar"><div class="avatar av-purple" id="aluAvatar">A</div><div><strong id="aluName">Alumno</strong><br><span class="text-muted" id="aluId"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAlu()">🚪</button></div>
+<div class="profile-bar"><div class="avatar av-purple" id="aluAvatar">A</div><div><strong id="aluName"></strong><br><span class="text-muted" id="aluId"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAlu()">🚪</button></div>
 <div class="card"><div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! ¿Cómo te sientes? 💜</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMsg()" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div></div>
 <div class="card"><select id="breathSelect" onchange="loadBreath()"><option value="">Respiración...</option></select><div id="breathInfo" style="display:none;"><div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div><p class="text-center text-muted" id="breathText">Toca</p></div></div>
 <div class="card"><div class="flex flex-wrap" id="moodSel"><button class="btn btn-outline btn-xs" onclick="setMood('😊',this)">😊</button><button class="btn btn-outline btn-xs" onclick="setMood('😢',this)">😢</button><button class="btn btn-outline btn-xs" onclick="setMood('😰',this)">😰</button><button class="btn btn-outline btn-xs" onclick="setMood('😠',this)">😠</button><button class="btn btn-outline btn-xs" onclick="setMood('😌',this)">😌</button></div><textarea id="diarioText" placeholder="Hoy..."></textarea><button class="btn btn-primary btn-block" onclick="saveDiary()">💾 Guardar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDiary()">📋 Ver</button><div id="diaryList"></div></div>
 <div class="card"><button class="btn btn-outline btn-block btn-sm" onclick="loadMisPlanes()">🎯 Mis planes</button><div id="misPlanesList"></div></div>
 <div class="card"><select id="paisSelect" onchange="loadLineas()"><option value="">Líneas ayuda...</option></select><div id="lineasList"></div></div></div></div>
 
-<!-- DOCENTES (compacto) -->
+<!-- DOCENTES -->
 <div class="page" id="page-docentes">
 <div id="docenteLogin"><div class="section-title">👨‍🏫 Docentes</div>
-<div class="card"><input type="text" id="docCodigo" placeholder="Código" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button><p id="docError" style="color:var(--red);font-size:0.7rem;display:none;"></p><div class="divider"></div><input type="text" id="docNombreReg" placeholder="Nombre" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar</button></div></div>
+<div class="card"><input type="text" id="docCodigo" placeholder="Código" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button><p id="docError" style="color:var(--red);font-size:0.65rem;display:none;"></p><div class="divider"></div><input type="text" id="docNombreReg" placeholder="Nombre" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar</button></div></div>
 <div id="docentePanel" style="display:none;">
-<div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName">Docente</strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
+<div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName"></strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
 <div id="avisosDocente"></div>
-<div class="card"><select id="bitTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select><input type="text" id="bitAlumno" placeholder="Alumno" autocomplete="off"><input type="text" id="bitGrupo" placeholder="Grupo" autocomplete="off"><textarea id="bitTexto" placeholder="Texto..."></textarea><button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBit()">📋 Ver</button><div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID"><input type="text" id="bitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗</button></div><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBitCompartidas()">📋 Compartidas</button><div id="bitList"></div></div>
-<div class="card"><select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título" autocomplete="off"><textarea id="guiaContenido" placeholder="Contenido..."></textarea><div class="file-upload" onclick="document.getElementById('guiaArchivo').click()" style="border:2px dashed var(--border);border-radius:1rem;padding:1rem;text-align:center;cursor:pointer;margin-bottom:0.4rem;"><span style="font-size:1.5rem;">📎</span><p class="text-muted">Adjuntar</p><span id="fileName"></span></div><input type="file" id="guiaArchivo" accept=".pdf,image/*" style="display:none;" onchange="previewFile()"><button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar</button></div>
-<div class="card"><select id="planVisibilidad"><option value="privado">🔒 Privado</option><option value="publico">🌍 Público</option><option value="compartido">🔗 Compartido</option></select><input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;" autocomplete="off"><input type="text" id="planNombre" placeholder="Nombre" autocomplete="off"><input type="text" id="planObjetivo" placeholder="Objetivo" autocomplete="off"><textarea id="planActividades" placeholder="Actividades..."></textarea><button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Mis planes</button><div id="planesDocenteList"></div></div></div></div>
+<div class="card"><select id="bitTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select><input type="text" id="bitAlumno" placeholder="Alumno" autocomplete="off"><input type="text" id="bitGrupo" placeholder="Grupo"><textarea id="bitTexto" placeholder="Texto..."></textarea><button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBit()">📋 Ver</button><div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID"><input type="text" id="bitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗</button></div><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBitCompartidas()">📋 Compartidas</button><div id="bitList"></div></div>
+<div class="card"><select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título"><textarea id="guiaContenido" placeholder="Contenido..."></textarea><div class="file-upload" onclick="document.getElementById('guiaArchivo').click()" style="border:2px dashed var(--border);border-radius:1rem;padding:0.8rem;text-align:center;cursor:pointer;margin-bottom:0.3rem;"><span>📎</span><p class="text-muted">Adjuntar</p><span id="fileName"></span></div><input type="file" id="guiaArchivo" accept=".pdf,image/*" style="display:none;" onchange="previewFile()"><button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar</button></div>
+<div class="card"><select id="planVisibilidad"><option value="privado">🔒 Privado</option><option value="publico">🌍 Público</option><option value="compartido">🔗 Compartido</option></select><input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;"><input type="text" id="planNombre" placeholder="Nombre"><input type="text" id="planObjetivo" placeholder="Objetivo"><textarea id="planActividades" placeholder="Actividades..."></textarea><button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Mis planes</button><div id="planesDocenteList"></div></div></div></div>
 
-<!-- DIRECTOR (compacto) -->
+<!-- DIRECTOR -->
 <div class="page" id="page-director">
 <div id="directorLogin"><div class="section-title">👔 Director</div>
-<div class="card"><input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX" autocomplete="off"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button><p id="dirError" style="color:var(--red);font-size:0.7rem;display:none;"></p></div></div>
+<div class="card"><input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button><p id="dirError" style="color:var(--red);font-size:0.65rem;display:none;"></p></div></div>
 <div id="directorPanel" style="display:none;">
-<div class="profile-bar" style="background:rgba(251,191,36,0.08);"><div class="avatar av-gold">👔</div><div><strong id="dirName">Director</strong><br><span class="text-muted" id="dirInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
-<div class="card"><input type="text" id="avisoTitulo" placeholder="Título" autocomplete="off"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver avisos</button><div id="avisosList"></div></div>
-<div class="card"><input type="text" id="bajaCodigo" placeholder="Código a dar de baja" autocomplete="off"><input type="text" id="bajaMotivo" placeholder="Motivo" autocomplete="off"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button><button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Nuevo código</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Reporte</button><div id="bajasList"></div></div>
+<div class="profile-bar" style="background:rgba(251,191,36,0.08);"><div class="avatar av-gold">👔</div><div><strong id="dirName"></strong><br><span class="text-muted" id="dirInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
+<div class="card"><input type="text" id="avisoTitulo" placeholder="Título"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver</button><div id="avisosList"></div></div>
+<div class="card"><input type="text" id="bajaCodigo" placeholder="Código a dar de baja"><input type="text" id="bajaMotivo" placeholder="Motivo"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button><button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Nuevo</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Reporte</button><div id="bajasList"></div></div>
 <div class="card"><textarea id="dirBitacoraTexto" placeholder="Bitácora..."></textarea><button class="btn btn-primary btn-block" onclick="addDirBit()">📝 Registrar</button><div class="flex mt-1"><input type="text" id="dirBitCompartirId" placeholder="ID"><input type="text" id="dirBitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirDirBit()">🔗</button></div><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDirBit()">📋 Ver</button><div id="dirBitList"></div></div></div></div>
 
-<!-- PRIMARIA (NUEVO) -->
+<!-- PRIMARIA -->
 <div class="page" id="page-primaria">
-<div class="section-title">🧒 Escuela Primaria</div>
-<div id="primariaLogin"><div class="card"><input type="text" id="primariaCodigo" placeholder="Código de docente (DOC-XXXXXX)" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button><p id="primariaError" style="color:var(--red);font-size:0.7rem;display:none;"></p></div></div>
-<div id="primariaPanel" style="display:none;">
-<div class="profile-bar"><div class="avatar av-green">P</div><div><strong id="primariaName">Docente Primaria</strong><br><span class="text-muted" id="primariaInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPrimaria()">🚪</button></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-blue">👥</div><div><div class="card-title">Mis Grupos</div></div></div>
-<input type="text" id="grupoNombre" placeholder="Nombre del grupo (ej: 3°A)" autocomplete="off"><button class="btn btn-primary btn-block" onclick="crearGrupo()">➕ Crear grupo</button>
-<button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadGrupos()">📋 Ver grupos</button><select id="grupoSelect" onchange="loadTareas()" class="mt-1"><option value="">Selecciona grupo...</option></select><div id="gruposList"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div><div class="card-title">Anuncio para Padres</div></div></div>
-<input type="text" id="anuncioPadresTitulo" placeholder="Título" autocomplete="off"><textarea id="anuncioPadresMensaje" placeholder="Mensaje para padres..."></textarea>
-<button class="btn btn-gold btn-block" onclick="publicarAnuncioPadres()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAnunciosPadres()">📋 Ver anuncios</button><div id="anunciosPadresList"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-orange">📝</div><div><div class="card-title">Muro de Tareas</div><div class="card-sub" id="tareasGrupoInfo">Selecciona un grupo</div></div></div>
-<input type="text" id="tareaTitulo" placeholder="Título de la tarea" autocomplete="off"><input type="text" id="tareaDescripcion" placeholder="Descripción" autocomplete="off">
-<button class="btn btn-primary btn-block" onclick="agregarTarea()">📝 Agregar tarea</button><div id="tareasList"></div></div></div></div>
-
-<!-- JUEGOS (NUEVO) -->
-<div class="page" id="page-juegos">
-<div class="section-title">🎮 Juegos</div>
-<div id="juegosList"></div>
-<div id="juegoFrame" style="display:none;">
-<button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button>
-<div id="juegoContainer" style="width:100%;min-height:400px;border-radius:1rem;overflow:hidden;"></div></div>
+<div class="section-title">🧒 Primaria</div>
+<div class="flex" style="margin-bottom:0.5rem;">
+<button class="btn btn-primary btn-sm flex-1" id="tabDocente" onclick="switchPrimariaTab('docente')">👨‍🏫 Docente</button>
+<button class="btn btn-outline btn-sm flex-1" id="tabPadre" onclick="switchPrimariaTab('padre')">👪 Padre</button>
 </div>
 
+<!-- TAB DOCENTE -->
+<div id="primariaDocenteTab">
+<div id="primariaLogin"><div class="card"><input type="text" id="primariaCodigo" placeholder="Código DOC-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button><p id="primariaError" style="color:var(--red);font-size:0.65rem;display:none;"></p></div></div>
+<div id="primariaPanel" style="display:none;">
+<div class="profile-bar"><div class="avatar av-green">P</div><div><strong id="primariaName"></strong><br><span class="text-muted" id="primariaInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPrimaria()">🚪</button></div>
+<div class="card"><div class="card-row"><div class="card-icon c-blue">👥</div><div><div class="card-title">Crear Grupo</div></div></div>
+<input type="text" id="grupoNombre" placeholder="Nombre (ej: 3°A)"><input type="number" id="numPadres" placeholder="Nº de padres" value="1" min="1" onchange="genPadresInputs()"><div id="padresInputs"></div>
+<button class="btn btn-primary btn-block" onclick="crearGrupo()">➕ Crear grupo</button>
+<button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadGrupos()">📋 Ver grupos</button><select id="grupoSelect" onchange="loadTareas()" class="mt-1"><option value="">Selecciona grupo...</option></select><div id="gruposList"></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div><div class="card-title">Anuncio para Padres</div></div></div>
+<input type="text" id="anuncioPadresTitulo" placeholder="Título"><textarea id="anuncioPadresMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAnuncioPadres()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAnunciosPadres()">📋 Ver</button><div id="anunciosPadresList"></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-orange">📝</div><div><div class="card-title">Muro de Tareas</div><div class="card-sub" id="tareasGrupoInfo">Selecciona grupo</div></div></div>
+<input type="text" id="tareaTitulo" placeholder="Título"><input type="text" id="tareaDescripcion" placeholder="Descripción"><button class="btn btn-primary btn-block" onclick="agregarTarea()">📝 Agregar</button><div id="tareasList"></div></div></div></div>
+
+<!-- TAB PADRE -->
+<div id="primariaPadreTab" style="display:none;">
+<div id="padreLogin"><div class="card"><input type="text" id="padreCodigo" placeholder="Código PAD-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPadre()">Ingresar</button><p id="padreError" style="color:var(--red);font-size:0.65rem;display:none;"></p></div></div>
+<div id="padrePanel" style="display:none;">
+<div class="profile-bar" style="background:rgba(147,197,253,0.08);"><div class="avatar av-blue">👪</div><div><strong id="padreName"></strong><br><span class="text-muted" id="padreInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPadre()">🚪</button></div>
+<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div><div class="card-title">Anuncios del Profesor</div></div></div><div id="padreAnunciosList"></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-orange">📝</div><div><div class="card-title">Tareas del Grupo</div></div></div><div id="padreTareasList"></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-purple">⭐</div><div><div class="card-title">Economía de Fichas</div><div class="card-sub">Sistema de puntos y recompensas</div></div></div>
+<div class="fichas-card"><strong>⭐ Puntos: <span id="fichasPuntos">0</span></strong></div>
+<input type="text" id="fichaTitulo" placeholder="Tarea"><input type="number" id="fichaPuntos" placeholder="Puntos" value="5" min="1"><input type="text" id="fichaRecompensa" placeholder="Recompensa (opcional)"><button class="btn btn-primary btn-block" onclick="addFicha()">➕ Agregar</button><div id="fichasList"></div></div></div></div></div>
+
+<!-- JUEGOS -->
+<div class="page" id="page-juegos"><div class="section-title">🎮 Juegos</div><div id="juegosList"></div><div id="juegoFrame" style="display:none;"><button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button><div id="juegoContainer" style="width:100%;min-height:400px;border-radius:1rem;overflow:hidden;"></div></div></div>
+
 <!-- BIBLIOTECA -->
-<div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div>
-<select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div>
-<div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
+<div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div><select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div><div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
 
 <!-- ADMIN -->
-<div class="page" id="page-admin"><div id="adminLock"><div class="section-title">⚙️ Admin</div>
-<div class="card text-center"><div style="font-size:3rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
+<div class="page" id="page-admin"><div id="adminLock"><div class="section-title">⚙️ Admin</div><div class="card text-center"><div style="font-size:2.5rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
 <div id="adminPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-purple">A</div><div><strong>Admin</strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAdmin()">🚪</button></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-purple">🏫</div><div><div class="card-title">Registrar Escuela</div></div></div>
-<input type="text" id="escNombre" placeholder="Nombre"><input type="number" id="escDocs" value="3"><input type="number" id="escAdmins" value="1"><button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar</button><div id="escResult"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-green">📋</div><div><div class="card-title">Escuelas Registradas</div></div></div>
-<button class="btn btn-outline btn-block btn-sm" onclick="listEsc()">📋 Listar escuelas</button><div id="escList"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-blue">🎮</div><div><div class="card-title">Agregar Juego</div></div></div>
-<input type="text" id="juegoTitulo" placeholder="Título del juego" autocomplete="off"><input type="text" id="juegoDesc" placeholder="Descripción" autocomplete="off"><select id="juegoCategoria"><option value="general">General</option><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option></select><textarea id="juegoHtml" placeholder="Pega el código HTML del juego aquí..."></textarea>
-<button class="btn btn-primary btn-block" onclick="agregarJuego()">🎮 Agregar juego</button></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-red">🗑️</div><div><div class="card-title">Borrar Contenido</div></div></div>
-<input type="text" id="borrarEscuelaCodigo" placeholder="Código de escuela a borrar" autocomplete="off"><button class="btn btn-danger btn-block" onclick="borrarEscuela()">🗑️ Borrar escuela</button></div></div></div>
+<div class="card"><input type="text" id="escNombre" placeholder="Nombre"><input type="number" id="escDocs" value="3"><input type="number" id="escAdmins" value="1"><button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar</button><div id="escResult"></div></div>
+<button class="btn btn-outline btn-block btn-sm" onclick="listEsc()">📋 Escuelas</button><div id="escList"></div>
+<div class="card mt-1"><div class="card-row"><div class="card-icon c-blue">🎮</div><div><div class="card-title">Agregar Juego</div></div></div><input type="text" id="juegoTitulo" placeholder="Título"><select id="juegoCategoria"><option value="general">General</option><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option></select><textarea id="juegoHtml" placeholder="Código HTML..."></textarea><button class="btn btn-primary btn-block" onclick="agregarJuego()">🎮 Agregar</button></div>
+<div class="card"><input type="text" id="borrarEscuelaCodigo" placeholder="Código a borrar"><button class="btn btn-danger btn-block" onclick="borrarEscuela()">🗑️ Borrar escuela</button></div></div></div>
 </div>
 
 <nav class="bottom-nav">
@@ -198,54 +216,60 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════
+// SANA v2.1 - MOTOR ULTRA OPTIMIZADO ⚡
+// ═══════════════════════════════════════
 const API='/api';const $=id=>document.getElementById(id);const LS=localStorage;
 const S={
     page:'home',mood:null,breathing:false,breathTimer:null,breathCycles:0,breathMax:4,
-    alu:JSON.parse(LS.getItem('sana_alu')||'null'),doc:JSON.parse(LS.getItem('sana_doc')||'null'),
-    dir:JSON.parse(LS.getItem('sana_dir')||'null'),primaria:JSON.parse(LS.getItem('sana_prim')||'null'),
-    admin:false,exercise:null,archivoB64:null,archivoTipo:null,archivoNombre:null
+    alu:JSON.parse(LS.getItem('sa_alu')||'null'),doc:JSON.parse(LS.getItem('sa_doc')||'null'),
+    dir:JSON.parse(LS.getItem('sa_dir')||'null'),primaria:JSON.parse(LS.getItem('sa_prim')||'null'),
+    padre:JSON.parse(LS.getItem('sa_padre')||'null'),admin:false,exercise:null,
+    archivoB64:null,archivoTipo:null,archivoNombre:null,primariaTab:'docente'
 };
-(function(){const c=$('cosmos');for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-delay:${Math.random()*3}s`;c.appendChild(s);}
-if(S.alu)showAluPanel(true);if(S.doc){$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=S.doc.escuela||'Docente';$('docInfo').textContent='Código: '+(S.doc.codigo_escuela||'');}
-if(S.dir){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent='Código: '+S.dir.codigo_escuela;}
-if(S.primaria){$('primariaLogin').style.display='none';$('primariaPanel').style.display='block';$('primariaName').textContent=S.primaria.escuela||'Docente';$('primariaInfo').textContent='Código: '+(S.primaria.codigo_escuela||'');loadGrupos();}
+(function(){const c=$('cosmos');for(let i=0;i<40;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-delay:${Math.random()*3}s`;c.appendChild(s);}
+if(S.alu)showAluPanel(true);if(S.doc){$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=S.doc.escuela||'Docente';$('docInfo').textContent=S.doc.codigo_escuela||'';}
+if(S.dir){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent=S.dir.codigo_escuela;}
+if(S.primaria){$('primariaLogin').style.display='none';$('primariaPanel').style.display='block';$('primariaName').textContent=S.primaria.escuela||'Docente';loadGrupos();}
+if(S.padre){$('padreLogin').style.display='none';$('padrePanel').style.display='block';$('padreName').textContent=S.padre.nombre_padre||'Padre';$('padreInfo').textContent=S.padre.nombre_nino||'';loadPadreData();}
 })();
 
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);}
 async function GET(e){try{return await(await fetch(API+e)).json();}catch{return null;}}
 async function POST(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');return await(await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b})).json();}catch{return null;}}
+
 function nav(p){S.page=p;document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));const t=$('page-'+p);if(t)t.classList.add('active');window.scrollTo({top:0,behavior:'instant'});if(p==='alumnos'){loadBreaths();loadPaises();}if(p==='biblioteca'){loadMatsFiltro();loadGuias();loadPlanesPublicos();}if(p==='juegos')loadJuegos();if(p==='primaria'&&S.primaria)loadGrupos();}
 document.querySelector('.bottom-nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b)nav(b.dataset.page);});
 document.querySelectorAll('.home-card').forEach((c,i)=>{const p=['alumnos','docentes','director','primaria','juegos','biblioteca'];if(i<6)c.addEventListener('click',()=>nav(p[i]));});
 
 // ═══════════ ALUMNO ═══════════
-async function regAlumno(){const n=$('alumnoNombre').value.trim();if(!n)return toast('⚠️ Pon tu nombre');const temp={id:'temp_'+Date.now(),nombre:n,tipo:'alumno'};S.alu=temp;LS.setItem('sana_alu',JSON.stringify(temp));showAluPanel(true);const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=alumno');if(d&&d.user){S.alu=d.user;LS.setItem('sana_alu',JSON.stringify(d.user));$('aluId').textContent='ID: '+d.user.id;toast('✅ ID: '+d.user.id);navigator.clipboard.writeText(d.user.id);}}
-async function loginAlumno(){const id=$('alumnoId').value.trim();if(!id)return;const cached=JSON.parse(LS.getItem('sana_alu_'+id)||'null');if(cached){S.alu=cached;showAluPanel(true);}const d=await GET('/login?user_id='+id);if(d&&d.valido){S.alu=d.user;LS.setItem('sana_alu',JSON.stringify(d.user));LS.setItem('sana_alu_'+id,JSON.stringify(d.user));showAluPanel(true);toast('✅ '+d.user.nombre);}else if(!cached)toast('❌ No encontrado');}
+async function regAlumno(){const n=$('alumnoNombre').value.trim();if(!n)return toast('⚠️ Nombre');const temp={id:'t_'+Date.now(),nombre:n};S.alu=temp;LS.setItem('sa_alu',JSON.stringify(temp));showAluPanel(true);const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=alumno');if(d&&d.user){S.alu=d.user;LS.setItem('sa_alu',JSON.stringify(d.user));$('aluId').textContent='ID: '+d.user.id;toast('✅ ID: '+d.user.id);navigator.clipboard.writeText(d.user.id);}}
+async function loginAlumno(){const id=$('alumnoId').value.trim();if(!id)return;const c=JSON.parse(LS.getItem('sa_alu_'+id)||'null');if(c){S.alu=c;showAluPanel(true);}const d=await GET('/login?user_id='+id);if(d&&d.valido){S.alu=d.user;LS.setItem('sa_alu',JSON.stringify(d.user));LS.setItem('sa_alu_'+id,JSON.stringify(d.user));showAluPanel(true);}else if(!c)toast('❌ No encontrado');}
 function showAluPanel(s){$('alumnoLogin').style.display='none';$('alumnoPanel').style.display='block';$('aluAvatar').textContent=(S.alu.nombre||'A')[0].toUpperCase();$('aluName').textContent=S.alu.nombre;$('aluId').textContent='ID: '+S.alu.id;}
-function logoutAlu(){S.alu=null;LS.removeItem('sana_alu');$('alumnoLogin').style.display='block';$('alumnoPanel').style.display='none';}
-async function sendMsg(){const i=$('chatInput'),m=i.value.trim();if(!m)return;addChat(m,'user');i.value='';i.focus();addChat('💬 Pensando...','bot thinking');const d=await POST('/chat',{mensaje:m});document.querySelector('.thinking')?.remove();if(d)addChat(d.respuesta,'bot');}
+function logoutAlu(){S.alu=null;LS.removeItem('sa_alu');$('alumnoLogin').style.display='block';$('alumnoPanel').style.display='none';}
+async function sendMsg(){const i=$('chatInput'),m=i.value.trim();if(!m)return;addChat(m,'user');i.value='';i.focus();addChat('💬...','bot thinking');const d=await POST('/chat',{mensaje:m});document.querySelector('.thinking')?.remove();if(d)addChat(d.respuesta,'bot');}
 function addChat(t,ty){const b=$('chatBox'),d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 async function loadBreaths(){const d=await GET('/respiracion/lista');if(d)$('breathSelect').innerHTML='<option value="">Elige...</option>'+d.ejercicios.map(e=>`<option value="${e.clave}">${e.nombre}</option>`).join('');}
-async function loadBreath(){const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;S.exercise=d;$('breathInfo').style.display='block';$('breathText').textContent='Toca';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';stopBreath();}
+async function loadBreath(){const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;S.exercise=d;$('breathInfo').style.display='block';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';$('breathText').textContent='Toca';stopBreath();}
 function toggleBreath(){if(S.breathing){stopBreath();return;}if(!S.exercise)return;startBreath();}
 function startBreath(){S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;function cycle(){if(!S.breathing)return;if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Listo!';return;}}const p=pasos[pi],c=$('breathCircle'),t=$('breathText');if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}else{c.classList.remove('inhale','exhale');c.textContent='✋';}t.textContent=p.texto+' · '+(S.breathCycles+1)+'/'+S.breathMax;pi++;S.breathTimer=setTimeout(cycle,p.segundos*1000);}$('breathCircle').onclick=stopBreath;cycle();}
 function stopBreath(){S.breathing=false;if(S.breathTimer){clearTimeout(S.breathTimer);S.breathTimer=null;}}
 function setMood(m,btn){S.mood=m;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));btn.classList.add('btn-primary');}
-async function saveDiary(){if(!S.alu)return;const t=$('diarioText').value.trim();if(!t&&!S.mood)return;const entry={texto:t||'',emocion:S.mood||'😶',fecha:new Date().toISOString(),id:Date.now()};let local=JSON.parse(LS.getItem('sana_diary')||'[]');local.unshift(entry);LS.setItem('sana_diary',JSON.stringify(local.slice(0,50)));$('diarioText').value='';S.mood=null;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));loadDiary(true);toast('✅');POST('/diario/guardar',{user_id:S.alu.id,texto:entry.texto,emocion:entry.emocion});}
-async function loadDiary(l){const local=JSON.parse(LS.getItem('sana_diary')||'[]');const c=$('diaryList');if(local.length)c.innerHTML='<div class="entry-list">'+local.slice(0,15).map(e=>`<div class="entry"><div class="entry-info"><strong>${e.emocion||'😶'}</strong> ${e.texto||''}</div><button class="btn btn-danger btn-xs" onclick="delDiaryLocal(${e.id})">🗑️</button></div>`).join('')+'</div>';}
-function delDiaryLocal(id){let local=JSON.parse(LS.getItem('sana_diary')||'[]');local=local.filter(e=>e.id!==id);LS.setItem('sana_diary',JSON.stringify(local));loadDiary(true);}
+async function saveDiary(){if(!S.alu)return;const t=$('diarioText').value.trim();if(!t&&!S.mood)return;const e={texto:t||'',emocion:S.mood||'😶',fecha:new Date().toISOString(),id:Date.now()};let l=JSON.parse(LS.getItem('sa_diary')||'[]');l.unshift(e);LS.setItem('sa_diary',JSON.stringify(l.slice(0,50)));$('diarioText').value='';S.mood=null;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));loadDiary(true);toast('✅');POST('/diario/guardar',{user_id:S.alu.id,texto:e.texto,emocion:e.emocion});}
+async function loadDiary(l){const lo=JSON.parse(LS.getItem('sa_diary')||'[]');const c=$('diaryList');if(lo.length)c.innerHTML='<div class="entry-list">'+lo.slice(0,15).map(e=>`<div class="entry"><div class="entry-info"><strong>${e.emocion||'😶'}</strong> ${e.texto||''}</div><button class="btn btn-danger btn-xs" onclick="delDiaryLocal(${e.id})">🗑️</button></div>`).join('')+'</div>';}
+function delDiaryLocal(id){let l=JSON.parse(LS.getItem('sa_diary')||'[]');l=l.filter(e=>e.id!==id);LS.setItem('sa_diary',JSON.stringify(l));loadDiary(true);}
 async function loadMisPlanes(){if(!S.alu)return;const d=await GET('/organizador/planes-alumno?alumno_id='+S.alu.id);const c=$('misPlanesList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong><br>${p.objetivo||''}</div></div>`).join('')+'</div>';}
 async function loadPaises(){const d=await GET('/lineas-ayuda/paises');if(d)$('paisSelect').innerHTML='<option value="">País...</option>'+d.paises.map(p=>`<option>${p}</option>`).join('');}
 async function loadLineas(){const p=$('paisSelect').value;if(!p)return;const d=await GET('/lineas-ayuda?pais='+p);if(!d)return;$('lineasList').innerHTML='<div class="entry-list mt-1">'+d.lineas.map(l=>`<div class="entry"><div><strong>${l.nombre}</strong><br>📞 ${l.numero}</div></div>`).join('')+'</div>';}
 
 // ═══════════ DOCENTE ═══════════
-async function loginDoc(){const c=$('docCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido){if(d.tipo==='director'){S.dir=d;LS.setItem('sana_dir',JSON.stringify(d));showDirPanel();return;}S.doc=d;LS.setItem('sana_doc',JSON.stringify(d));$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=d.escuela||'Docente';$('docInfo').textContent='Código: '+c;loadMats();loadBit();loadAvisosDocente();toast('✅');}else{$('docError').textContent='❌ Inválido';$('docError').style.display='block';}}
+async function loginDoc(){const c=$('docCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido){if(d.tipo==='director'){S.dir=d;LS.setItem('sa_dir',JSON.stringify(d));showDirPanel();return;}S.doc=d;LS.setItem('sa_doc',JSON.stringify(d));$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=d.escuela||'Docente';$('docInfo').textContent=d.codigo_escuela||c;loadMats();loadBit();loadAvisosDocente();toast('✅');}else{$('docError').textContent='❌ Inválido';$('docError').style.display='block';}}
 async function regDoc(){const c=$('docCodigo').value.trim(),n=$('docNombreReg').value.trim();if(!c||!n)return;const dv=await GET('/login?codigo='+c);if(!dv||!dv.valido)return toast('❌ Código');const d=await GET('/registro?nombre='+n+'&tipo=docente&codigo='+c);if(d&&d.user){toast('✅ Creado!');loginDoc();}}
-function logoutDoc(){S.doc=null;LS.removeItem('sana_doc');$('docenteLogin').style.display='block';$('docentePanel').style.display='none';}
-async function loadAvisosDocente(){if(!S.doc)return;const d=await GET('/director/avisos?escuela='+(S.doc.codigo_escuela||''));const c=$('avisosDocente');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='';return;}c.innerHTML=d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.7rem;">${a.mensaje}</p></div>`).join('');}
+function logoutDoc(){S.doc=null;LS.removeItem('sa_doc');$('docenteLogin').style.display='block';$('docentePanel').style.display='none';}
+async function loadAvisosDocente(){if(!S.doc)return;const d=await GET('/director/avisos?escuela='+(S.doc.codigo_escuela||''));const c=$('avisosDocente');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='';return;}c.innerHTML=d.avisos.map(a=>`<div class="aviso-card"><strong>📢 ${a.titulo}</strong><p style="font-size:0.65rem;">${a.mensaje}</p></div>`).join('');}
 async function addBit(){if(!S.doc)return;const d=await GET('/bitacora/agregar?tipo='+$('bitTipo').value+'&alumno='+encodeURIComponent($('bitAlumno').value)+'&grupo='+$('bitGrupo').value+'&texto='+encodeURIComponent($('bitTexto').value)+'&autor='+encodeURIComponent($('docName').textContent)+'&escuela='+(S.doc.codigo_escuela||''));if(d&&d.guardado){$('bitAlumno').value='';$('bitTexto').value='';toast('✅');loadBit();}}
 async function loadBit(){const d=await GET('/bitacora/entradas?escuela='+(S.doc?S.doc.codigo_escuela:''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Vacío</p>';return;}c.innerHTML='<div class="entry-list">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.alumno}</strong> <span class="badge b-blue">${e.tipo}</span><br>${e.texto}</div><button class="btn btn-danger btn-xs" onclick="borrarBit(${e.id})">🗑️</button><button class="btn btn-green btn-xs" onclick="compartirBitDirecto(${e.id})">🔗</button></div>`).join('')+'</div>';}
-async function borrarBit(id){if(!confirm('¿Borrar esta entrada?'))return;await GET('/bitacora/borrar?id='+id);loadBit();toast('🗑️ Borrada');}
+async function borrarBit(id){if(!confirm('¿Borrar?'))return;await GET('/bitacora/borrar?id='+id);loadBit();toast('🗑️');}
 async function compartirBit(){const id=parseInt($('bitCompartirId').value),cod=$('bitCompartirCodigo').value.trim();if(!id||!cod)return;const d=await GET('/bitacora/compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 async function compartirBitDirecto(id){const cod=prompt('Código:');if(!cod)return;const d=await GET('/bitacora/compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 async function loadBitCompartidas(){if(!S.doc)return;const d=await GET('/bitacora/compartidas?codigo='+($('docCodigo').value||''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted">📋 Sin compartidas</p>';return;}c.innerHTML='<div class="entry-list"><p class="text-muted">🔗 Compartidas:</p>'+d.entradas.map(e=>`<div class="entry"><div>${e.texto}</div></div>`).join('')+'</div>';}
@@ -254,45 +278,62 @@ async function loadMats(){const d=await GET('/regularizacion/materias');if(d)$('
 async function loadMatsFiltro(){const d=await GET('/regularizacion/materias');if(d)$('filtroMateria').innerHTML='<option value="">Todas</option>'+d.materias.map(m=>`<option>${m}</option>`).join('');}
 async function addGuia(){if(!S.doc)return;const m=$('guiaMateria').value,t=$('guiaTitulo').value.trim();if(!m||!t)return;const body={materia:m,titulo:t,contenido:$('guiaContenido').value,autor:$('docName').textContent,escuela:S.doc.codigo_escuela||''};if(S.archivoB64){body.archivo_base64=S.archivoB64;body.tipo_archivo=S.archivoTipo;body.nombre_archivo=S.archivoNombre;}await POST('/regularizacion/agregar',body);$('guiaTitulo').value='';$('guiaContenido').value='';$('fileName').textContent='';S.archivoB64=null;toast('✅');}
 async function loadGuias(){const m=$('filtroMateria')?.value||'';const d=await GET('/regularizacion/guias?materia='+(m||''));const c=$('guiasList');if(!d||!d.guias||!d.guias.length){c.innerHTML='<p class="text-muted text-center mt-1">📚 Sin guías</p>';return;}c.innerHTML='<div class="entry-list">'+d.guias.slice(-20).reverse().map(g=>`<div class="entry"><div><strong>${g.materia}</strong>: ${g.titulo}${g.tiene_archivo?' <span class="badge b-purple">📎</span>':''}<br>${g.contenido||''}</div>${g.tiene_archivo?`<button class="btn btn-green btn-xs" onclick="descargar('${g.archivo_base64||''}','${g.tipo_archivo||''}','${g.nombre_archivo||''}')">📥</button>`:''}${S.admin||S.doc?`<button class="btn btn-danger btn-xs" onclick="borrarGuia(${g.id})">🗑️</button>`:''}</div>`).join('')+'</div>';}
-async function borrarGuia(id){if(!confirm('¿Borrar?'))return;await POST('/regularizacion/borrar',{id:id});loadGuias();toast('🗑️ Borrada');}
+async function borrarGuia(id){if(!confirm('¿Borrar?'))return;await POST('/regularizacion/borrar',{id:id});loadGuias();toast('🗑️');}
 function descargar(b64,t,n){if(!b64)return;const byte=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));const blob=new Blob([byte],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=n;a.click();}
 $('planVisibilidad').addEventListener('change',function(){$('planAlumnoId').style.display=this.value==='compartido'?'block':'none';});
 async function addPlan(){if(!S.doc)return;const n=$('planNombre').value.trim(),o=$('planObjetivo').value.trim();if(!n||!o)return;const d=await POST('/organizador/crear-plan',{nombre:n,materia:'General',objetivo:o,actividades:$('planActividades').value,escuela:S.doc.codigo_escuela||'',autor:$('docName').textContent,visibilidad:$('planVisibilidad').value,alumno_id:$('planAlumnoId').value});if(d&&d.guardado){$('planNombre').value='';$('planObjetivo').value='';toast('✅');loadMisPlanesDocente();}}
 async function loadMisPlanesDocente(){if(!S.doc)return;const d=await GET('/organizador/planes-docente?autor='+$('docName').textContent+'&escuela='+(S.doc.codigo_escuela||''));const c=$('planesDocenteList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong> <span class="badge b-${p.visibilidad==='publico'?'green':'blue'}">${p.visibilidad}</span></div><button class="btn btn-green btn-xs" onclick="compartirPlan(${p.id})">🔗</button><button class="btn btn-danger btn-xs" onclick="borrarPlan(${p.id})">🗑️</button></div>`).join('')+'</div>';}
-async function borrarPlan(id){if(!confirm('¿Borrar?'))return;await GET('/organizador/borrar-plan?id='+id);loadMisPlanesDocente();toast('🗑️ Borrado');}
+async function borrarPlan(id){if(!confirm('¿Borrar?'))return;await GET('/organizador/borrar-plan?id='+id);loadMisPlanesDocente();toast('🗑️');}
 async function compartirPlan(id){const aid=prompt('ID alumno:');if(!aid)return;const d=await GET('/organizador/compartir-plan?id='+id+'&alumno_id='+aid);if(d&&d.ok)toast('✅');}
 async function loadPlanesPublicos(){const d=await GET('/organizador/planes-publicos');const c=$('planesPublicosList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🌍 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong><br>${p.objetivo}</div></div>`).join('')+'</div>';}
 
 // ═══════════ DIRECTOR ═══════════
-async function loginDir(){const c=$('dirCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido&&d.tipo==='director'){S.dir=d;LS.setItem('sana_dir',JSON.stringify(d));showDirPanel();}else{$('dirError').textContent='❌ Inválido';$('dirError').style.display='block';}}
-function showDirPanel(){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent='Código: '+S.dir.codigo_escuela;loadAvisos();}
-function logoutDir(){S.dir=null;LS.removeItem('sana_dir');$('directorLogin').style.display='block';$('directorPanel').style.display='none';}
+async function loginDir(){const c=$('dirCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido&&d.tipo==='director'){S.dir=d;LS.setItem('sa_dir',JSON.stringify(d));showDirPanel();}else{$('dirError').textContent='❌';$('dirError').style.display='block';}}
+function showDirPanel(){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent=S.dir.codigo_escuela;loadAvisos();}
+function logoutDir(){S.dir=null;LS.removeItem('sa_dir');$('directorLogin').style.display='block';$('directorPanel').style.display='none';}
 async function publicarAviso(){if(!S.dir)return;const t=$('avisoTitulo').value.trim(),m=$('avisoMensaje').value.trim();if(!t||!m)return;const d=await GET('/director/publicar-aviso?escuela='+S.dir.codigo_escuela+'&titulo='+encodeURIComponent(t)+'&mensaje='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){$('avisoTitulo').value='';$('avisoMensaje').value='';toast('✅');loadAvisos();}}
-async function loadAvisos(){if(!S.dir)return;const d=await GET('/director/avisos?escuela='+S.dir.codigo_escuela);const c=$('avisosList');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='<p class="text-muted text-center mt-1">📢 Sin avisos</p>';return;}c.innerHTML='<div class="entry-list">'+d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.7rem;">${a.mensaje}</p><button class="btn btn-danger btn-xs" onclick="delAviso(${a.id})">🗑️</button></div>`).join('')+'</div>';}
+async function loadAvisos(){if(!S.dir)return;const d=await GET('/director/avisos?escuela='+S.dir.codigo_escuela);const c=$('avisosList');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='<p class="text-muted text-center mt-1">📢 Sin avisos</p>';return;}c.innerHTML='<div class="entry-list">'+d.avisos.map(a=>`<div class="aviso-card"><strong>📢 ${a.titulo}</strong><p style="font-size:0.65rem;">${a.mensaje}</p><button class="btn btn-danger btn-xs" onclick="delAviso(${a.id})">🗑️</button></div>`).join('')+'</div>';}
 async function delAviso(id){await GET('/director/eliminar-aviso?id='+id);loadAvisos();}
 async function darBaja(){if(!S.dir)return;const c=$('bajaCodigo').value.trim(),m=$('bajaMotivo').value.trim();if(!c||!m)return;const d=await GET('/director/dar-baja?escuela='+S.dir.codigo_escuela+'&codigo_docente='+c+'&motivo='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){toast('✅');$('bajaCodigo').value='';$('bajaMotivo').value='';}}
 async function nuevoCodigo(){if(!S.dir)return;const d=await GET('/director/nuevo-codigo?escuela='+S.dir.codigo_escuela);if(d&&d.nuevo_codigo){toast('🆕 '+d.nuevo_codigo);navigator.clipboard.writeText(d.nuevo_codigo);}}
-async function verReporte(){if(!S.dir)return;const d=await GET('/director/reporte?escuela='+S.dir.codigo_escuela);const c=$('bajasList');if(!d||!d.reporte)return;c.innerHTML=`<div class="card mt-1" style="background:rgba(251,191,36,0.05);"><strong>📊 Reporte</strong><br>Total bajas: ${d.reporte.total_bajas}<br>${d.reporte.bajas.map(b=>`<div>❌ ${b.codigo_docente}</div>`).join('')}<p class="text-muted">📧 pdabasel1@gmail.com</p></div>`;}
+async function verReporte(){if(!S.dir)return;const d=await GET('/director/reporte?escuela='+S.dir.codigo_escuela);const c=$('bajasList');if(!d||!d.reporte)return;c.innerHTML=`<div class="card mt-1" style="background:rgba(251,191,36,0.05);"><strong>📊 Reporte</strong><br>Bajas: ${d.reporte.total_bajas}<br>${d.reporte.bajas.map(b=>`<div>❌ ${b.codigo_docente}</div>`).join('')}</div>`;}
 async function addDirBit(){if(!S.dir)return;const t=$('dirBitacoraTexto').value.trim();if(!t)return;const d=await GET('/director/bitacora-agregar?escuela='+S.dir.codigo_escuela+'&texto='+encodeURIComponent(t)+'&autor=Director');if(d&&d.guardado){$('dirBitacoraTexto').value='';toast('✅');loadDirBit();}}
 async function loadDirBit(){if(!S.dir)return;const d=await GET('/director/bitacora?escuela='+S.dir.codigo_escuela);const c=$('dirBitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Vacío</p>';return;}c.innerHTML='<div class="entry-list">'+d.entradas.reverse().map(e=>`<div class="entry"><div>${e.texto}</div><button class="btn btn-green btn-xs" onclick="compartirDirBitDirecto(${e.id})">🔗</button></div>`).join('')+'</div>';}
 async function compartirDirBit(){const id=parseInt($('dirBitCompartirId').value),cod=$('dirBitCompartirCodigo').value.trim();if(!id||!cod)return;const d=await GET('/director/bitacora-compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 async function compartirDirBitDirecto(id){const cod=prompt('Código:');if(!cod)return;const d=await GET('/director/bitacora-compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 
 // ═══════════ PRIMARIA ═══════════
-async function loginPrimaria(){const c=$('primariaCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido){S.primaria=d;LS.setItem('sana_prim',JSON.stringify(d));$('primariaLogin').style.display='none';$('primariaPanel').style.display='block';$('primariaName').textContent=d.escuela||'Docente';$('primariaInfo').textContent='Código: '+(d.codigo_escuela||c);loadGrupos();toast('✅');}else{$('primariaError').textContent='❌ Inválido';$('primariaError').style.display='block';}}
-function logoutPrimaria(){S.primaria=null;LS.removeItem('sana_prim');$('primariaLogin').style.display='block';$('primariaPanel').style.display='none';}
-async function crearGrupo(){if(!S.primaria)return;const n=$('grupoNombre').value.trim();if(!n)return;const d=await GET('/primaria/crear-grupo?escuela='+(S.primaria.codigo_escuela||'')+'&nombre='+encodeURIComponent(n)+'&docente='+encodeURIComponent(S.primaria.escuela||'Docente'));if(d&&d.guardado){$('grupoNombre').value='';toast('✅ Grupo creado');loadGrupos();}}
-async function loadGrupos(){if(!S.primaria)return;const d=await GET('/primaria/grupos?escuela='+(S.primaria.codigo_escuela||''));const c=$('gruposList'),s=$('grupoSelect');if(!d||!d.grupos||!d.grupos.length){c.innerHTML='<p class="text-muted text-center mt-1">Sin grupos</p>';s.innerHTML='<option value="">Sin grupos</option>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.grupos.map(g=>`<div class="entry"><div><strong>${g.nombre}</strong></div><button class="btn btn-danger btn-xs" onclick="delGrupo('${g.id}')">🗑️</button></div>`).join('')+'</div>';s.innerHTML='<option value="">Selecciona grupo...</option>'+d.grupos.map(g=>`<option value="${g.id}">${g.nombre}</option>`).join('');}
-async function delGrupo(id){if(!confirm('¿Borrar grupo?'))return;await GET('/primaria/eliminar-grupo?id='+id);loadGrupos();}
+function switchPrimariaTab(tab){S.primariaTab=tab;$('tabDocente').className=tab==='docente'?'btn btn-primary btn-sm flex-1':'btn btn-outline btn-sm flex-1';$('tabPadre').className=tab==='padre'?'btn btn-primary btn-sm flex-1':'btn btn-outline btn-sm flex-1';$('primariaDocenteTab').style.display=tab==='docente'?'block':'none';$('primariaPadreTab').style.display=tab==='padre'?'block':'none';}
+
+// -- DOCENTE PRIMARIA --
+async function loginPrimaria(){const c=$('primariaCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido){S.primaria=d;LS.setItem('sa_prim',JSON.stringify(d));$('primariaLogin').style.display='none';$('primariaPanel').style.display='block';$('primariaName').textContent=d.escuela||'Docente';$('primariaInfo').textContent=d.codigo_escuela||c;loadGrupos();toast('✅');}else{$('primariaError').textContent='❌';$('primariaError').style.display='block';}}
+function logoutPrimaria(){S.primaria=null;LS.removeItem('sa_prim');$('primariaLogin').style.display='block';$('primariaPanel').style.display='none';}
+function genPadresInputs(){const n=parseInt($('numPadres').value)||1;let h='';for(let i=0;i<n;i++){h+=`<input type="text" id="padreNombre${i}" placeholder="Nombre del padre/madre ${i+1}"><input type="text" id="ninoNombre${i}" placeholder="Nombre del niño/a ${i+1}"><input type="text" id="parentesco${i}" placeholder="Parentesco (ej: Mamá)" value="Padre/Madre">`;}$('padresInputs').innerHTML=h;}
+genPadresInputs();
+async function crearGrupo(){if(!S.primaria)return;const n=$('grupoNombre').value.trim();if(!n)return;const num=parseInt($('numPadres').value)||1;const padres=[];for(let i=0;i<num;i++){padres.push({nombre_padre:$('padreNombre'+i)?.value||'Padre '+(i+1),nombre_nino:$('ninoNombre'+i)?.value||'Niño '+(i+1),relacion:$('parentesco'+i)?.value||'Padre/Madre'});}
+const d=await GET('/primaria/crear-grupo?escuela='+(S.primaria.codigo_escuela||'')+'&nombre='+encodeURIComponent(n)+'&docente='+encodeURIComponent(S.primaria.escuela||'Docente')+'&padres='+encodeURIComponent(JSON.stringify(padres)));if(d&&d.guardado){$('grupoNombre').value='';toast('✅ Grupo creado');loadGrupos();}}
+async function loadGrupos(){if(!S.primaria)return;const d=await GET('/primaria/grupos?escuela='+(S.primaria.codigo_escuela||''));const c=$('gruposList'),s=$('grupoSelect');if(!d||!d.grupos||!d.grupos.length){c.innerHTML='<p class="text-muted text-center mt-1">Sin grupos</p>';s.innerHTML='<option value="">Sin grupos</option>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.grupos.map(g=>`<div class="entry"><div><strong>${g.nombre}</strong> (${g.num_padres} padres)<br>${g.codigos_padres.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div><button class="btn btn-danger btn-xs" onclick="delGrupo('${g.id}')">🗑️</button></div>`).join('')+'</div>';s.innerHTML='<option value="">Selecciona grupo...</option>'+d.grupos.map(g=>`<option value="${g.id}">${g.nombre}</option>`).join('');}
+async function delGrupo(id){if(!confirm('¿Borrar?'))return;await GET('/primaria/eliminar-grupo?id='+id);loadGrupos();}
 async function publicarAnuncioPadres(){if(!S.primaria)return;const t=$('anuncioPadresTitulo').value.trim(),m=$('anuncioPadresMensaje').value.trim();if(!t||!m)return;const d=await GET('/primaria/publicar-anuncio-padres?escuela='+(S.primaria.codigo_escuela||'')+'&titulo='+encodeURIComponent(t)+'&mensaje='+encodeURIComponent(m)+'&autor=Docente');if(d&&d.guardado){$('anuncioPadresTitulo').value='';$('anuncioPadresMensaje').value='';toast('✅');loadAnunciosPadres();}}
-async function loadAnunciosPadres(){if(!S.primaria)return;const d=await GET('/primaria/anuncios-padres?escuela='+(S.primaria.codigo_escuela||''));const c=$('anunciosPadresList');if(!d||!d.anuncios||!d.anuncios.length){c.innerHTML='';return;}c.innerHTML='<div class="entry-list mt-1">'+d.anuncios.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.7rem;">${a.mensaje}</p><button class="btn btn-danger btn-xs" onclick="delAnuncioPadres(${a.id})">🗑️</button></div>`).join('')+'</div>';}
+async function loadAnunciosPadres(){if(!S.primaria)return;const d=await GET('/primaria/anuncios-padres?escuela='+(S.primaria.codigo_escuela||''));const c=$('anunciosPadresList');if(!d||!d.anuncios||!d.anuncios.length){c.innerHTML='';return;}c.innerHTML='<div class="entry-list mt-1">'+d.anuncios.map(a=>`<div class="aviso-card"><strong>📢 ${a.titulo}</strong><p style="font-size:0.65rem;">${a.mensaje}</p><button class="btn btn-danger btn-xs" onclick="delAnuncioPadres(${a.id})">🗑️</button></div>`).join('')+'</div>';}
 async function delAnuncioPadres(id){await GET('/primaria/eliminar-anuncio-padres?id='+id);loadAnunciosPadres();}
 async function agregarTarea(){if(!S.primaria)return;const g=$('grupoSelect').value;if(!g)return toast('⚠️ Selecciona grupo');const t=$('tareaTitulo').value.trim(),d=$('tareaDescripcion').value.trim();if(!t)return;const r=await GET('/primaria/agregar-tarea?escuela='+(S.primaria.codigo_escuela||'')+'&grupo='+g+'&titulo='+encodeURIComponent(t)+'&descripcion='+encodeURIComponent(d));if(r&&r.guardado){$('tareaTitulo').value='';$('tareaDescripcion').value='';toast('✅');loadTareas();}}
-async function loadTareas(){if(!S.primaria)return;const g=$('grupoSelect').value;if(!g){$('tareasList').innerHTML='';$('tareasGrupoInfo').textContent='Selecciona un grupo';return;}const d=await GET('/primaria/tareas?escuela='+(S.primaria.codigo_escuela||'')+'&grupo='+g);$('tareasGrupoInfo').textContent='Grupo: '+($('grupoSelect').selectedOptions[0]?.textContent||'');const c=$('tareasList');if(!d||!d.tareas||!d.tareas.length){c.innerHTML='<p class="text-muted text-center mt-1">Sin tareas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.tareas.map(t=>`<div class="entry"><div><strong>${t.titulo}</strong><br>${t.descripcion||''}</div><button class="btn btn-danger btn-xs" onclick="delTarea(${t.id})">🗑️</button></div>`).join('')+'</div>';}
+async function loadTareas(){if(!S.primaria)return;const g=$('grupoSelect').value;if(!g){$('tareasList').innerHTML='';return;}const d=await GET('/primaria/tareas?escuela='+(S.primaria.codigo_escuela||'')+'&grupo='+g);$('tareasGrupoInfo').textContent='Grupo: '+($('grupoSelect').selectedOptions[0]?.textContent||'');const c=$('tareasList');if(!d||!d.tareas||!d.tareas.length){c.innerHTML='<p class="text-muted text-center mt-1">Sin tareas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.tareas.map(t=>`<div class="entry"><div><strong>${t.titulo}</strong><br>${t.descripcion||''}</div><button class="btn btn-danger btn-xs" onclick="delTarea(${t.id})">🗑️</button></div>`).join('')+'</div>';}
 async function delTarea(id){if(!S.primaria)return;const g=$('grupoSelect').value;if(!g)return;await GET('/primaria/eliminar-tarea?escuela='+(S.primaria.codigo_escuela||'')+'&grupo='+g+'&id='+id);loadTareas();}
 
+// -- PADRE --
+async function loginPadre(){const c=$('padreCodigo').value.trim();if(!c)return;const d=await GET('/primaria/login-padre?codigo='+c);if(d&&d.valido){S.padre=d.padre;LS.setItem('sa_padre',JSON.stringify(d.padre));$('padreLogin').style.display='none';$('padrePanel').style.display='block';$('padreName').textContent=d.padre.nombre_padre;$('padreInfo').textContent='Niño: '+d.padre.nombre_nino;loadPadreData();toast('✅');}else{$('padreError').textContent='❌';$('padreError').style.display='block';}}
+function logoutPadre(){S.padre=null;LS.removeItem('sa_padre');$('padreLogin').style.display='block';$('padrePanel').style.display='none';}
+async function loadPadreData(){if(!S.padre)return;const d=await GET('/primaria/anuncios-padres?escuela='+(S.padre.escuela||''));const c=$('padreAnunciosList');if(d&&d.anuncios&&d.anuncios.length){c.innerHTML='<div class="entry-list">'+d.anuncios.map(a=>`<div class="aviso-card"><strong>📢 ${a.titulo}</strong><p style="font-size:0.65rem;">${a.mensaje}</p></div>`).join('')+'</div>';}else{c.innerHTML='<p class="text-muted">Sin anuncios</p>';}
+const t=await GET('/primaria/tareas?escuela='+(S.padre.escuela||'')+'&grupo='+(S.padre.id_grupo||''));const tc=$('padreTareasList');if(t&&t.tareas&&t.tareas.length){tc.innerHTML='<div class="entry-list mt-1">'+t.tareas.map(t=>`<div class="entry"><div><strong>${t.titulo}</strong><br>${t.descripcion||''}</div></div>`).join('')+'</div>';}else{tc.innerHTML='<p class="text-muted">Sin tareas</p>';}
+loadFichas();}
+async function loadFichas(){if(!S.padre)return;const d=await GET('/primaria/fichas?codigo_padre='+(S.padre.codigo||''));if(!d)return;$('fichasPuntos').textContent=d.fichas?.puntos||0;const c=$('fichasList');if(!d.fichas||!d.fichas.tareas||!d.fichas.tareas.length){c.innerHTML='<p class="text-muted text-center mt-1">Sin tareas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.fichas.tareas.map(t=>`<div class="entry"><div><strong>${t.titulo}</strong> (${t.puntos}pts) ${t.completada?'✅':''}</div>${!t.completada?`<button class="btn btn-green btn-xs" onclick="completarFicha(${t.id})">✅</button>`:''}<button class="btn btn-danger btn-xs" onclick="delFicha(${t.id})">🗑️</button></div>`).join('')+'</div>';}
+async function addFicha(){if(!S.padre)return;const t=$('fichaTitulo').value.trim(),p=parseInt($('fichaPuntos').value)||1,r=$('fichaRecompensa').value.trim();if(!t)return;const d=await GET('/primaria/fichas-agregar?codigo_padre='+S.padre.codigo+'&titulo='+encodeURIComponent(t)+'&puntos='+p+'&recompensa='+encodeURIComponent(r));if(d&&d.guardado){$('fichaTitulo').value='';toast('✅');loadFichas();}}
+async function completarFicha(id){if(!S.padre)return;await GET('/primaria/fichas-completar?codigo_padre='+S.padre.codigo+'&id='+id);loadFichas();toast('⭐ +Puntos!');}
+async function delFicha(id){if(!S.padre)return;await GET('/primaria/fichas-eliminar?codigo_padre='+S.padre.codigo+'&id='+id);loadFichas();}
+
 // ═══════════ JUEGOS ═══════════
-async function loadJuegos(){const d=await GET('/juegos/lista');const c=$('juegosList');$('juegoFrame').style.display='none';$('juegosList').style.display='block';if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted text-center mt-1">🎮 No hay juegos aún</p>';return;}c.innerHTML='<div class="entry-list">'+d.juegos.map(j=>`<div class="game-card" onclick="verJuego(${j.id})"><strong>🎮 ${j.titulo}</strong><br><span class="text-muted">${j.descripcion||''}</span></div>`).join('')+'</div>';}
+async function loadJuegos(){const d=await GET('/juegos/lista');const c=$('juegosList');$('juegoFrame').style.display='none';$('juegosList').style.display='block';if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted text-center mt-1">🎮 No hay juegos</p>';return;}c.innerHTML='<div class="entry-list">'+d.juegos.map(j=>`<div class="game-card" onclick="verJuego(${j.id})"><strong>🎮 ${j.titulo}</strong><br><span class="text-muted">${j.descripcion||''}</span></div>`).join('')+'</div>';}
 async function verJuego(id){const d=await GET('/juegos/ver?id='+id);if(!d||!d.juego)return;$('juegosList').style.display='none';$('juegoFrame').style.display='block';$('juegoContainer').innerHTML=d.juego.html_code;}
 function cerrarJuego(){$('juegoFrame').style.display='none';$('juegosList').style.display='block';}
 
@@ -300,10 +341,10 @@ function cerrarJuego(){$('juegoFrame').style.display='none';$('juegosList').styl
 function verifyAdmin(){const c=$('adminCode').value.trim();if(c==='SANA-ADMIN-2025'||c.startsWith('ADM-')){S.admin=true;$('adminLock').style.display='none';$('adminPanel').style.display='block';}else{$('adminError').style.display='block';}}
 function logoutAdmin(){S.admin=false;$('adminLock').style.display='block';$('adminPanel').style.display='none';}
 async function regEsc(){const n=$('escNombre').value.trim();if(!n)return;const r=await GET('/escuelas/registrar?nombre='+n+'&docentes='+($('escDocs').value||3)+'&admin='+($('escAdmins').value||1));if(r&&r.escuela){$('escResult').innerHTML=`<div class="card mt-1" style="background:rgba(110,231,183,0.08);"><strong>✅ ${r.escuela.nombre}</strong><br>🏫 <span class="badge b-green">${r.escuela.codigo_escuela}</span><br>📋 ${r.escuela.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div>`;}}
-async function listEsc(){const d=await GET('/escuelas/lista');const c=$('escList');if(!d||!d.escuelas||!d.escuelas.length){c.innerHTML='<p class="text-muted">Sin escuelas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.escuelas.map(e=>`<div class="entry"><div><strong>${e.nombre}</strong> <span class="badge b-green">${e.codigo_escuela}</span><br>📋 ${e.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div><button class="btn btn-danger btn-xs" onclick="borrarEscuelaDir('${e.codigo_escuela}')">🗑️</button></div>`).join('')+'</div>';}
-async function borrarEscuela(){const c=$('borrarEscuelaCodigo').value.trim();if(!c)return;if(!confirm('¿Borrar escuela '+c+'?'))return;const d=await GET('/escuelas/borrar?codigo='+c);if(d&&d.ok){toast('✅ Escuela borrada');listEsc();}}
+async function listEsc(){const d=await GET('/escuelas/lista');const c=$('escList');if(!d||!d.escuelas||!d.escuelas.length){c.innerHTML='<p class="text-muted">Sin escuelas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.escuelas.map(e=>`<div class="entry"><div><strong>${e.nombre}</strong> <span class="badge b-green">${e.codigo_escuela}</span><br>${e.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div><button class="btn btn-danger btn-xs" onclick="borrarEscuelaDir('${e.codigo_escuela}')">🗑️</button></div>`).join('')+'</div>';}
+async function borrarEscuela(){const c=$('borrarEscuelaCodigo').value.trim();if(!c||!confirm('¿Borrar '+c+'?'))return;const d=await GET('/escuelas/borrar?codigo='+c);if(d&&d.ok){toast('✅ Borrada');listEsc();}}
 async function borrarEscuelaDir(cod){if(!confirm('¿Borrar '+cod+'?'))return;const d=await GET('/escuelas/borrar?codigo='+cod);if(d&&d.ok){toast('✅ Borrada');listEsc();}}
-async function agregarJuego(){const t=$('juegoTitulo').value.trim(),d=$('juegoDesc').value.trim(),h=$('juegoHtml').value.trim(),c=$('juegoCategoria').value;if(!t||!h)return toast('⚠️ Completa título y HTML');const r=await POST('/juegos/agregar',{titulo:t,descripcion:d,html_code:h,categoria:c});if(r&&r.guardado){$('juegoTitulo').value='';$('juegoDesc').value='';$('juegoHtml').value='';toast('✅ Juego agregado');}}
+async function agregarJuego(){const t=$('juegoTitulo').value.trim(),h=$('juegoHtml').value.trim();if(!t||!h)return;const r=await POST('/juegos/agregar',{titulo:t,descripcion:$('juegoDesc')?.value||'',html_code:h,categoria:$('juegoCategoria').value});if(r&&r.guardado){$('juegoTitulo').value='';$('juegoHtml').value='';toast('✅ Agregado');}}
 </script>
 </body>
 </html>
