@@ -289,20 +289,6 @@
       "fecha": "2026-07-06T22:52:44.312602",
       "editado": false,
       "fecha_edicion": null
-    },
-    {
-      "id": 2,
-      "tipo": "reporte",
-      "alumno": "Gt",
-      "grupo": "Ttt",
-      "texto": "Tt",
-      "autor": "EPR José María Morelos xhaniro",
-      "escuela": "ESC-XGQ7KG",
-      "publico": false,
-      "calificacion": null,
-      "fecha": "2026-07-10T08:13:38.449801",
-      "compartido_con": [],
-      "visible_para": []
     }
   ],
   "regularizacion": [
@@ -323,5 +309,67 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T08:13:38.450139"
+  "fecha": "2026-07-10T08:13:24.765722",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {
+      "GRP-001": {
+        "id": "GRP-001",
+        "escuela": "ESC-XGQ7KG",
+        "nombre": "3d",
+        "docente": "EPR José María Morelos xhaniro",
+        "fecha": "2026-07-10T07:58:45.975019",
+        "num_padres": 1,
+        "codigos_padres": [
+          "PAD-521LQI"
+        ],
+        "padres": [
+          {
+            "nombre_padre": "Juan",
+            "nombre_nino": "Perdo",
+            "relacion": "Padre/Madre"
+          }
+        ]
+      }
+    },
+    "anuncios_padres": [
+      {
+        "id": 1,
+        "escuela": "ESC-XGQ7KG",
+        "titulo": "Hola",
+        "mensaje": "Prueba",
+        "autor": "Docente",
+        "fecha": "2026-07-10T07:59:07.918440",
+        "activo": true
+      }
+    ],
+    "muro_tareas": {
+      "ESC-XGQ7KG": {
+        "GRP-001": []
+      }
+    },
+    "padres": {
+      "PAD-521LQI": {
+        "codigo": "PAD-521LQI",
+        "nombre_padre": "Juan",
+        "nombre_nino": "Perdo",
+        "relacion": "Padre/Madre",
+        "id_grupo": "GRP-001",
+        "escuela": "ESC-XGQ7KG",
+        "fecha": "2026-07-10T07:58:45.975009"
+      }
+    },
+    "fichas": {
+      "PAD-521LQI": {
+        "tareas": [],
+        "puntos": 0,
+        "recompensas": []
+      }
+    }
+  },
+  "juegos": []
 }
