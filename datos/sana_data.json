@@ -310,5 +310,18 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:54:26.862381"
+  "fecha": "2026-07-10T07:54:26.862381",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {},
+    "anuncios_padres": [],
+    "muro_tareas": {},
+    "padres": {},
+    "fichas": {}
+  },
+  "juegos": []
 }
