@@ -1,6 +1,6 @@
 """
 🌿 SANA v2.0 - Servidor Principal Completo
-Director escolar + Avisos + Bajas + Bitácora especial + Persistencia
+Primaria + Juegos + Borrado general + Admin mejorado + Persistencia
 """
 
 import os, sys, json
@@ -21,6 +21,8 @@ from zonas.escuelas import Escuelas
 from zonas.regularizacion import Regularizacion
 from zonas.usuarios import Usuarios
 from zonas.director import Director
+from zonas.primaria import Primaria
+from zonas.juegos import Juegos
 from backend.github_sync import GitHubSync
 
 respiracion = Respiracion()
@@ -35,6 +37,8 @@ escuelas = Escuelas()
 regularizacion = Regularizacion()
 usuarios = Usuarios()
 director = Director()
+primaria = Primaria()
+juegos = Juegos()
 
 PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
@@ -42,18 +46,18 @@ github = GitHubSync()
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
     github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
-    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(director.avisos)} avisos")
+    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(juegos.juegos)} juegos")
 
 def sync_all():
     if not github.modo_local:
         github.sync_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
-        datos_director = {
-            "avisos": director.avisos,
-            "bajas": director.bajas,
-            "bitacora_director": director.bitacora_director
+        datos_extra = {
+            "director": {"avisos": director.avisos, "bajas": director.bajas, "bitacora_director": director.bitacora_director},
+            "primaria": {"grupos": primaria.grupos, "anuncios_padres": primaria.anuncios_padres, "muro_tareas": primaria.muro_tareas},
+            "juegos": juegos.juegos
         }
         data = github.obtener_datos()
-        data["director"] = datos_director
+        data.update(datos_extra)
         github.guardar_datos(data)
 
 class SanaHandler(SimpleHTTPRequestHandler):
@@ -74,7 +78,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
         def q(k, d=''): return qs.get(k, [d])[0]
 
         if path == '/api/stats':
-            return self.json({"tests": 983, "modulos": 27, "version": "2.0", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "avisos": len(director.avisos)})
+            return self.json({"tests": 983, "modulos": 27, "version": "2.1", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "juegos": len(juegos.juegos), "grupos": len(primaria.grupos)})
 
         # ──── REGISTRO / LOGIN ────
         if path == '/api/registro':
@@ -114,6 +118,16 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/escuelas/registrar':
             esc = escuelas.registrar_escuela(q('nombre', ''), int(q('docentes', '0')), int(q('admin', '0')))
             sync_all(); return self.json({"escuela": esc})
+        if path == '/api/escuelas/ver':
+            esc = escuelas.obtener_escuela(q('codigo', ''))
+            return self.json({"escuela": esc}) if esc else self.json({"error": "No encontrada"}, 404)
+        if path == '/api/escuelas/borrar':
+            cod = q('codigo', '')
+            if cod in escuelas.escuelas:
+                del escuelas.escuelas[cod]
+                escuelas._guardar(); sync_all()
+                return self.json({"ok": True})
+            return self.json({"error": "No encontrada"}, 404)
 
         # ──── DIRECTOR: Avisos ────
         if path == '/api/director/avisos':
@@ -158,6 +172,41 @@ class SanaHandler(SimpleHTTPRequestHandler):
             if ok: sync_all()
             return self.json({"ok": ok})
 
+        # ──── PRIMARIA: Grupos ────
+        if path == '/api/primaria/grupos':
+            return self.json({"grupos": primaria.obtener_grupos(q('escuela', ''), q('docente', ''))})
+        if path == '/api/primaria/crear-grupo':
+            g = primaria.crear_grupo(q('escuela', ''), q('nombre', ''), q('docente', ''))
+            sync_all(); return self.json({"guardado": True, "grupo": g})
+        if path == '/api/primaria/eliminar-grupo':
+            primaria.eliminar_grupo(q('id', '')); sync_all(); return self.json({"ok": True})
+
+        # ──── PRIMARIA: Anuncios padres ────
+        if path == '/api/primaria/anuncios-padres':
+            return self.json({"anuncios": primaria.obtener_anuncios_padres(q('escuela', ''))})
+        if path == '/api/primaria/publicar-anuncio-padres':
+            primaria.publicar_anuncio_padres(q('escuela', ''), q('titulo', ''), q('mensaje', ''), q('autor', ''))
+            sync_all(); return self.json({"guardado": True})
+        if path == '/api/primaria/eliminar-anuncio-padres':
+            primaria.eliminar_anuncio_padres(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── PRIMARIA: Muro tareas ────
+        if path == '/api/primaria/tareas':
+            return self.json({"tareas": primaria.obtener_tareas(q('escuela', ''), q('grupo', ''))})
+        if path == '/api/primaria/agregar-tarea':
+            primaria.agregar_tarea(q('escuela', ''), q('grupo', ''), q('titulo', ''), q('descripcion', ''))
+            sync_all(); return self.json({"guardado": True})
+        if path == '/api/primaria/eliminar-tarea':
+            primaria.eliminar_tarea(q('escuela', ''), q('grupo', ''), int(q('id', '0'))); sync_all()
+            return self.json({"ok": True})
+
+        # ──── JUEGOS ────
+        if path == '/api/juegos/lista':
+            return self.json({"juegos": juegos.obtener_juegos(q('categoria', ''))})
+        if path == '/api/juegos/ver':
+            j = juegos.obtener_juego(int(q('id', '0')))
+            return self.json({"juego": j}) if j else self.json({"error": "No encontrado"}, 404)
+
         # ──── RESPIRACIÓN ────
         if path == '/api/respiracion/lista':
             return self.json({"ejercicios": [{"clave": c, "nombre": e["nombre"], "descripcion": e["descripcion"], "nivel": e["nivel"], "ciclos": e["ciclos"]} for c, e in respiracion.EJERCICIOS.items()]})
@@ -189,6 +238,8 @@ class SanaHandler(SimpleHTTPRequestHandler):
             sync_all(); return self.json({"guardado": True, "entrada": e})
         if path == '/api/bitacora/compartir': ok = bitacora.compartir_entrada(int(q('id', '0')), q('codigo', '')); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/bitacora/compartidas': return self.json({"entradas": bitacora.obtener_compartidas(q('codigo', ''))})
+        if path == '/api/bitacora/borrar':
+            bitacora.eliminar_entrada(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
 
         # ──── ORGANIZADOR ────
         if path == '/api/organizador/planes': return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
@@ -199,6 +250,8 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/organizador/compartir-plan': ok = organizador.compartir_plan(int(q('id', '0')), q('alumno_id', '')); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/hacer-publico': ok = organizador.hacer_publico(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/hacer-privado': ok = organizador.hacer_privado(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
+        if path == '/api/organizador/borrar-plan':
+            organizador.eliminar_plan(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
 
         # ──── REGULARIZACIÓN ────
         if path == '/api/regularizacion/materias': return self.json({"materias": regularizacion.obtener_materias()})
@@ -211,8 +264,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
 
         # ──── ESTÁTICOS ────
-        if path == '/' or path == '':
-            self.path = '/index.html'
+        if path == '/' or path == '': self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
@@ -237,13 +289,21 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/alertas/agregar':
             alertas.agregar_contacto(v('nombre', ''), v('telefono', ''), v('relacion', ''), v('escuela', ''))
             sync_all(); return self.json({"guardado": True})
+
+        # ──── JUEGOS ────
+        if path == '/api/juegos/agregar':
+            juego = juegos.agregar_juego(v('titulo', ''), v('descripcion', ''), v('html_code', ''), v('categoria', 'general'))
+            sync_all(); return self.json({"guardado": True, "juego": juego})
+        if path == '/api/juegos/borrar':
+            juegos.eliminar_juego(int(v('id', '0'))); sync_all(); return self.json({"ok": True})
+
         return self.json({"error": "Not found"}, 404)
 
     def log_message(self, f, *a): print(f"🌿 {self.client_address[0]} - {f % a}")
 
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    print(f"🌿 SANA v2.0 :{PUERTO}")
+    print(f"🌿 SANA v2.1 :{PUERTO}")
     HTTPServer(('0.0.0.0', PUERTO), SanaHandler).serve_forever()
 
 if __name__ == '__main__':
