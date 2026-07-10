@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#060613">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>🌿 SANA - Tu espacio seguro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -15,15 +13,10 @@
             --purple: #a78bfa; --purple2: #7c3aed; --green: #6ee7b7; --green2: #34d399;
             --orange: #fbbf24; --red: #fca5a5; --blue: #93c5fd; --pink: #f9a8d4; --gold: #fbbf24;
             --radius: 1.4rem; --radius-sm: 0.9rem; --nav-h: 72px;
-            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
         }
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{
-            font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);
-            min-height:100vh;min-height:100dvh;overflow-x:hidden;
-            -webkit-tap-highlight-color:transparent;padding-bottom:var(--nav-h);
-            -webkit-font-smoothing:antialiased;
-        }
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-bottom:var(--nav-h);-webkit-font-smoothing:antialiased;}
         .cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;}
         .cosmos .nebula{position:absolute;border-radius:50%;filter:blur(130px);opacity:0.18;animation:drift 28s infinite ease-in-out;}
         .cosmos .nebula:nth-child(1){width:450px;height:450px;background:var(--purple2);top:-120px;left:-120px;}
@@ -33,64 +26,66 @@
         @keyframes drift{0%,100%{transform:translate(0,0)scale(1)}25%{transform:translate(50px,-35px)scale(1.12)}50%{transform:translate(-25px,45px)scale(0.92)}75%{transform:translate(-45px,-25px)scale(1.08)}}
         @keyframes twinkle{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:1;transform:scale(2)}}
         .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0.8rem;}
-        .main-header{text-align:center;padding:2.5rem 0 1.5rem;}
+        .main-header{text-align:center;padding:2rem 0 1rem;}
         .main-header .logo-emote{font-size:3.5rem;display:inline-block;animation:levitate 3.5s ease-in-out infinite;cursor:pointer;filter:drop-shadow(0 0 25px rgba(167,139,250,0.4));}
         @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        .main-header h1{font-size:2.8rem;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,var(--purple) 0%,var(--green) 40%,var(--blue) 70%,var(--purple) 100%);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;line-height:1;}
+        .main-header h1{font-size:2.8rem;font-weight:900;letter-spacing:-3px;background:linear-gradient(135deg,var(--purple),var(--green),var(--blue),var(--purple));background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;line-height:1;}
         @keyframes shimmer{to{background-position:300% center}}
         .main-header .tagline{font-size:0.7rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:0.3rem;}
         .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(8,8,28,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);padding:0 0.3rem;padding-bottom:env(safe-area-inset-bottom,0);}
-        .bottom-nav .nav-item{background:none;border:none;color:var(--muted);font-size:0.6rem;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:0.25rem;cursor:pointer;transition:var(--transition);padding:0.4rem 0.2rem;min-width:58px;position:relative;}
-        .bottom-nav .nav-item .nav-emoji{font-size:1.5rem;transition:transform 0.3s;}
+        .bottom-nav .nav-item{background:none;border:none;color:var(--muted);font-size:0.6rem;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:0.25rem;cursor:pointer;transition:var(--transition);padding:0.4rem 0.2rem;min-width:55px;position:relative;}
+        .bottom-nav .nav-item .nav-emoji{font-size:1.4rem;transition:transform 0.2s;}
         .bottom-nav .nav-item.active{color:var(--purple);}.bottom-nav .nav-item.active .nav-emoji{transform:scale(1.2);}
-        .bottom-nav .nav-item.active::after{content:'';position:absolute;top:-1px;width:30px;height:3px;background:var(--purple);border-radius:0 0 1rem 1rem;}
+        .bottom-nav .nav-item.active::after{content:'';position:absolute;top:-1px;width:24px;height:3px;background:var(--purple);border-radius:0 0 1rem 1rem;}
         .bottom-nav .nav-item:active{transform:scale(0.88);}
-        .page{display:none;animation:pageIn 0.35s ease;min-height:60vh;}.page.active{display:block;}
-        @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-top:0.5rem;}
-        .home-card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem 1rem;text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;}
+        .page{display:none;animation:pageIn 0.25s ease;min-height:60vh;}.page.active{display:block;}
+        @keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.5rem;}
+        .home-card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem 0.8rem;text-align:center;cursor:pointer;transition:var(--transition);}
         .home-card:nth-child(1){border-top:3px solid var(--purple);}.home-card:nth-child(2){border-top:3px solid var(--green);}.home-card:nth-child(3){border-top:3px solid var(--orange);}.home-card:nth-child(4){border-top:3px solid var(--red);}.home-card:nth-child(5){border-top:3px solid var(--gold);}
-        .home-card:active{transform:scale(0.93);}.home-card .hc-emoji{font-size:3rem;display:block;margin-bottom:0.7rem;transition:transform 0.3s;}
-        .home-card:active .hc-emoji{transform:scale(1.2);}.home-card .hc-title{font-weight:700;font-size:0.95rem;margin-bottom:0.2rem;}.home-card .hc-sub{font-size:0.65rem;color:var(--muted);}
-        .card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:0.8rem;transition:var(--transition);}
-        .card:active{transform:scale(0.97);}.card-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;}
-        .card-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-        .c-purple{background:rgba(167,139,250,0.18);}.c-green{background:rgba(110,231,183,0.18);}.c-blue{background:rgba(147,197,253,0.18);}.c-orange{background:rgba(251,191,36,0.18);}.c-pink{background:rgba(249,168,212,0.18);}.c-red{background:rgba(252,165,165,0.18);}.c-gold{background:rgba(251,191,36,0.2);}
-        .card-title{font-weight:700;font-size:0.9rem;}.card-sub{font-size:0.7rem;color:var(--muted);}
-        input,textarea,select{width:100%;padding:0.75rem 1.1rem;border-radius:2.5rem;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:0.85rem;outline:none;transition:var(--transition);font-family:'Inter',sans-serif;margin-bottom:0.5rem;-webkit-appearance:none;}
-        input:focus,textarea:focus,select:focus{border-color:var(--purple);box-shadow:0 0 20px rgba(167,139,250,0.1);}
-        textarea{border-radius:var(--radius-sm);resize:vertical;min-height:80px;}
+        .home-card:active{transform:scale(0.93);}.home-card .hc-emoji{font-size:2.5rem;display:block;margin-bottom:0.5rem;transition:transform 0.2s;}
+        .home-card:active .hc-emoji{transform:scale(1.2);}.home-card .hc-title{font-weight:700;font-size:0.9rem;}.home-card .hc-sub{font-size:0.6rem;color:var(--muted);}
+        .card{background:var(--card);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.6rem;transition:var(--transition);}
+        .card-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;}
+        .card-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+        .c-purple{background:rgba(167,139,250,0.18);}.c-green{background:rgba(110,231,183,0.18);}.c-blue{background:rgba(147,197,253,0.18);}.c-orange{background:rgba(251,191,36,0.18);}.c-pink{background:rgba(249,168,212,0.18);}.c-gold{background:rgba(251,191,36,0.2);}
+        .card-title{font-weight:700;font-size:0.85rem;}.card-sub{font-size:0.65rem;color:var(--muted);}
+        input,textarea,select{width:100%;padding:0.65rem 1rem;border-radius:2rem;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font-size:0.82rem;outline:none;transition:var(--transition);font-family:'Inter',sans-serif;margin-bottom:0.4rem;-webkit-appearance:none;}
+        input:focus,textarea:focus,select:focus{border-color:var(--purple);}
+        textarea{border-radius:var(--radius-sm);resize:vertical;min-height:70px;}
         select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%239090b0'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
-        .btn{padding:0.75rem 1.6rem;border-radius:2.5rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.85rem;display:inline-flex;align-items:center;justify-content:center;gap:0.3rem;letter-spacing:-0.2px;}
-        .btn:active{transform:scale(0.94);}.btn-primary{background:var(--purple2);color:#fff;}.btn-green{background:var(--green2);color:#0a0a1a;}.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-danger{background:rgba(252,165,165,0.12);color:var(--red);border:1px solid rgba(252,165,165,0.2);}.btn-gold{background:var(--gold);color:#0a0a1a;}.btn-sm{padding:0.45rem 1rem;font-size:0.72rem;}.btn-block{width:100%;}.btn-xs{padding:0.3rem 0.7rem;font-size:0.65rem;border-radius:1.5rem;}
-        .profile-bar{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 1rem;background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.15);border-radius:3rem;margin-bottom:1rem;font-size:0.8rem;}
+        .btn{padding:0.65rem 1.4rem;border-radius:2rem;border:none;font-weight:700;cursor:pointer;transition:var(--transition);font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:0.3rem;}
+        .btn:active{transform:scale(0.94);}.btn-primary{background:var(--purple2);color:#fff;}.btn-green{background:var(--green2);color:#0a0a1a;}.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}.btn-danger{background:rgba(252,165,165,0.12);color:var(--red);border:1px solid rgba(252,165,165,0.2);}.btn-gold{background:var(--gold);color:#0a0a1a;}.btn-sm{padding:0.4rem 0.8rem;font-size:0.7rem;}.btn-block{width:100%;}.btn-xs{padding:0.25rem 0.6rem;font-size:0.62rem;border-radius:1.5rem;}
+        .profile-bar{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.8rem;background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.15);border-radius:2.5rem;margin-bottom:0.8rem;font-size:0.75rem;}
         .profile-bar.dir-bar{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);}
-        .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;}
-        .av-green{background:var(--green2);color:#0a0a1a;}.av-purple{background:var(--purple2);color:#fff;}.av-blue{background:var(--blue);color:#0a0a1a;}.av-gold{background:var(--gold);color:#0a0a1a;}
-        .chat-box{background:rgba(0,0,0,0.25);border-radius:var(--radius-sm);padding:0.8rem;min-height:200px;max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.5rem;}
-        .chat-msg{padding:0.65rem 0.9rem;border-radius:1.2rem;font-size:0.8rem;max-width:82%;animation:msgPop 0.3s ease;line-height:1.4;}
-        @keyframes msgPop{from{opacity:0;transform:translateY(8px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+        .avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+        .av-green{background:var(--green2);color:#0a0a1a;}.av-purple{background:var(--purple2);color:#fff;}.av-gold{background:var(--gold);color:#0a0a1a;}
+        .chat-box{background:rgba(0,0,0,0.25);border-radius:var(--radius-sm);padding:0.7rem;min-height:180px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.4rem;}
+        .chat-msg{padding:0.55rem 0.8rem;border-radius:1rem;font-size:0.78rem;max-width:82%;animation:msgPop 0.2s ease;line-height:1.3;}
+        @keyframes msgPop{from{opacity:0;transform:translateY(6px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
         .chat-msg.user{background:var(--purple2);align-self:flex-end;border-bottom-right-radius:0.3rem;}
         .chat-msg.bot{background:rgba(255,255,255,0.07);align-self:flex-start;border-bottom-left-radius:0.3rem;}
-        .chat-input-row{display:flex;gap:0.4rem;}.chat-input-row input{margin-bottom:0;flex:1;}
-        .breath-circle{width:130px;height:130px;border-radius:50%;margin:1rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;cursor:pointer;transition:all 0.12s ease;box-shadow:0 0 35px rgba(124,58,237,0.35);user-select:none;}
-        .breath-circle.inhale{transform:scale(1.45);box-shadow:0 0 55px rgba(110,231,183,0.5);}.breath-circle.exhale{transform:scale(0.72);box-shadow:0 0 15px rgba(124,58,237,0.15);}
-        .entry-list{display:flex;flex-direction:column;gap:0.4rem;max-height:320px;overflow-y:auto;}
-        .entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 0.9rem;font-size:0.76rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;}
-        .entry .entry-info{flex:1;}.entry .entry-meta{font-size:0.62rem;color:var(--muted);margin-top:0.25rem;display:flex;gap:0.4rem;flex-wrap:wrap;}
-        .badge{padding:0.12rem 0.45rem;border-radius:1rem;font-size:0.58rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+        .chat-input-row{display:flex;gap:0.3rem;}.chat-input-row input{margin-bottom:0;flex:1;}
+        .breath-circle{width:120px;height:120px;border-radius:50%;margin:1rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;cursor:pointer;transition:all 0.1s ease;box-shadow:0 0 30px rgba(124,58,237,0.35);user-select:none;}
+        .breath-circle.inhale{transform:scale(1.4);box-shadow:0 0 50px rgba(110,231,183,0.5);}.breath-circle.exhale{transform:scale(0.7);box-shadow:0 0 15px rgba(124,58,237,0.2);}
+        .entry-list{display:flex;flex-direction:column;gap:0.3rem;max-height:280px;overflow-y:auto;}
+        .entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.6rem 0.8rem;font-size:0.73rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.4rem;}
+        .entry .entry-info{flex:1;}.entry .entry-meta{font-size:0.6rem;color:var(--muted);margin-top:0.2rem;display:flex;gap:0.3rem;flex-wrap:wrap;}
+        .badge{padding:0.1rem 0.4rem;border-radius:1rem;font-size:0.55rem;font-weight:600;text-transform:uppercase;}
         .b-green{background:rgba(110,231,183,0.18);color:var(--green);}.b-orange{background:rgba(251,191,36,0.18);color:var(--orange);}.b-blue{background:rgba(147,197,253,0.18);color:var(--blue);}.b-red{background:rgba(252,165,165,0.18);color:var(--red);}.b-purple{background:rgba(167,139,250,0.18);color:var(--purple);}.b-gold{background:rgba(251,191,36,0.2);color:var(--gold);}
-        .toast{position:fixed;bottom:calc(var(--nav-h) + 1rem);left:50%;transform:translateX(-50%) translateY(130px);background:var(--card);border:1px solid var(--border);border-radius:3rem;padding:0.65rem 1.3rem;font-size:0.78rem;z-index:200;transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;backdrop-filter:blur(25px);white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+        .toast{position:fixed;bottom:calc(var(--nav-h) + 1rem);left:50%;transform:translateX(-50%) translateY(130px);background:var(--card);border:1px solid var(--border);border-radius:2.5rem;padding:0.55rem 1.1rem;font-size:0.75rem;z-index:200;transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;backdrop-filter:blur(25px);white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
         .toast.show{transform:translateX(-50%) translateY(0);}
-        .section-title{font-size:1.25rem;font-weight:800;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.4rem;}
-        .text-center{text-align:center;}.text-muted{color:var(--muted);font-size:0.7rem;}.mt-1{margin-top:0.5rem;}.mt-2{margin-top:1rem;}.mb-1{margin-bottom:0.5rem;}
-        .divider{height:1px;background:var(--border);margin:1rem 0;}
-        .flex{display:flex;gap:0.5rem;}.flex-wrap{flex-wrap:wrap;}.flex-col{flex-direction:column;}
-        .file-upload{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition);margin-bottom:0.5rem;}
-        .file-upload:hover{border-color:var(--purple);background:rgba(167,139,250,0.05);}.file-upload .fu-icon{font-size:2rem;margin-bottom:0.3rem;}
-        .aviso-card{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius-sm);padding:0.9rem;margin-bottom:0.5rem;border-left:3px solid var(--gold);}
-        .aviso-card .aviso-title{font-weight:700;font-size:0.85rem;color:var(--gold);}
-        @media(max-width:400px){.home-grid{grid-template-columns:1fr;gap:0.6rem;}.main-header h1{font-size:2.2rem;}}
+        .section-title{font-size:1.15rem;font-weight:800;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.3rem;}
+        .text-center{text-align:center;}.text-muted{color:var(--muted);font-size:0.65rem;}.mt-1{margin-top:0.4rem;}.mb-1{margin-bottom:0.4rem;}
+        .divider{height:1px;background:var(--border);margin:0.8rem 0;}
+        .flex{display:flex;gap:0.4rem;}.flex-wrap{flex-wrap:wrap;}
+        .file-upload{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;text-align:center;cursor:pointer;transition:var(--transition);margin-bottom:0.4rem;}
+        .file-upload:active{border-color:var(--purple);background:rgba(167,139,250,0.05);}
+        .aviso-card{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius-sm);padding:0.7rem;margin-bottom:0.4rem;border-left:3px solid var(--gold);}
+        .aviso-card .aviso-title{font-weight:700;font-size:0.8rem;color:var(--gold);}
+        .skeleton{background:linear-gradient(90deg,rgba(255,255,255,0.03) 25%,rgba(255,255,255,0.06) 50%,rgba(255,255,255,0.03) 75%);background-size:200% 100%;animation:skeleton 1.5s infinite;border-radius:0.5rem;height:2rem;}
+        @keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        @media(max-width:400px){.home-grid{grid-template-columns:1fr;}.main-header h1{font-size:2.2rem;}}
     </style>
 </head>
 <body>
@@ -100,31 +95,30 @@
 
 <!-- HOME -->
 <div class="page active" id="page-home">
-<div class="home-grid" style="grid-template-columns:1fr 1fr;">
+<div class="home-grid">
 <div class="home-card" onclick="nav('alumnos')"><span class="hc-emoji">🎓</span><span class="hc-title">Alumnos</span><span class="hc-sub">Chat · Respira · Diario</span></div>
 <div class="home-card" onclick="nav('docentes')"><span class="hc-emoji">👨‍🏫</span><span class="hc-title">Docentes</span><span class="hc-sub">Bitácora · Guías · Planes</span></div>
-<div class="home-card" onclick="nav('director')"><span class="hc-emoji">👔</span><span class="hc-title">Director</span><span class="hc-sub">Avisos · Bajas · Reportes</span></div>
-<div class="home-card" onclick="nav('biblioteca')"><span class="hc-emoji">📚</span><span class="hc-title">Biblioteca</span><span class="hc-sub">Guías · Planes públicos</span></div>
-<div class="home-card" onclick="nav('admin')" style="grid-column:1/-1;"><span class="hc-emoji">⚙️</span><span class="hc-title">Administrador</span><span class="hc-sub">Escuelas · Códigos</span></div>
+<div class="home-card" onclick="nav('director')"><span class="hc-emoji">👔</span><span class="hc-title">Director</span><span class="hc-sub">Avisos · Bajas</span></div>
+<div class="home-card" onclick="nav('biblioteca')"><span class="hc-emoji">📚</span><span class="hc-title">Biblioteca</span><span class="hc-sub">Guías · Planes</span></div>
 </div></div>
 
 <!-- ALUMNOS -->
 <div class="page" id="page-alumnos">
 <div id="alumnoLogin"><div class="section-title">🎓 Alumnos</div>
-<div class="card"><div class="card-row"><div class="card-icon c-purple">✨</div><div><div class="card-title">Crear cuenta</div><div class="card-sub">Gratis, anónimo y seguro</div></div></div>
-<input type="text" id="alumnoNombre" placeholder="Tu nombre o apodo"><button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear mi espacio</button>
+<div class="card"><div class="card-row"><div class="card-icon c-purple">✨</div><div><div class="card-title">Crear cuenta</div><div class="card-sub">Gratis y anónimo</div></div></div>
+<input type="text" id="alumnoNombre" placeholder="Tu nombre o apodo" autocomplete="off"><button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear mi espacio</button>
 <div class="divider"></div><p class="text-muted text-center mb-1">¿Ya tienes cuenta?</p>
-<input type="text" id="alumnoId" placeholder="Pega tu ID de acceso"><button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar</button></div></div>
+<input type="text" id="alumnoId" placeholder="Pega tu ID" autocomplete="off"><button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar</button></div></div>
 <div id="alumnoPanel" style="display:none;">
 <div class="profile-bar"><div class="avatar av-purple" id="aluAvatar">A</div><div><strong id="aluName">Alumno</strong><br><span class="text-muted" id="aluId"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAlu()">🚪</button></div>
-<div class="card"><div class="card-row"><div class="card-icon c-purple">🤖</div><div><div class="card-title">Sana IA</div><div class="card-sub">Tu amiga virtual 24/7</div></div></div>
-<div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. Estoy aquí para ti. 💜</div></div>
-<div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe lo que sientas..." onkeypress="if(event.key==='Enter')sendMsg()"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-purple">🤖</div><div><div class="card-title">Sana IA</div></div></div>
+<div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes? 💜</div></div>
+<div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMsg()" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div></div>
 <div class="card"><div class="card-row"><div class="card-icon c-green">🫁</div><div><div class="card-title">Respiración</div></div></div>
 <select id="breathSelect" onchange="loadBreath()"><option value="">Elige...</option></select>
 <div id="breathInfo" style="display:none;"><div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div><p class="text-center text-muted" id="breathText">Toca para empezar</p></div></div>
 <div class="card"><div class="card-row"><div class="card-icon c-pink">📝</div><div><div class="card-title">Diario</div></div></div>
-<div class="flex flex-wrap" id="moodSel"><button class="btn btn-outline btn-xs" onclick="setMood('😊 Feliz',this)">😊</button><button class="btn btn-outline btn-xs" onclick="setMood('😢 Triste',this)">😢</button><button class="btn btn-outline btn-xs" onclick="setMood('😰 Ansioso',this)">😰</button><button class="btn btn-outline btn-xs" onclick="setMood('😠 Enojado',this)">😠</button><button class="btn btn-outline btn-xs" onclick="setMood('😌 Calma',this)">😌</button></div>
+<div class="flex flex-wrap" id="moodSel"><button class="btn btn-outline btn-xs" onclick="setMood('😊',this)">😊</button><button class="btn btn-outline btn-xs" onclick="setMood('😢',this)">😢</button><button class="btn btn-outline btn-xs" onclick="setMood('😰',this)">😰</button><button class="btn btn-outline btn-xs" onclick="setMood('😠',this)">😠</button><button class="btn btn-outline btn-xs" onclick="setMood('😌',this)">😌</button></div>
 <textarea id="diarioText" placeholder="Hoy me siento..."></textarea><button class="btn btn-primary btn-block" onclick="saveDiary()">💾 Guardar</button>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDiary()">📋 Ver diario</button><div id="diaryList"></div></div>
 <div class="card"><div class="card-row"><div class="card-icon c-blue">🎯</div><div><div class="card-title">Mis Planes</div></div></div>
@@ -136,28 +130,28 @@
 <div class="page" id="page-docentes">
 <div id="docenteLogin"><div class="section-title">👨‍🏫 Docentes</div>
 <div class="card"><div class="card-row"><div class="card-icon c-green">🔐</div><div><div class="card-title">Acceso</div><div class="card-sub">Código de profesor o escuela</div></div></div>
-<input type="text" id="docCodigo" placeholder="Código (DOC-XXXXXX o ESC-XXXXXX)"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button>
+<input type="text" id="docCodigo" placeholder="Código (DOC-XXXXXX o ESC-XXXXXX)" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button>
 <p id="docError" style="color:var(--red);font-size:0.7rem;display:none;"></p><div class="divider"></div>
 <p class="text-muted text-center mb-1">¿Primera vez?</p>
-<input type="text" id="docNombreReg" placeholder="Tu nombre completo"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar perfil</button></div></div>
+<input type="text" id="docNombreReg" placeholder="Tu nombre completo" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar perfil</button></div></div>
 <div id="docentePanel" style="display:none;">
-<div class="profile-bar"><div class="avatar av-green" id="docAvatar">D</div><div><strong id="docName">Docente</strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
+<div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName">Docente</strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
 <div id="avisosDocente"></div>
 <div class="card"><div class="card-row"><div class="card-icon c-green">📋</div><div><div class="card-title">Bitácora</div></div></div>
 <select id="bitTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select>
-<input type="text" id="bitAlumno" placeholder="Nombre alumno"><input type="text" id="bitGrupo" placeholder="Grupo"><textarea id="bitTexto" placeholder="Descripción..."></textarea>
+<input type="text" id="bitAlumno" placeholder="Nombre alumno" autocomplete="off"><input type="text" id="bitGrupo" placeholder="Grupo" autocomplete="off"><textarea id="bitTexto" placeholder="Descripción..."></textarea>
 <button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar</button>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBit()">📋 Ver</button>
-<div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID entrada"><input type="text" id="bitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗</button></div>
+<div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID"><input type="text" id="bitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗</button></div>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBitCompartidas()">📋 Compartidas</button><div id="bitList"></div></div>
 <div class="card"><div class="card-row"><div class="card-icon c-orange">📤</div><div><div class="card-title">Publicar Guía</div></div></div>
-<select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título"><textarea id="guiaContenido" placeholder="Contenido..."></textarea>
+<select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título" autocomplete="off"><textarea id="guiaContenido" placeholder="Contenido..."></textarea>
 <div class="file-upload" onclick="document.getElementById('guiaArchivo').click()"><div class="fu-icon">📎</div><p class="text-muted">Adjuntar PDF/imagen</p><span id="fileName"></span></div>
 <input type="file" id="guiaArchivo" accept=".pdf,image/*" style="display:none;" onchange="previewFile()">
 <button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar</button></div>
 <div class="card"><div class="card-row"><div class="card-icon c-blue">🎯</div><div><div class="card-title">Crear Plan</div></div></div>
 <select id="planVisibilidad"><option value="privado">🔒 Privado</option><option value="publico">🌍 Público</option><option value="compartido">🔗 Compartido</option></select>
-<input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;"><input type="text" id="planNombre" placeholder="Nombre"><input type="text" id="planObjetivo" placeholder="Objetivo"><textarea id="planActividades" placeholder="Actividades..."></textarea>
+<input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;" autocomplete="off"><input type="text" id="planNombre" placeholder="Nombre" autocomplete="off"><input type="text" id="planObjetivo" placeholder="Objetivo" autocomplete="off"><textarea id="planActividades" placeholder="Actividades..."></textarea>
 <button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear</button>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Mis planes</button><div id="planesDocenteList"></div></div></div></div>
 
@@ -165,33 +159,30 @@
 <div class="page" id="page-director">
 <div id="directorLogin"><div class="section-title">👔 Director</div>
 <div class="card"><div class="card-row"><div class="card-icon c-gold">🏫</div><div><div class="card-title">Acceso Director</div><div class="card-sub">Código de escuela (ESC-XXXXXX)</div></div></div>
-<input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button>
+<input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX" autocomplete="off"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button>
 <p id="dirError" style="color:var(--red);font-size:0.7rem;display:none;"></p></div></div>
 <div id="directorPanel" style="display:none;">
 <div class="profile-bar dir-bar"><div class="avatar av-gold">👔</div><div><strong id="dirName">Director</strong><br><span class="text-muted" id="dirInfo"></span></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div><div class="card-title">Publicar Aviso</div><div class="card-sub">Solo docentes de tu escuela lo verán</div></div></div>
-<input type="text" id="avisoTitulo" placeholder="Título del aviso"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea>
+<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div><div class="card-title">Publicar Aviso</div></div></div>
+<input type="text" id="avisoTitulo" placeholder="Título" autocomplete="off"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea>
 <button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver avisos</button><div id="avisosList"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-red">🔄</div><div><div class="card-title">Gestionar Docentes</div><div class="card-sub">Dar de baja y generar nuevos códigos</div></div></div>
-<input type="text" id="bajaCodigo" placeholder="Código del docente a dar de baja"><input type="text" id="bajaMotivo" placeholder="Motivo de la baja"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button>
-<button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Generar nuevo código</button>
-<button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Ver reporte mensual</button><div id="bajasList"></div></div>
-
-<div class="card"><div class="card-row"><div class="card-icon c-purple">📋</div><div><div class="card-title">Bitácora del Director</div><div class="card-sub">Solo admin y docentes autorizados</div></div></div>
-<textarea id="dirBitacoraTexto" placeholder="Entrada de bitácora..."></textarea>
+<div class="card"><div class="card-row"><div class="card-icon c-red">🔄</div><div><div class="card-title">Gestionar Docentes</div></div></div>
+<input type="text" id="bajaCodigo" placeholder="Código a dar de baja" autocomplete="off"><input type="text" id="bajaMotivo" placeholder="Motivo" autocomplete="off"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button>
+<button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Nuevo código</button>
+<button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Reporte mensual</button><div id="bajasList"></div></div>
+<div class="card"><div class="card-row"><div class="card-icon c-purple">📋</div><div><div class="card-title">Bitácora del Director</div></div></div>
+<textarea id="dirBitacoraTexto" placeholder="Entrada..."></textarea>
 <button class="btn btn-primary btn-block" onclick="addDirBit()">📝 Registrar</button>
 <div class="flex mt-1"><input type="text" id="dirBitCompartirId" placeholder="ID"><input type="text" id="dirBitCompartirCodigo" placeholder="Código"><button class="btn btn-green btn-sm" onclick="compartirDirBit()">🔗</button></div>
 <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDirBit()">📋 Ver bitácora</button><div id="dirBitList"></div></div></div></div>
 
-<!-- BIBLIOTECA y ADMMIN (compactos) -->
+<!-- BIBLIOTECA & ADMIN -->
 <div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div>
 <select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div>
 <div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
 <div class="page" id="page-admin"><div id="adminLock"><div class="section-title">⚙️ Admin</div>
-<div class="card text-center"><div style="font-size:3.5rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
+<div class="card text-center"><div style="font-size:3rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button><p id="adminError" style="color:var(--red);display:none;">❌ Incorrecto</p></div></div>
 <div id="adminPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-purple">A</div><div><strong>Admin</strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAdmin()">🚪</button></div>
 <div class="card"><input type="text" id="escNombre" placeholder="Nombre"><input type="number" id="escDocs" value="3"><input type="number" id="escAdmins" value="1"><button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar</button><div id="escResult"></div></div>
 <button class="btn btn-outline btn-block btn-sm" onclick="listEsc()">📋 Escuelas</button><div id="escList"></div></div></div>
@@ -207,79 +198,148 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════
+// SANA v2.0 - MOTOR OPTIMIZADO ⚡
+// ═══════════════════════════════════════
 const API='/api';const $=id=>document.getElementById(id);
-const S={page:'home',mood:null,breathing:false,breathTimer:null,breathCycles:0,breathMax:4,alu:null,doc:null,dir:null,admin:false,exercise:null,archivoB64:null,archivoTipo:null,archivoNombre:null};
-(function(){const c=$('cosmos');for(let i=0;i<70;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;animation-delay:${Math.random()*4}s`;c.appendChild(s);}})();
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
-async function GET(e){try{return await(await fetch(API+e)).json();}catch{toast('📴 Sin conexión');return null;}}
-async function POST(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');return await(await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b})).json();}catch{toast('📴 Error');return null;}}
-function nav(p){S.page=p;document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));const t=$('page-'+p);if(t)t.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(p==='alumnos'){loadBreaths();loadPaises();}if(p==='biblioteca'){loadMatsFiltro();loadGuias();loadPlanesPublicos();}if(p==='docentes'&&S.doc)loadAvisosDocente();}
-document.querySelector('.bottom-nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b)nav(b.dataset.page);});
-document.querySelectorAll('.home-card').forEach((c,i)=>{const pages=['alumnos','docentes','director','biblioteca','admin'];if(i<5)c.addEventListener('click',()=>nav(pages[i]));});
+const LS=localStorage;
+const S={
+    page:'home',mood:null,breathing:false,breathTimer:null,breathCycles:0,breathMax:4,
+    alu:JSON.parse(LS.getItem('sana_alu')||'null'),
+    doc:JSON.parse(LS.getItem('sana_doc')||'null'),
+    dir:JSON.parse(LS.getItem('sana_dir')||'null'),
+    admin:false,exercise:null,
+    archivoB64:null,archivoTipo:null,archivoNombre:null
+};
 
-// ═══════════ ALUMNO ═══════════
-async function regAlumno(){const n=$('alumnoNombre').value.trim();if(!n)return toast('⚠️ Pon tu nombre');const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=alumno');if(d&&d.user){S.alu=d.user;showAluPanel();toast('✅ ID: '+d.user.id);navigator.clipboard.writeText(d.user.id);}}
-async function loginAlumno(){const id=$('alumnoId').value.trim();if(!id)return;const d=await GET('/login?user_id='+id);if(d&&d.valido){S.alu=d.user;showAluPanel();toast('✅ '+d.user.nombre);}else toast('❌ No encontrado');}
-function showAluPanel(){$('alumnoLogin').style.display='none';$('alumnoPanel').style.display='block';$('aluAvatar').textContent=(S.alu.nombre||'A')[0].toUpperCase();$('aluName').textContent=S.alu.nombre;$('aluId').textContent='ID: '+S.alu.id;}
-function logoutAlu(){S.alu=null;$('alumnoLogin').style.display='block';$('alumnoPanel').style.display='none';}
-async function sendMsg(){const i=$('chatInput'),m=i.value.trim();if(!m)return;addChat(m,'user');i.value='';i.focus();const d=await POST('/chat',{mensaje:m});if(d)addChat(d.respuesta,'bot');}
+// ⚡ INICIALIZACIÓN INSTANTÁNEA
+(function(){
+    const c=$('cosmos');for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-delay:${Math.random()*3}s`;c.appendChild(s);}
+    // Restaurar sesión al instante
+    if(S.alu) showAluPanel(true);
+    if(S.doc){$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=S.doc.escuela||'Docente';$('docInfo').textContent='Código: '+(S.doc.codigo_escuela||'');}
+    if(S.dir){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent='Código: '+S.dir.codigo_escuela;}
+})();
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);}
+async function GET(e){try{return await(await fetch(API+e)).json();}catch{return null;}}
+async function POST(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(d[k])).join('&');return await(await fetch(API+e,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:b})).json();}catch{return null;}}
+
+function nav(p){
+    S.page=p;
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));
+    document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+    const t=$('page-'+p);if(t)t.classList.add('active');
+    window.scrollTo({top:0,behavior:'instant'});
+    if(p==='alumnos'){loadBreaths();loadPaises();}
+    if(p==='biblioteca'){loadMatsFiltro();loadGuias();loadPlanesPublicos();}
+    if(p==='docentes'&&S.doc)loadAvisosDocente();
+}
+document.querySelector('.bottom-nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b)nav(b.dataset.page);});
+document.querySelectorAll('.home-card').forEach((c,i)=>{const p=['alumnos','docentes','director','biblioteca'];if(i<4)c.addEventListener('click',()=>nav(p[i]));});
+
+// ⚡ ALUMNO - REGISTRO INSTANTÁNEO
+async function regAlumno(){
+    const n=$('alumnoNombre').value.trim();if(!n)return toast('⚠️ Pon tu nombre');
+    // Mostrar panel AL INSTANTE
+    const tempUser={id:'temp_'+Date.now(),nombre:n,tipo:'alumno'};
+    S.alu=tempUser;LS.setItem('sana_alu',JSON.stringify(tempUser));
+    showAluPanel(true);
+    // Sync en segundo plano
+    const d=await GET('/registro?nombre='+encodeURIComponent(n)+'&tipo=alumno');
+    if(d&&d.user){S.alu=d.user;LS.setItem('sana_alu',JSON.stringify(d.user));$('aluId').textContent='ID: '+d.user.id;toast('✅ ¡Listo! Tu ID: '+d.user.id);navigator.clipboard.writeText(d.user.id);}
+}
+async function loginAlumno(){
+    const id=$('alumnoId').value.trim();if(!id)return;
+    // Mostrar panel AL INSTANTE con datos locales
+    const cached=JSON.parse(LS.getItem('sana_alu_'+id)||'null');
+    if(cached){S.alu=cached;showAluPanel(true);}
+    const d=await GET('/login?user_id='+id);
+    if(d&&d.valido){S.alu=d.user;LS.setItem('sana_alu',JSON.stringify(d.user));LS.setItem('sana_alu_'+id,JSON.stringify(d.user));showAluPanel(true);toast('✅ '+d.user.nombre);}
+    else if(!cached){toast('❌ No encontrado');}
+}
+function showAluPanel(silent){
+    $('alumnoLogin').style.display='none';$('alumnoPanel').style.display='block';
+    $('aluAvatar').textContent=(S.alu.nombre||'A')[0].toUpperCase();
+    $('aluName').textContent=S.alu.nombre;$('aluId').textContent='ID: '+S.alu.id;
+    if(!silent)toast('✅ ¡Bienvenido!');
+}
+function logoutAlu(){S.alu=null;LS.removeItem('sana_alu');$('alumnoLogin').style.display='block';$('alumnoPanel').style.display='none';}
+
+// ⚡ CHAT OPTIMIZADO
+async function sendMsg(){const i=$('chatInput'),m=i.value.trim();if(!m)return;addChat(m,'user');i.value='';i.focus();addChat('💬 Pensando...','bot thinking');const d=await POST('/chat',{mensaje:m});document.querySelector('.thinking')?.remove();if(d)addChat(d.respuesta,'bot');}
 function addChat(t,ty){const b=$('chatBox'),d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
-async function loadBreaths(){const d=await GET('/respiracion/lista');if(!d)return;$('breathSelect').innerHTML='<option value="">Elige...</option>'+d.ejercicios.map(e=>`<option value="${e.clave}">${e.nombre}</option>`).join('');}
+
+// ⚡ RESPIRACIÓN (cache local)
+async function loadBreaths(){
+    const cached=LS.getItem('sana_breaths');
+    if(cached){renderBreaths(JSON.parse(cached));}
+    const d=await GET('/respiracion/lista');if(d){LS.setItem('sana_breaths',JSON.stringify(d.ejercicios));renderBreaths(d.ejercicios);}
+}
+function renderBreaths(ejercicios){$('breathSelect').innerHTML='<option value="">Elige...</option>'+ejercicios.map(e=>`<option value="${e.clave}">${e.nombre}</option>`).join('');}
 async function loadBreath(){const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;S.exercise=d;$('breathInfo').style.display='block';$('breathText').textContent='Toca para empezar';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';stopBreath();}
 function toggleBreath(){if(S.breathing){stopBreath();return;}if(!S.exercise)return toast('⚠️ Elige');startBreath();}
-function startBreath(){S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;function cycle(){if(!S.breathing)return;if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Listo!';return;}}const p=pasos[pi],c=$('breathCircle'),t=$('breathText');if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}else{c.classList.remove('inhale','exhale');c.textContent='✋';}t.textContent=`${p.texto} (${p.segundos}s) · ${S.breathCycles+1}/${S.breathMax}`;pi++;S.breathTimer=setTimeout(cycle,p.segundos*1000);}$('breathCircle').onclick=stopBreath;cycle();}
+function startBreath(){S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;function cycle(){if(!S.breathing)return;if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Listo!';return;}}const p=pasos[pi],c=$('breathCircle'),t=$('breathText');if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}else{c.classList.remove('inhale','exhale');c.textContent='✋';}t.textContent=p.texto+' · '+(S.breathCycles+1)+'/'+S.breathMax;pi++;S.breathTimer=setTimeout(cycle,p.segundos*1000);}$('breathCircle').onclick=stopBreath;cycle();}
 function stopBreath(){S.breathing=false;if(S.breathTimer){clearTimeout(S.breathTimer);S.breathTimer=null;}}
+
+// ⚡ DIARIO (local + sync)
 function setMood(m,btn){S.mood=m;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));btn.classList.add('btn-primary');}
-async function saveDiary(){if(!S.alu)return;const t=$('diarioText').value.trim();if(!t&&!S.mood)return toast('⚠️ Escribe');const d=await POST('/diario/guardar',{user_id:S.alu.id,texto:t||'',emocion:S.mood||'😶'});if(d&&d.guardado){$('diarioText').value='';toast('✅ Guardado');loadDiary();}}
-async function loadDiary(){if(!S.alu)return;const d=await GET('/diario/entradas?user_id='+S.alu.id);const c=$('diaryList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📖 Vacío</p>';return;}c.innerHTML='<div class="entry-list">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.emocion||'😶'}</strong> ${e.texto||''}<div class="entry-meta">${e.fecha?new Date(e.fecha).toLocaleString():''}</div></div><button class="btn btn-danger btn-xs" onclick="delDiary(${e.id})">🗑️</button></div>`).join('')+'</div>';}
-async function delDiary(id){if(!S.alu)return;await GET('/diario/borrar?user_id='+S.alu.id+'&id='+id);loadDiary();}
-async function loadMisPlanes(){if(!S.alu)return;const d=await GET('/organizador/planes-alumno?alumno_id='+S.alu.id);const c=$('misPlanesList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div class="entry-info"><strong>${p.nombre}</strong><br>${p.objetivo||''}</div></div>`).join('')+'</div>';}
-async function loadPaises(){const d=await GET('/lineas-ayuda/paises');if(d)$('paisSelect').innerHTML='<option value="">País...</option>'+d.paises.map(p=>`<option>${p}</option>`).join('');}
+async function saveDiary(){if(!S.alu)return;const t=$('diarioText').value.trim();if(!t&&!S.mood)return toast('⚠️ Escribe');const entry={texto:t||'',emocion:S.mood||'😶',fecha:new Date().toISOString(),id:Date.now()};let local=JSON.parse(LS.getItem('sana_diary')||'[]');local.unshift(entry);LS.setItem('sana_diary',JSON.stringify(local.slice(0,50)));$('diarioText').value='';S.mood=null;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));loadDiary(true);toast('✅ Guardado');POST('/diario/guardar',{user_id:S.alu.id,texto:entry.texto,emocion:entry.emocion});}
+async function loadDiary(localOnly){const local=JSON.parse(LS.getItem('sana_diary')||'[]');const c=$('diaryList');if(local.length){c.innerHTML='<div class="entry-list">'+local.slice(0,15).map(e=>`<div class="entry"><div class="entry-info"><strong>${e.emocion||'😶'}</strong> ${e.texto||''}<div class="entry-meta">${e.fecha?new Date(e.fecha).toLocaleString():''}</div></div><button class="btn btn-danger btn-xs" onclick="delDiaryLocal(${e.id})">🗑️</button></div>`).join('')+'</div>';}if(!localOnly&&S.alu){const d=await GET('/diario/entradas?user_id='+S.alu.id);if(d&&d.entradas){LS.setItem('sana_diary',JSON.stringify(d.entradas.slice(0,50)));loadDiary(true);}}}
+function delDiaryLocal(id){let local=JSON.parse(LS.getItem('sana_diary')||'[]');local=local.filter(e=>e.id!==id);LS.setItem('sana_diary',JSON.stringify(local));loadDiary(true);}
+
+// ⚡ PLANES ALUMNO
+async function loadMisPlanes(){if(!S.alu)return;const d=await GET('/organizador/planes-alumno?alumno_id='+S.alu.id);const c=$('misPlanesList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong><br>${p.objetivo||''}</div></div>`).join('')+'</div>';}
+
+// ⚡ LÍNEAS DE AYUDA (cache)
+async function loadPaises(){const cached=LS.getItem('sana_paises');if(cached){$('paisSelect').innerHTML=JSON.parse(cached);}const d=await GET('/lineas-ayuda/paises');if(d){const html='<option value="">País...</option>'+d.paises.map(p=>`<option>${p}</option>`).join('');$('paisSelect').innerHTML=html;LS.setItem('sana_paises',JSON.stringify(html));}}
 async function loadLineas(){const p=$('paisSelect').value;if(!p)return;const d=await GET('/lineas-ayuda?pais='+p);if(!d)return;$('lineasList').innerHTML='<div class="entry-list mt-1">'+d.lineas.map(l=>`<div class="entry"><div><strong>${l.nombre}</strong><br>📞 ${l.numero}</div></div>`).join('')+'</div>';}
 
-// ═══════════ DOCENTE ═══════════
+// ⚡ DOCENTE
 async function loginDoc(){const c=$('docCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);
 if(d&&d.valido){
-if(d.tipo==='director'){S.dir=d;showDirPanel();return;}
-S.doc=d;$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=d.escuela||'Docente';$('docInfo').textContent='Código: '+c;loadMats();loadBit();loadAvisosDocente();toast('✅ Bienvenido');}else{$('docError').textContent='❌ Inválido';$('docError').style.display='block';}}
-async function regDoc(){const c=$('docCodigo').value.trim(),n=$('docNombreReg').value.trim();if(!c||!n)return toast('⚠️ Completa');const dv=await GET('/login?codigo='+c);if(!dv||!dv.valido)return toast('❌ Código inválido');const d=await GET('/registro?nombre='+n+'&tipo=docente&codigo='+c);if(d&&d.user){toast('✅ Creado! ID: '+d.user.id);loginDoc();}}
-function logoutDoc(){S.doc=null;$('docenteLogin').style.display='block';$('docentePanel').style.display='none';}
-async function loadAvisosDocente(){if(!S.doc)return;const d=await GET('/director/avisos?escuela='+(S.doc.codigo_escuela||''));const c=$('avisosDocente');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='';return;}c.innerHTML=d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.75rem;">${a.mensaje}</p><div class="entry-meta">${a.autor} · ${new Date(a.fecha).toLocaleString()}</div></div>`).join('');}
+if(d.tipo==='director'){S.dir=d;LS.setItem('sana_dir',JSON.stringify(d));showDirPanel();return;}
+S.doc=d;LS.setItem('sana_doc',JSON.stringify(d));$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=d.escuela||'Docente';$('docInfo').textContent='Código: '+c;loadMats();loadBit();loadAvisosDocente();toast('✅ Bienvenido');}else{$('docError').textContent='❌ Inválido';$('docError').style.display='block';}}
+async function regDoc(){const c=$('docCodigo').value.trim(),n=$('docNombreReg').value.trim();if(!c||!n)return toast('⚠️ Completa');const dv=await GET('/login?codigo='+c);if(!dv||!dv.valido)return toast('❌ Código inválido');const d=await GET('/registro?nombre='+n+'&tipo=docente&codigo='+c);if(d&&d.user){toast('✅ Creado!');loginDoc();}}
+function logoutDoc(){S.doc=null;LS.removeItem('sana_doc');$('docenteLogin').style.display='block';$('docentePanel').style.display='none';}
+async function loadAvisosDocente(){if(!S.doc)return;const d=await GET('/director/avisos?escuela='+(S.doc.codigo_escuela||''));const c=$('avisosDocente');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='';return;}c.innerHTML=d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.7rem;">${a.mensaje}</p></div>`).join('');}
 async function addBit(){if(!S.doc)return;const d=await GET('/bitacora/agregar?tipo='+$('bitTipo').value+'&alumno='+encodeURIComponent($('bitAlumno').value)+'&grupo='+$('bitGrupo').value+'&texto='+encodeURIComponent($('bitTexto').value)+'&autor='+encodeURIComponent($('docName').textContent)+'&escuela='+(S.doc.codigo_escuela||''));if(d&&d.guardado){$('bitAlumno').value='';$('bitTexto').value='';toast('✅');loadBit();}}
-async function loadBit(){const d=await GET('/bitacora/entradas?escuela='+(S.doc?S.doc.codigo_escuela:''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Vacío</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.alumno}</strong> (${e.grupo}) <span class="badge b-blue">${e.tipo}</span><br>${e.texto}<div class="entry-meta">${e.autor} · ${e.fecha?new Date(e.fecha).toLocaleDateString():''}</div></div><button class="btn btn-green btn-xs" onclick="compartirBitDirecto(${e.id})">🔗</button></div>`).join('')+'</div>';}
-async function compartirBit(){const id=parseInt($('bitCompartirId').value),cod=$('bitCompartirCodigo').value.trim();if(!id||!cod)return toast('⚠️ Completa');const d=await GET('/bitacora/compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
+async function loadBit(){const d=await GET('/bitacora/entradas?escuela='+(S.doc?S.doc.codigo_escuela:''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Vacío</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.entradas.slice(-15).reverse().map(e=>`<div class="entry"><div class="entry-info"><strong>${e.alumno}</strong> (${e.grupo}) <span class="badge b-blue">${e.tipo}</span><br>${e.texto}</div><button class="btn btn-green btn-xs" onclick="compartirBitDirecto(${e.id})">🔗</button></div>`).join('')+'</div>';}
+async function compartirBit(){const id=parseInt($('bitCompartirId').value),cod=$('bitCompartirCodigo').value.trim();if(!id||!cod)return;const d=await GET('/bitacora/compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 async function compartirBitDirecto(id){const cod=prompt('Código:');if(!cod)return;const d=await GET('/bitacora/compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
-async function loadBitCompartidas(){if(!S.doc)return;const d=await GET('/bitacora/compartidas?codigo='+($('docCodigo').value||''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted">📋 Sin compartidas</p>';return;}c.innerHTML='<div class="entry-list"><p class="text-muted">🔗 Compartidas:</p>'+d.entradas.map(e=>`<div class="entry"><div>${e.texto}<div class="entry-meta">${e.autor}</div></div></div>`).join('')+'</div>';}
+async function loadBitCompartidas(){if(!S.doc)return;const d=await GET('/bitacora/compartidas?codigo='+($('docCodigo').value||''));const c=$('bitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted">📋 Sin compartidas</p>';return;}c.innerHTML='<div class="entry-list"><p class="text-muted">🔗 Compartidas:</p>'+d.entradas.map(e=>`<div class="entry"><div>${e.texto}</div></div>`).join('')+'</div>';}
 function previewFile(){const f=$('guiaArchivo').files[0];if(!f)return;$('fileName').textContent='📎 '+f.name;const r=new FileReader();r.onload=function(){S.archivoB64=r.result.split(',')[1];S.archivoTipo=f.type;S.archivoNombre=f.name;};r.readAsDataURL(f);}
 async function loadMats(){const d=await GET('/regularizacion/materias');if(d)$('guiaMateria').innerHTML='<option value="">Materia</option>'+d.materias.map(m=>`<option>${m}</option>`).join('');}
 async function loadMatsFiltro(){const d=await GET('/regularizacion/materias');if(d)$('filtroMateria').innerHTML='<option value="">Todas</option>'+d.materias.map(m=>`<option>${m}</option>`).join('');}
 async function addGuia(){if(!S.doc)return;const m=$('guiaMateria').value,t=$('guiaTitulo').value.trim();if(!m||!t)return toast('⚠️ Completa');const body={materia:m,titulo:t,contenido:$('guiaContenido').value,autor:$('docName').textContent,escuela:S.doc.codigo_escuela||''};if(S.archivoB64){body.archivo_base64=S.archivoB64;body.tipo_archivo=S.archivoTipo;body.nombre_archivo=S.archivoNombre;}await POST('/regularizacion/agregar',body);$('guiaTitulo').value='';$('guiaContenido').value='';$('fileName').textContent='';S.archivoB64=null;toast('✅');}
-async function loadGuias(){const m=$('filtroMateria')?.value||'';const d=await GET('/regularizacion/guias?materia='+(m||''));const c=$('guiasList');if(!d||!d.guias||!d.guias.length){c.innerHTML='<p class="text-muted text-center mt-1">📚 Sin guías</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.guias.slice(-20).reverse().map(g=>`<div class="entry"><div class="entry-info"><strong>${g.materia}</strong>: ${g.titulo}${g.tiene_archivo?' <span class="badge b-purple">📎</span>':''}<br>${g.contenido||''}</div>${g.tiene_archivo?`<button class="btn btn-green btn-xs" onclick="descargar('${g.archivo_base64||''}','${g.tipo_archivo||''}','${g.nombre_archivo||''}')">📥</button>`:''}</div>`).join('')+'</div>';}
+async function loadGuias(){const m=$('filtroMateria')?.value||'';const d=await GET('/regularizacion/guias?materia='+(m||''));const c=$('guiasList');if(!d||!d.guias||!d.guias.length){c.innerHTML='<p class="text-muted text-center mt-1">📚 Sin guías</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.guias.slice(-20).reverse().map(g=>`<div class="entry"><div><strong>${g.materia}</strong>: ${g.titulo}${g.tiene_archivo?' <span class="badge b-purple">📎</span>':''}<br>${g.contenido||''}</div>${g.tiene_archivo?`<button class="btn btn-green btn-xs" onclick="descargar('${g.archivo_base64||''}','${g.tipo_archivo||''}','${g.nombre_archivo||''}')">📥</button>`:''}</div>`).join('')+'</div>';}
 function descargar(b64,t,n){if(!b64)return;const byte=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));const blob=new Blob([byte],{type:t});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=n;a.click();}
 $('planVisibilidad').addEventListener('change',function(){$('planAlumnoId').style.display=this.value==='compartido'?'block':'none';});
 async function addPlan(){if(!S.doc)return;const n=$('planNombre').value.trim(),o=$('planObjetivo').value.trim();if(!n||!o)return toast('⚠️ Completa');const d=await POST('/organizador/crear-plan',{nombre:n,materia:'General',objetivo:o,actividades:$('planActividades').value,escuela:S.doc.codigo_escuela||'',autor:$('docName').textContent,visibilidad:$('planVisibilidad').value,alumno_id:$('planAlumnoId').value});if(d&&d.guardado){$('planNombre').value='';$('planObjetivo').value='';toast('✅');loadMisPlanesDocente();}}
-async function loadMisPlanesDocente(){if(!S.doc)return;const d=await GET('/organizador/planes-docente?autor='+$('docName').textContent+'&escuela='+(S.doc.codigo_escuela||''));const c=$('planesDocenteList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div class="entry-info"><strong>${p.nombre}</strong> <span class="badge b-${p.visibilidad==='publico'?'green':'blue'}">${p.visibilidad}</span><br>${p.objetivo}</div><button class="btn btn-green btn-xs" onclick="compartirPlan(${p.id})">🔗</button></div>`).join('')+'</div>';}
+async function loadMisPlanesDocente(){if(!S.doc)return;const d=await GET('/organizador/planes-docente?autor='+$('docName').textContent+'&escuela='+(S.doc.codigo_escuela||''));const c=$('planesDocenteList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🎯 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong> <span class="badge b-${p.visibilidad==='publico'?'green':'blue'}">${p.visibilidad}</span></div><button class="btn btn-green btn-xs" onclick="compartirPlan(${p.id})">🔗</button></div>`).join('')+'</div>';}
 async function compartirPlan(id){const aid=prompt('ID del alumno:');if(!aid)return;const d=await GET('/organizador/compartir-plan?id='+id+'&alumno_id='+aid);if(d&&d.ok)toast('✅');}
-async function loadPlanesPublicos(){const d=await GET('/organizador/planes-publicos');const c=$('planesPublicosList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🌍 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong><br>${p.objetivo}<br>📝 ${p.actividades||''}</div></div>`).join('')+'</div>';}
+async function loadPlanesPublicos(){const d=await GET('/organizador/planes-publicos');const c=$('planesPublicosList');if(!d||!d.planes||!d.planes.length){c.innerHTML='<p class="text-muted text-center mt-1">🌍 Sin planes</p>';return;}c.innerHTML='<div class="entry-list">'+d.planes.map(p=>`<div class="entry"><div><strong>${p.nombre}</strong><br>${p.objetivo}</div></div>`).join('')+'</div>';}
 
-// ═══════════ DIRECTOR ═══════════
-async function loginDir(){const c=$('dirCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido&&d.tipo==='director'){S.dir=d;showDirPanel();toast('✅ Bienvenido Director');}else{$('dirError').textContent='❌ Código inválido';$('dirError').style.display='block';}}
+// ⚡ DIRECTOR
+async function loginDir(){const c=$('dirCodigo').value.trim();if(!c)return;const d=await GET('/login?codigo='+c);if(d&&d.valido&&d.tipo==='director'){S.dir=d;LS.setItem('sana_dir',JSON.stringify(d));showDirPanel();toast('✅ Director');}else{$('dirError').textContent='❌ Inválido';$('dirError').style.display='block';}}
 function showDirPanel(){$('directorLogin').style.display='none';$('directorPanel').style.display='block';$('dirName').textContent=S.dir.escuela;$('dirInfo').textContent='Código: '+S.dir.codigo_escuela;loadAvisos();}
-function logoutDir(){S.dir=null;$('directorLogin').style.display='block';$('directorPanel').style.display='none';$('dirCodigo').value='';}
-async function publicarAviso(){if(!S.dir)return;const t=$('avisoTitulo').value.trim(),m=$('avisoMensaje').value.trim();if(!t||!m)return toast('⚠️ Completa');const d=await GET('/director/publicar-aviso?escuela='+S.dir.codigo_escuela+'&titulo='+encodeURIComponent(t)+'&mensaje='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){$('avisoTitulo').value='';$('avisoMensaje').value='';toast('✅ Aviso publicado');loadAvisos();}}
-async function loadAvisos(){if(!S.dir)return;const d=await GET('/director/avisos?escuela='+S.dir.codigo_escuela);const c=$('avisosList');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='<p class="text-muted text-center mt-1">📢 Sin avisos</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.75rem;">${a.mensaje}</p><div class="entry-meta">${new Date(a.fecha).toLocaleString()}</div><button class="btn btn-danger btn-xs" onclick="delAviso(${a.id})">🗑️</button></div>`).join('')+'</div>';}
+function logoutDir(){S.dir=null;LS.removeItem('sana_dir');$('directorLogin').style.display='block';$('directorPanel').style.display='none';}
+async function publicarAviso(){if(!S.dir)return;const t=$('avisoTitulo').value.trim(),m=$('avisoMensaje').value.trim();if(!t||!m)return toast('⚠️ Completa');const d=await GET('/director/publicar-aviso?escuela='+S.dir.codigo_escuela+'&titulo='+encodeURIComponent(t)+'&mensaje='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){$('avisoTitulo').value='';$('avisoMensaje').value='';toast('✅');loadAvisos();}}
+async function loadAvisos(){if(!S.dir)return;const d=await GET('/director/avisos?escuela='+S.dir.codigo_escuela);const c=$('avisosList');if(!d||!d.avisos||!d.avisos.length){c.innerHTML='<p class="text-muted text-center mt-1">📢 Sin avisos</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.avisos.map(a=>`<div class="aviso-card"><div class="aviso-title">📢 ${a.titulo}</div><p style="font-size:0.7rem;">${a.mensaje}</p><button class="btn btn-danger btn-xs" onclick="delAviso(${a.id})">🗑️</button></div>`).join('')+'</div>';}
 async function delAviso(id){await GET('/director/eliminar-aviso?id='+id);loadAvisos();}
-async function darBaja(){if(!S.dir)return;const c=$('bajaCodigo').value.trim(),m=$('bajaMotivo').value.trim();if(!c||!m)return toast('⚠️ Completa');const d=await GET('/director/dar-baja?escuela='+S.dir.codigo_escuela+'&codigo_docente='+c+'&motivo='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){toast('✅ Docente dado de baja');$('bajaCodigo').value='';$('bajaMotivo').value='';}}
-async function nuevoCodigo(){if(!S.dir)return;const d=await GET('/director/nuevo-codigo?escuela='+S.dir.codigo_escuela);if(d&&d.nuevo_codigo){toast('🆕 Nuevo: '+d.nuevo_codigo);navigator.clipboard.writeText(d.nuevo_codigo);}}
-async function verReporte(){if(!S.dir)return;const d=await GET('/director/reporte?escuela='+S.dir.codigo_escuela);const c=$('bajasList');if(!d||!d.reporte){c.innerHTML='';return;}c.innerHTML=`<div class="card mt-1" style="background:rgba(251,191,36,0.05);"><strong>📊 Reporte Mensual</strong><br>Escuela: ${d.reporte.escuela}<br>Mes: ${d.reporte.mes}<br>Total bajas: ${d.reporte.total_bajas}<br>${d.reporte.bajas.map(b=>`<div class="entry-meta">❌ ${b.codigo_docente} - ${b.motivo}</div>`).join('')}<p class="text-muted">📧 Enviado a pdabasel1@gmail.com</p></div>`;}
-async function addDirBit(){if(!S.dir)return;const t=$('dirBitacoraTexto').value.trim();if(!t)return toast('⚠️ Escribe');const d=await GET('/director/bitacora-agregar?escuela='+S.dir.codigo_escuela+'&texto='+encodeURIComponent(t)+'&autor=Director');if(d&&d.guardado){$('dirBitacoraTexto').value='';toast('✅');loadDirBit();}}
-async function loadDirBit(){if(!S.dir)return;const d=await GET('/director/bitacora-compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
+async function darBaja(){if(!S.dir)return;const c=$('bajaCodigo').value.trim(),m=$('bajaMotivo').value.trim();if(!c||!m)return toast('⚠️ Completa');const d=await GET('/director/dar-baja?escuela='+S.dir.codigo_escuela+'&codigo_docente='+c+'&motivo='+encodeURIComponent(m)+'&autor=Director');if(d&&d.guardado){toast('✅ Dado de baja');$('bajaCodigo').value='';$('bajaMotivo').value='';}}
+async function nuevoCodigo(){if(!S.dir)return;const d=await GET('/director/nuevo-codigo?escuela='+S.dir.codigo_escuela);if(d&&d.nuevo_codigo){toast('🆕 '+d.nuevo_codigo);navigator.clipboard.writeText(d.nuevo_codigo);}}
+async function verReporte(){if(!S.dir)return;const d=await GET('/director/reporte?escuela='+S.dir.codigo_escuela);const c=$('bajasList');if(!d||!d.reporte)return;c.innerHTML=`<div class="card mt-1" style="background:rgba(251,191,36,0.05);"><strong>📊 Reporte</strong><br>Total bajas: ${d.reporte.total_bajas}<br>${d.reporte.bajas.map(b=>`<div>❌ ${b.codigo_docente}</div>`).join('')}<p class="text-muted">📧 pdabasel1@gmail.com</p></div>`;}
+async function addDirBit(){if(!S.dir)return;const t=$('dirBitacoraTexto').value.trim();if(!t)return;const d=await GET('/director/bitacora-agregar?escuela='+S.dir.codigo_escuela+'&texto='+encodeURIComponent(t)+'&autor=Director');if(d&&d.guardado){$('dirBitacoraTexto').value='';toast('✅');loadDirBit();}}
+async function loadDirBit(){if(!S.dir)return;const d=await GET('/director/bitacora?escuela='+S.dir.codigo_escuela);const c=$('dirBitList');if(!d||!d.entradas||!d.entradas.length){c.innerHTML='<p class="text-muted text-center mt-1">📋 Vacío</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.entradas.reverse().map(e=>`<div class="entry"><div>${e.texto}</div><button class="btn btn-green btn-xs" onclick="compartirDirBitDirecto(${e.id})">🔗</button></div>`).join('')+'</div>';}
+async function compartirDirBit(){const id=parseInt($('dirBitCompartirId').value),cod=$('dirBitCompartirCodigo').value.trim();if(!id||!cod)return;const d=await GET('/director/bitacora-compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
+async function compartirDirBitDirecto(id){const cod=prompt('Código:');if(!cod)return;const d=await GET('/director/bitacora-compartir?id='+id+'&codigo='+cod);if(d&&d.ok)toast('✅');}
 
-// ═══════════ ADMIN ═══════════
+// ⚡ ADMIN
 function verifyAdmin(){const c=$('adminCode').value.trim();if(c==='SANA-ADMIN-2025'||c.startsWith('ADM-')){S.admin=true;$('adminLock').style.display='none';$('adminPanel').style.display='block';}else{$('adminError').style.display='block';}}
 function logoutAdmin(){S.admin=false;$('adminLock').style.display='block';$('adminPanel').style.display='none';}
-async function regEsc(){const n=$('escNombre').value.trim();if(!n)return;const r=await GET('/escuelas/registrar?nombre='+n+'&docentes='+($('escDocs').value||3)+'&admin='+($('escAdmins').value||1));if(r&&r.escuela){$('escResult').innerHTML=`<div class="card mt-1" style="background:rgba(110,231,183,0.08);"><strong>✅ ${r.escuela.nombre}</strong><br>🏫 <span class="badge b-green">${r.escuela.codigo_escuela}</span> (Director)<br>📋 ${r.escuela.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}<br>🔑 ${r.escuela.codigos_admin.map(c=>'<span class="badge b-purple">'+c+'</span>').join(' ')}</div>`;}}
-async function listEsc(){const d=await GET('/escuelas/lista');const c=$('escList');if(!d||!d.escuelas||!d.escuelas.length){c.innerHTML='<p class="text-muted">Sin escuelas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.escuelas.map(e=>`<div class="entry"><div><strong>${e.nombre}</strong> <span class="badge b-green">${e.codigo_escuela}</span><br>📋 ${e.num_docentes} docs | 🔑 ${e.num_admin} admins</div></div>`).join('')+'</div>';}
+async function regEsc(){const n=$('escNombre').value.trim();if(!n)return;const r=await GET('/escuelas/registrar?nombre='+n+'&docentes='+($('escDocs').value||3)+'&admin='+($('escAdmins').value||1));if(r&&r.escuela){$('escResult').innerHTML=`<div class="card mt-1" style="background:rgba(110,231,183,0.08);"><strong>✅ ${r.escuela.nombre}</strong><br>🏫 <span class="badge b-green">${r.escuela.codigo_escuela}</span> (Director)<br>📋 ${r.escuela.codigos_docentes.map(c=>'<span class="badge b-blue">'+c+'</span>').join(' ')}</div>`;}}
+async function listEsc(){const d=await GET('/escuelas/lista');const c=$('escList');if(!d||!d.escuelas||!d.escuelas.length){c.innerHTML='<p class="text-muted">Sin escuelas</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.escuelas.map(e=>`<div class="entry"><div><strong>${e.nombre}</strong> <span class="badge b-green">${e.codigo_escuela}</span></div></div>`).join('')+'</div>';}
 </script>
 </body>
 </html>
