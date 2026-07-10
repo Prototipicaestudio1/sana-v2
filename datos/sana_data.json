@@ -327,5 +327,49 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T08:58:11.133597"
+  "fecha": "2026-07-10T08:58:11.133597",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {},
+    "anuncios_padres": [
+      {
+        "id": 1,
+        "escuela": "ESC-XGQ7KG",
+        "titulo": "Hola",
+        "mensaje": "Prueba",
+        "autor": "Docente",
+        "fecha": "2026-07-10T07:59:07.918440",
+        "activo": false
+      }
+    ],
+    "muro_tareas": {
+      "ESC-XGQ7KG": {
+        "GRP-001": []
+      }
+    },
+    "padres": {
+      "PAD-521LQI": {
+        "codigo": "PAD-521LQI",
+        "nombre_padre": "Juan",
+        "nombre_nino": "Perdo",
+        "relacion": "Padre/Madre",
+        "id_grupo": "GRP-001",
+        "escuela": "ESC-XGQ7KG",
+        "fecha": "2026-07-10T07:58:45.975009"
+      }
+    },
+    "fichas": {
+      "PAD-521LQI": {
+        "tareas": [],
+        "puntos": 0,
+        "recompensas": []
+      }
+    }
+  },
+  "juegos": [],
+  "buzon": {}
 }
