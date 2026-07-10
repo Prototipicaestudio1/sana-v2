@@ -240,6 +240,42 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "rtwWwD36jrfj": {
+      "id": "rtwWwD36jrfj",
+      "nombre": "Bsj",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T14:20:19.788863",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "ykxoDdUR9GHk": {
+      "id": "ykxoDdUR9GHk",
+      "nombre": "Daniel",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T14:21:30.056169",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "8a88r7qNQPBi": {
+      "id": "8a88r7qNQPBi",
+      "nombre": "Daniel",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-09T14:21:37.283754",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -276,7 +312,7 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-09T04:32:27.355013",
+  "fecha": "2026-07-09T14:21:37.284420",
   "director": {
     "avisos": [],
     "bajas": [],
