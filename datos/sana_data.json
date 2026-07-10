@@ -285,5 +285,38 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-10T07:26:37.988466"
+  "fecha": "2026-07-10T07:26:37.988466",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {
+      "GRP-001": {
+        "id": "GRP-001",
+        "escuela": "ESC-XGQ7KG",
+        "nombre": "Ejemplo",
+        "docente": "EPR José María Morelos xhaniro",
+        "fecha": "2026-07-10T07:26:10.942625",
+        "alumnos": []
+      }
+    },
+    "anuncios_padres": [],
+    "muro_tareas": {
+      "ESC-XGQ7KG": {
+        "GRP-001": [
+          {
+            "id": 1,
+            "titulo": "Estudiante",
+            "descripcion": "Estoy",
+            "fecha_entrega": null,
+            "fecha": "2026-07-10T07:26:37.988115",
+            "completada": false
+          }
+        ]
+      }
+    }
+  },
+  "juegos": []
 }
