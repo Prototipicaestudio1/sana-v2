@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>♟️ Ajedrez SANA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0e8;--card:rgba(255,255,255,0.92);--gold:#b8860b;--wc:#e8d5b7;--bc:#b08860;--text:#2a1a0a;--navy:#1a2a4a;--cs:min(10vw,44px);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:0.5rem;user-select:none;}
+.app{width:100%;max-width:460px;}
+.card{background:var(--card);border-radius:1rem;padding:0.7rem;margin-bottom:0.4rem;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.btn{padding:0.4rem 0.8rem;border-radius:2rem;border:2px solid rgba(184,134,11,0.2);background:var(--card);color:var(--navy);font-weight:600;font-size:0.7rem;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.controls{display:flex;gap:0.2rem;margin-bottom:0.3rem;flex-wrap:wrap;justify-content:center;align-items:center;}
+.timer{background:var(--card);padding:0.3rem 0.8rem;border-radius:2rem;font-weight:700;font-size:0.75rem;min-width:60px;text-align:center;}
+.board{display:grid;grid-template-columns:repeat(8,var(--cs));grid-template-rows:repeat(8,var(--cs));border:2px solid var(--navy);border-radius:4px;overflow:hidden;margin:0 auto;}
+.cell{width:var(--cs);height:var(--cs);display:flex;align-items:center;justify-content:center;font-size:calc(var(--cs)*0.7);cursor:pointer;font-weight:700;position:relative;}
+.cell.w{background:var(--wc);}.cell.b{background:var(--bc);}
+.cell.sel{box-shadow:inset 0 0 0 3px var(--gold);}
+.cell.mv::after{content:'';position:absolute;width:24%;height:24%;background:rgba(0,0,0,0.2);border-radius:50%;}
+.cell.cp::after{content:'';position:absolute;width:80%;height:80%;border:3px solid rgba(200,50,50,0.5);border-radius:50%;}
+.status{text-align:center;margin-top:0.3rem;font-weight:700;font-size:0.8rem;}
+.captured{text-align:center;font-size:0.9rem;color:#8a7a6a;}
+.profile{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.8rem;background:var(--card);border-radius:3rem;margin-bottom:0.5rem;font-size:0.75rem;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
+.pts{background:var(--navy);color:#fff;padding:0.15rem 0.6rem;border-radius:2rem;font-weight:700;font-size:0.7rem;}
+.loading{text-align:center;padding:1rem;color:var(--navy);}
+</style>
+</head>
+<body>
+<div class="app">
+<div id="loginBox" class="card" style="text-align:center;">
+<p style="font-weight:600;color:var(--navy);margin-bottom:0.3rem;">🔗 Vincula tu cuenta SANA</p>
+<input type="text" id="userIdInput" placeholder="Pega tu ID de SANA" style="width:100%;padding:0.45rem;border-radius:2rem;border:2px solid rgba(184,134,11,0.2);text-align:center;font-family:'Inter',sans-serif;margin-bottom:0.3rem;font-size:0.8rem;">
+<button class="btn btn-primary" onclick="vincular()" style="width:100%;">🔗 Vincular cuenta</button>
+<p style="font-size:0.6rem;color:#8a7a6a;margin-top:0.3rem;">Tu ID está en tu perfil de SANA</p>
+</div>
+<div id="profileBox" class="profile" style="display:none;">
+<div class="avatar" id="userAvatar">?</div><div style="flex:1;"><strong id="userName">Jugador</strong><br><span style="font-size:0.6rem;color:#8a7a6a;" id="userIdDisplay"></span></div>
+<div class="pts">⭐ <span id="userPoints">100</span></div>
+<button class="btn" onclick="salir()" style="font-size:0.6rem;">Salir</button>
+</div>
+<div id="gameBox" style="display:none;">
+<div class="controls">
+<select class="btn" id="diffSelect" onchange="setDiff(this.value)"><option value="1">🟢 Fácil</option><option value="2">🟡 Medio</option><option value="3" selected>🟠 Intermedio</option><option value="4">🔴 Experto</option><option value="5">👑 Maestro</option></select>
+<div class="timer" id="timerDisplay">⏱ 5:00</div>
+<button class="btn btn-primary" onclick="modoIA()">🤖 vs IA</button>
+<button class="btn" onclick="modo2P()">👥 2 Jugadores</button>
+<button class="btn" onclick="nuevoJuego()">🔄</button>
+</div>
+<div class="board" id="chessBoard"></div>
+<div class="status" id="chessStatus">⚪ Turno de Blancas</div>
+<div class="captured"><span id="chessCaptW"></span> | <span id="chessCaptB"></span></div>
+</div>
+</div>
+<script>
+// ═══════════════════════════════════════
+// VINCULACIÓN REAL CON SANA
+// ═══════════════════════════════════════
+
+// Detectar dominio automáticamente (funciona en Render y local)
+const API_BASE = window.location.origin + '/api';
+
+async function vincular(){
+    const id = document.getElementById('userIdInput').value.trim();
+    if(!id) return alert('Ingresa tu ID de SANA');
+    
+    document.getElementById('loginBox').innerHTML = '<div class="loading">⏳ Conectando con SANA...</div>';
+    
+    try {
+        // Llamar a la API de SANA
+        const resp = await fetch(API_BASE + '/login?user_id=' + encodeURIComponent(id));
+        const data = await resp.json();
+        
+        if(data && data.valido && data.user){
+            // Vinculación exitosa
+            mostrarPerfil(data.user);
+            document.getElementById('gameBox').style.display = 'block';
+            nuevoJuego();
+        } else {
+            document.getElementById('loginBox').innerHTML = '<div class="card" style="text-align:center;"><p style="color:red;">❌ ID no encontrado</p><p style="font-size:0.7rem;color:#8a7a6a;">Regístrate primero en SANA</p><button class="btn btn-primary" onclick="location.reload()" style="width:100%;">Reintentar</button></div>';
+        }
+    } catch(e) {
+        document.getElementById('loginBox').innerHTML = '<div class="card" style="text-align:center;"><p style="color:red;">❌ Error de conexión</p><p style="font-size:0.7rem;color:#8a7a6a;">Verifica que SANA esté funcionando</p><button class="btn btn-primary" onclick="location.reload()" style="width:100%;">Reintentar</button></div>';
+    }
+}
+
+function mostrarPerfil(user){
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('profileBox').style.display = 'flex';
+    document.getElementById('userAvatar').textContent = (user.nombre || '?')[0].toUpperCase();
+    document.getElementById('userName').textContent = user.nombre || 'Jugador';
+    document.getElementById('userIdDisplay').textContent = 'ID: ' + user.id;
+    // Cargar puntos guardados
+    const pts = parseInt(localStorage.getItem('chess_pts_' + user.id) || '100');
+    document.getElementById('userPoints').textContent = pts;
+}
+
+function salir(){
+    document.getElementById('loginBox').style.display = 'block';
+    document.getElementById('profileBox').style.display = 'none';
+    document.getElementById('gameBox').style.display = 'none';
+    location.reload();
+}
+
+// ═══════════ MOTOR DE AJEDREZ ═══════════
+const PIECES={wK:'♔',wQ:'♕',wR:'♖',wB:'♗',wN:'♘',wP:'♙',bK:'♚',bQ:'♛',bR:'♜',bB:'♝',bN:'♞',bP:'♟'};
+const PV={K:100,Q:9,R:5,B:3,N:3,P:1};
+let board=[],turn='w',sel=null,vm=[],gameOver=false,mode='ia',diff=3,cw=[],cb=[],timerInterval=null,timeLeft=300;
+
+function initBoard(){
+    board=[['bR','bN','bB','bQ','bK','bB','bN','bR'],['bP','bP','bP','bP','bP','bP','bP','bP'],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],['wP','wP','wP','wP','wP','wP','wP','wP'],['wR','wN','wB','wQ','wK','wB','wN','wR']];
+    turn='w';sel=null;vm=[];gameOver=false;cw=[];cb=[];render();updateStatus();resetTimer();
+}
+function render(){
+    const be=document.getElementById('chessBoard');be.innerHTML='';
+    for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+        const cell=document.createElement('div');
+        cell.className='cell '+((r+c)%2===0?'w':'b')+' '+(sel&&sel.row===r&&sel.col===c?'sel':'');
+        const p=board[r][c];if(p)cell.textContent=PIECES[p];
+        const v=vm.find(m=>m.row===r&&m.col===c);
+        if(v)cell.classList.add(board[r][c]?'cp':'mv');
+        cell.addEventListener('click',()=>handleClick(r,c));be.appendChild(cell);
+    }
+    document.getElementById('chessCaptW').textContent=cw.map(p=>PIECES[p]).join('');
+    document.getElementById('chessCaptB').textContent=cb.map(p=>PIECES[p]).join('');
+}
+function handleClick(r,c){
+    if(gameOver||(mode==='ia'&&turn==='b'))return;
+    const p=board[r][c];
+    if(sel){
+        const m=vm.find(m=>m.row===r&&m.col===c);
+        if(m){makeMove(sel.row,sel.col,r,c);sel=null;vm=[];render();updateStatus();resetTimer();if(mode==='ia'&&turn==='b'&&!gameOver)setTimeout(()=>{iaMove();resetTimer();},200);return;}
+        sel=null;vm=[];render();return;
+    }
+    if(p&&p[0]===turn){sel={row:r,col:c};vm=getValidMoves(r,c);render();}
+}
+function getValidMoves(r,c){
+    const piece=board[r][c];if(!piece)return[];
+    return getRawMoves(r,c,piece).filter(m=>{
+        const saved=board[m.row][m.col];board[m.row][m.col]=piece;board[r][c]=null;
+        const safe=!isKingInCheck(turn);board[r][c]=piece;board[m.row][m.col]=saved;return safe;
+    });
+}
+function getRawMoves(r,c,piece){
+    const moves=[],color=piece[0],type=piece[1],dir=color==='w'?-1:1;
+    const add=(rr,cc)=>{if(rr>=0&&rr<8&&cc>=0&&cc<8){const t=board[rr][cc];if(!t||t[0]!==color)moves.push({row:rr,col:cc});}};
+    const slide=(dr,dc)=>{for(let i=1;i<8;i++){const rr=r+dr*i,cc=c+dc*i;if(rr<0||rr>=8||cc<0||cc>=8)break;const t=board[rr][cc];if(!t){moves.push({row:rr,col:cc});continue;}if(t[0]!==color)moves.push({row:rr,col:cc});break;}};
+    if(type==='P'){const fwd=r+dir;if(fwd>=0&&fwd<8&&!board[fwd][c]){moves.push({row:fwd,col:c});if((color==='w'&&r===6)||(color==='b'&&r===1))if(!board[r+2*dir][c])moves.push({row:r+2*dir,col:c});}for(const dc of[-1,1]){const cc=c+dc;if(cc>=0&&cc<8&&fwd>=0&&fwd<8&&board[fwd][cc]&&board[fwd][cc][0]!==color)moves.push({row:fwd,col:cc});}}
+    else if(type==='N')for(const[dr,dc]of[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]])add(r+dr,c+dc);
+    else if(type==='B')for(const[dr,dc]of[[-1,-1],[-1,1],[1,-1],[1,1]])slide(dr,dc);
+    else if(type==='R')for(const[dr,dc]of[[-1,0],[1,0],[0,-1],[0,1]])slide(dr,dc);
+    else if(type==='Q')for(const[dr,dc]of[[-1,-1],[-1,1],[1,-1],[1,1],[-1,0],[1,0],[0,-1],[0,1]])slide(dr,dc);
+    else if(type==='K')for(const[dr,dc]of[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]])add(r+dr,c+dc);
+    return moves;
+}
+function makeMove(fr,fc,tr,tc){
+    const piece=board[fr][fc],captured=board[tr][tc];
+    if(captured){if(piece[0]==='w')cw.push(captured);else cb.push(captured);}
+    board[tr][tc]=piece;board[fr][fc]=null;
+    if(piece[1]==='P'&&((piece[0]==='w'&&tr===0)||(piece[0]==='b'&&tr===7)))board[tr][tc]=piece[0]+'Q';
+    turn=turn==='w'?'b':'w';checkGameEnd();
+}
+function isKingInCheck(color){
+    for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]===color+'K')
+        for(let rr=0;rr<8;rr++)for(let cc=0;cc<8;cc++)if(board[rr][cc]&&board[rr][cc][0]!==color&&getRawMoves(rr,cc,board[rr][cc]).some(m=>m.row===r&&m.col===c))return true;
+    return false;
+}
+function checkGameEnd(){
+    let hasMoves=false;
+    for(let r=0;r<8&&!hasMoves;r++)for(let c=0;c<8&&!hasMoves;c++)if(board[r][c]&&board[r][c][0]===turn&&getValidMoves(r,c).length>0)hasMoves=true;
+    if(!hasMoves){gameOver=true;stopTimer();document.getElementById('chessStatus').textContent='🏆 Ganan '+(turn==='w'?'Negras':'Blancas');}
+}
+function iaMove(){
+    if(gameOver||turn!=='b')return;
+    const all=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]&&board[r][c][0]==='b')getValidMoves(r,c).forEach(m=>all.push({fr:r,fc:c,tr:m.row,tc:m.col,captured:board[m.row][m.col]}));
+    if(!all.length)return;
+    let chosen;if(diff===1)chosen=all[Math.floor(Math.random()*all.length)];
+    else if(diff===2){const caps=all.filter(m=>m.captured);chosen=caps.length?caps[Math.floor(Math.random()*caps.length)]:all[Math.floor(Math.random()*all.length)];}
+    else if(diff===3){all.sort((a,b)=>(b.captured?PV[b.captured[1]]:0)-(a.captured?PV[a.captured[1]]:0));chosen=all[Math.floor(Math.random()*Math.min(8,all.length))];}
+    else{let best=all[0],bs=-Infinity;for(const m of all.slice(0,20)){const saved=board[m.tr][m.tc];board[m.tr][m.tc]=board[m.fr][m.fc];board[m.fr][m.fc]=null;let sc=evalBoard();board[m.fr][m.fc]=board[m.tr][m.tc];board[m.tr][m.tc]=saved;if(sc>bs){bs=sc;best=m;}}chosen=best;}
+    if(chosen)makeMove(chosen.fr,chosen.fc,chosen.tr,chosen.tc);sel=null;vm=[];render();updateStatus();
+}
+function evalBoard(){let s=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=board[r][c];if(!p)continue;s+=p[0]==='b'?PV[p[1]]||0:-(PV[p[1]]||0);}return s+Math.random()*0.3;}
+function updateStatus(){document.getElementById('chessStatus').textContent=turn==='w'?'⚪ Turno de Blancas':'⚫ Turno de Negras';}
+function startTimer(){stopTimer();timeLeft=300;updateTimerDisplay();timerInterval=setInterval(()=>{timeLeft--;updateTimerDisplay();if(timeLeft<=0){stopTimer();gameOver=true;document.getElementById('chessStatus').textContent='⏰ Tiempo agotado';}},1000);}
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+function updateTimerDisplay(){const m=Math.floor(timeLeft/60),s=timeLeft%60;document.getElementById('timerDisplay').textContent='⏱ '+(m>0?m+':':'')+(s<10&&m>0?'0':'')+s+(m===0?'s':'');}
+function resetTimer(){stopTimer();timeLeft=300;updateTimerDisplay();startTimer();}
+function setDiff(d){diff=parseInt(d);}
+function nuevoJuego(){initBoard();}
+function modoIA(){mode='ia';nuevoJuego();}
+function modo2P(){mode='local';nuevoJuego();}
+</script>
+</body>
+</html>
