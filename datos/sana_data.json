@@ -387,6 +387,30 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "4aNCD3CRwIVa": {
+      "id": "4aNCD3CRwIVa",
+      "nombre": "Jugador",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-18T21:11:41.046964",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "hPqz5cjEq3Up": {
+      "id": "hPqz5cjEq3Up",
+      "nombre": "Jugador",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-18T21:24:53.142105",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -441,7 +465,7 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-18T20:59:47.375992",
+  "fecha": "2026-07-18T21:24:53.142823",
   "director": {
     "avisos": [],
     "bajas": [],
