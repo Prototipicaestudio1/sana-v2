@@ -292,25 +292,13 @@
       "planes": [],
       "guias": []
     },
-    "Nay3Iv8tZn1i": {
-      "id": "Nay3Iv8tZn1i",
+    "bOKqBWXcCDjq": {
+      "id": "bOKqBWXcCDjq",
       "nombre": "LeoDani",
       "tipo": "alumno",
       "codigo_escuela": null,
       "codigo_docente": null,
-      "fecha_registro": "2026-07-18T19:38:08.314204",
-      "diario": [],
-      "bitacoras": [],
-      "planes": [],
-      "guias": []
-    },
-    "cn8u501AH3bj": {
-      "id": "cn8u501AH3bj",
-      "nombre": "LeoDani",
-      "tipo": "alumno",
-      "codigo_escuela": null,
-      "codigo_docente": null,
-      "fecha_registro": "2026-07-18T19:38:13.588935",
+      "fecha_registro": "2026-07-18T19:38:47.204688",
       "diario": [],
       "bitacoras": [],
       "planes": [],
@@ -369,5 +357,5 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-18T19:38:13.589487"
+  "fecha": "2026-07-18T19:38:47.205275"
 }
