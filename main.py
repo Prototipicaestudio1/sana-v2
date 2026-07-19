@@ -43,6 +43,7 @@ github = GitHubSync()
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
     github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
+    print(f"DEBUG: Escuelas cargadas: {len(escuelas.escuelas)}, Usuarios: {len(usuarios.usuarios)}")
     datos = github.obtener_datos()
     if datos:
         if "primaria" in datos:
