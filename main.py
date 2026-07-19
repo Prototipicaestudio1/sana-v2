@@ -1,3 +1,8 @@
+"""
+🌿 SANA v2.2 - Servidor Principal Completo
+Buzón + Guías con visibilidad + Compartir universal + Persistencia total
+"""
+
 import os, sys, json
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
@@ -41,20 +46,22 @@ PUERTO = int(os.environ.get('PORT', 8080))
 github = GitHubSync()
 
 if not github.modo_local:
-    print("🔄 Cargando datos desde GitHub...")
+    print("🔄 Cargando TODOS los datos desde GitHub...")
     github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
     datos = github.obtener_datos()
     if datos:
         if "primaria" in datos:
-            for k, v in datos["primaria"].items():
+            pdata = datos["primaria"]
+            for k, v in pdata.items():
                 if hasattr(primaria, k): setattr(primaria, k, v)
             primaria._guardar()
         if "director" in datos:
-            for k, v in datos["director"].items():
+            ddata = datos["director"]
+            for k, v in ddata.items():
                 if hasattr(director, k): setattr(director, k, v)
         if "juegos" in datos: juegos.juegos = datos["juegos"]
         if "buzon" in datos: buzon.mensajes = datos["buzon"]
-    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(primaria.grupos)} grupos")
+    print(f"✅ {len(escuelas.escuelas)} escuelas | {len(usuarios.usuarios)} usuarios | {len(primaria.grupos)} grupos | {len(primaria.padres)} padres")
 
 def sync_all():
     if not github.modo_local:
@@ -88,20 +95,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/stats':
             return self.json({"version": "2.2", "usuarios": len(usuarios.usuarios), "escuelas": len(escuelas.escuelas), "grupos": len(primaria.grupos)})
 
-        if path == '/api/chess-login':
-            uid = q('user_id', '')
-            if uid:
-                u = usuarios.login(uid)
-                if u:
-                    return self.json({"valido": True, "user": u})
-                if uid == 'SANA-ADMIN-2025' or uid.startswith('ADM-'):
-                    nuevo = usuarios.registrar("Administrador", "admin")
-                else:
-                    nuevo = usuarios.registrar("Jugador", "alumno")
-                sync_all()
-                return self.json({"valido": True, "user": nuevo})
-            return self.json({"valido": False})
-
+        # ──── REGISTRO / LOGIN ────
         if path == '/api/registro':
             n = q('nombre', ''); t = q('tipo', 'alumno'); cod = q('codigo', '')
             if not n: return self.json({"error": "Falta nombre"}, 400)
@@ -140,6 +134,7 @@ class SanaHandler(SimpleHTTPRequestHandler):
                 return self.json(r)
             return self.json({"valido": False})
 
+        # ──── BUZÓN ────
         if path == '/api/buzon':
             return self.json({"mensajes": buzon.obtener(q('destino', '')), "no_leidos": buzon.no_leidos(q('destino', ''))})
         if path == '/api/buzon/leer':
@@ -148,6 +143,8 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/buzon/eliminar':
             buzon.eliminar(q('destino', ''), int(q('id', '0'))); sync_all()
             return self.json({"ok": True})
+
+        # ──── PERFIL ────
         if path == '/api/perfil':
             u = usuarios.obtener_por_id(q('user_id', ''))
             return self.json({"user": u}) if u else self.json({"error": "No encontrado"}, 404)
@@ -155,6 +152,8 @@ class SanaHandler(SimpleHTTPRequestHandler):
             if usuarios.actualizar_perfil(q('user_id', ''), q('nombre', '')):
                 sync_all(); return self.json({"ok": True})
             return self.json({"error": "No encontrado"}, 404)
+
+        # ──── ESCUELAS ────
         if path == '/api/escuelas/lista': return self.json({"escuelas": escuelas.listar_escuelas()})
         if path == '/api/escuelas/registrar':
             esc = escuelas.registrar_escuela(q('nombre', ''), int(q('docentes', '0')), int(q('admin', '0')))
@@ -166,16 +165,19 @@ class SanaHandler(SimpleHTTPRequestHandler):
             cod = q('codigo', '')
             if cod in escuelas.escuelas: del escuelas.escuelas[cod]; escuelas._guardar(); sync_all(); return self.json({"ok": True})
             return self.json({"error": "No encontrada"}, 404)
+
+        # ──── DIRECTOR ────
         if path == '/api/director/avisos': return self.json({"avisos": director.obtener_avisos(q('escuela', ''))})
         if path == '/api/director/publicar-aviso':
-            director.publicar_aviso(q('escuela', ''), q('titulo', ''), q('mensaje', ''), q('autor', ''))
+            av = director.publicar_aviso(q('escuela', ''), q('titulo', ''), q('mensaje', ''), q('autor', ''))
             sync_all(); return self.json({"guardado": True})
         if path == '/api/director/eliminar-aviso': director.eliminar_aviso(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
         if path == '/api/director/bajas': return self.json({"bajas": director.obtener_bajas(q('escuela', ''))})
         if path == '/api/director/dar-baja':
             cod = q('codigo_docente', '')
             esc_data = escuelas.obtener_escuela(q('escuela', ''))
-            if esc_data and cod in esc_data.get("codigos_docentes", []): esc_data["codigos_docentes"].remove(cod); escuelas._guardar()
+            if esc_data and cod in esc_data.get("codigos_docentes", []):
+                esc_data["codigos_docentes"].remove(cod); escuelas._guardar()
             director.dar_baja_docente(q('escuela', ''), cod, q('motivo', ''), q('autor', ''))
             sync_all(); return self.json({"guardado": True})
         if path == '/api/director/nuevo-codigo':
@@ -191,8 +193,12 @@ class SanaHandler(SimpleHTTPRequestHandler):
             sync_all(); return self.json({"guardado": True})
         if path == '/api/director/bitacora-compartir':
             ok = director.compartir_bitacora(int(q('id', '0')), q('codigo', ''))
-            if ok: buzon.enviar(q('codigo', ''), q('autor', ''), "bitacora_director", q('texto', '')[:50], int(q('id', '0'))); sync_all()
+            if ok:
+                buzon.enviar(q('codigo', ''), q('autor', ''), "bitacora_director", q('texto', '')[:50], int(q('id', '0')))
+                sync_all()
             return self.json({"ok": ok})
+
+        # ──── PRIMARIA ────
         if path == '/api/primaria/grupos': return self.json({"grupos": primaria.obtener_grupos(q('escuela', ''), q('docente', ''))})
         if path == '/api/primaria/crear-grupo':
             try: padres_lista = json.loads(q('padres', '[]'))
@@ -225,10 +231,14 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/primaria/fichas-eliminar':
             primaria.eliminar_ficha_tarea(q('codigo_padre', ''), int(q('id', '0'))); sync_all()
             return self.json({"ok": True})
+
+        # ──── JUEGOS ────
         if path == '/api/juegos/lista': return self.json({"juegos": juegos.obtener_juegos(q('categoria', ''))})
         if path == '/api/juegos/ver':
             j = juegos.obtener_juego(int(q('id', '0')))
             return self.json({"juego": j}) if j else self.json({"error": "No encontrado"}, 404)
+
+        # ──── RESPIRACIÓN ────
         if path == '/api/respiracion/lista':
             return self.json({"ejercicios": [{"clave": c, "nombre": e["nombre"], "nivel": e["nivel"], "ciclos": e["ciclos"]} for c, e in respiracion.EJERCICIOS.items()]})
         if path == '/api/respiracion/info':
@@ -239,12 +249,18 @@ class SanaHandler(SimpleHTTPRequestHandler):
         if path == '/api/respiracion/crisis': return self.json({"crisis": respiracion.obtener_mensaje_crisis()})
         if path == '/api/emociones/detectar':
             t = q('texto', ''); return self.json(escucha.detectar_emocion(t)) if t else self.json({"emocion": "neutral"})
+
+        # ──── DIARIO ────
         if path == '/api/diario/entradas': return self.json({"entradas": usuarios.obtener_diario(q('user_id', ''))})
         if path == '/api/diario/borrar': usuarios.borrar_diario(q('user_id', ''), int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── LÍNEAS DE AYUDA ────
         if path == '/api/lineas-ayuda/paises': return self.json({"paises": list(lineas_ayuda.PAISES.keys())})
         if path == '/api/lineas-ayuda':
             ld = lineas_ayuda.PAISES.get(q('pais', 'México'), {})
             return self.json({"pais": q('pais'), "lineas": [{"nombre": l[0], "numero": l[1], "categoria": l[3]} for l in ld.get('lineas', [])]})
+
+        # ──── BITÁCORA ────
         if path == '/api/bitacora/entradas': return self.json({"entradas": bitacora.obtener_entradas(q('escuela', ''))})
         if path == '/api/bitacora/agregar':
             e = bitacora.agregar_entrada(q('tipo', 'observacion'), q('alumno', ''), q('grupo', ''), q('texto', ''), q('autor', ''), q('escuela', ''))
@@ -253,12 +269,14 @@ class SanaHandler(SimpleHTTPRequestHandler):
             ok = bitacora.compartir_entrada(int(q('id', '0')), q('destino', ''))
             if ok:
                 entrada = bitacora.entradas[int(q('id', '0'))-1] if int(q('id', '0')) <= len(bitacora.entradas) else None
-                if entrada: buzon.enviar(q('destino', ''), q('autor', 'Docente'), "bitacora", entrada.get("texto","")[:50], int(q('id', '0')))
+                if entrada:
+                    buzon.enviar(q('destino', ''), q('autor', 'Docente'), "bitacora", entrada.get("texto","")[:50], int(q('id', '0')))
                 sync_all()
             return self.json({"ok": ok})
         if path == '/api/bitacora/compartidas': return self.json({"entradas": bitacora.obtener_compartidas(q('destino', ''))})
-        if path == '/api/bitacora/visibles': return self.json({"entradas": bitacora.obtener_visibles(q('destino', ''))})
         if path == '/api/bitacora/borrar': bitacora.eliminar_entrada(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── ORGANIZADOR ────
         if path == '/api/organizador/planes': return self.json({"planes": organizador.obtener_planes(q('escuela', ''))})
         if path == '/api/organizador/planes-publicos': return self.json({"planes": organizador.obtener_planes_publicos()})
         if path == '/api/organizador/planes-alumno': return self.json({"planes": organizador.obtener_planes_alumno(q('alumno_id', ''))})
@@ -268,34 +286,44 @@ class SanaHandler(SimpleHTTPRequestHandler):
             ok = organizador.compartir_plan(int(q('id', '0')), q('destino', ''))
             if ok:
                 plan = organizador.planes[int(q('id', '0'))-1] if int(q('id', '0')) <= len(organizador.planes) else None
-                if plan: buzon.enviar(q('destino', ''), q('autor', 'Docente'), "plan", plan.get("nombre","")[:50], int(q('id', '0')))
+                if plan:
+                    buzon.enviar(q('destino', ''), q('autor', 'Docente'), "plan", plan.get("nombre","")[:50], int(q('id', '0')))
                 sync_all()
             return self.json({"ok": ok})
         if path == '/api/organizador/hacer-publico': ok = organizador.hacer_publico(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/hacer-privado': ok = organizador.hacer_privado(int(q('id', '0'))); sync_all() if ok else None; return self.json({"ok": ok})
         if path == '/api/organizador/borrar-plan': organizador.eliminar_plan(int(q('id', '0'))); sync_all(); return self.json({"ok": True})
+
+        # ──── REGULARIZACIÓN (Guías con visibilidad) ────
         if path == '/api/regularizacion/materias': return self.json({"materias": regularizacion.obtener_materias()})
         if path == '/api/regularizacion/guias': return self.json({"guias": regularizacion.obtener_guias(q('materia', ''), q('escuela', ''))})
         if path == '/api/regularizacion/guia':
             guia = regularizacion.obtener_guia(int(q('id', '0')))
             return self.json({"guia": guia}) if guia else self.json({"error": "No encontrada"}, 404)
         if path == '/api/regularizacion/compartir':
-            ok = False; guia = regularizacion.obtener_guia(int(q('id', '0')))
+            ok = False
+            guia = regularizacion.obtener_guia(int(q('id', '0')))
             if guia:
                 if "compartido_con" not in guia: guia["compartido_con"] = []
                 destino = q('destino', '')
                 if destino not in guia["compartido_con"]:
-                    guia["compartido_con"].append(destino); regularizacion._guardar()
-                    buzon.enviar(destino, q('autor', 'Docente'), "guia", guia.get("titulo","")[:50], int(q('id', '0'))); ok = True
+                    guia["compartido_con"].append(destino)
+                    regularizacion._guardar()
+                    buzon.enviar(destino, q('autor', 'Docente'), "guia", guia.get("titulo","")[:50], int(q('id', '0')))
+                    ok = True
             if ok: sync_all()
             return self.json({"ok": ok})
+
+        # ──── ALERTAS ────
         if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
+
         if path == '/' or path == '': self.path = '/index.html'
         return SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
         p = urlparse(self.path); path = p.path; b = self.read_body()
         def v(k, d=''): return b.get(k, [d])[0]
+
         if path == '/api/chat':
             msg = v('mensaje', '')
             if not msg: return self.json({"error": "Sin mensaje"}, 400)
