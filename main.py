@@ -42,7 +42,18 @@ github = GitHubSync()
 
 if not github.modo_local:
     print("🔄 Cargando datos desde GitHub...")
-    github.load_all(escuelas, usuarios, bitacora, regularizacion, organizador, alertas)
+    # Carga directa del archivo local
+    if os.path.exists("datos/sana_data.json"):
+        with open("datos/sana_data.json", "r") as f:
+            datos = json.load(f)
+        if "escuelas" in datos: escuelas.escuelas = datos["escuelas"]; escuelas._guardar()
+        if "usuarios" in datos: usuarios.usuarios = datos["usuarios"]; usuarios._guardar()
+        if "bitacoras" in datos: bitacora.entradas = datos["bitacoras"]; bitacora.guardar()
+        if "regularizacion" in datos: regularizacion.material = datos["regularizacion"]; regularizacion._guardar()
+        if "planes" in datos: organizador.planes = datos["planes"]
+        if "tareas" in datos: organizador.tareas = datos["tareas"]; organizador._guardar()
+        if "juegos" in datos: juegos.juegos = datos["juegos"]
+        print(f"Cargado: {len(escuelas.escuelas)} escuelas, {len(usuarios.usuarios)} usuarios")
     datos = github.obtener_datos()
     if datos:
         if "primaria" in datos:
