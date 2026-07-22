@@ -290,8 +290,13 @@ class SanaHandler(SimpleHTTPRequestHandler):
             if ok: sync_all()
             return self.json({"ok": ok})
         if path == '/api/alertas/red': return self.json({"red": alertas.obtener_red(q('escuela', ''))})
-        if path == '/' or path == '': self.path = '/index.html'
-        return SimpleHTTPRequestHandler.do_GET(self)
+        if path == '/' or path == '':
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.end_headers()
+            with open('index.html', 'rb') as f:
+                self.wfile.write(f.read())
+            return
 
     def do_POST(self):
         p = urlparse(self.path); path = p.path; b = self.read_body()
