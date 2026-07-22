@@ -447,6 +447,54 @@
       "bitacoras": [],
       "planes": [],
       "guias": []
+    },
+    "cdJAxslTXsVL": {
+      "id": "cdJAxslTXsVL",
+      "nombre": "Buiu",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-22T06:20:46.587921",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "Rskj8uCgy0Od": {
+      "id": "Rskj8uCgy0Od",
+      "nombre": "Frty",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-22T06:21:02.845740",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "Zcv3bQ7D7WQJ": {
+      "id": "Zcv3bQ7D7WQJ",
+      "nombre": "Frty",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-22T06:21:08.069354",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
+    },
+    "OwtVU23TUzdL": {
+      "id": "OwtVU23TUzdL",
+      "nombre": "Frty",
+      "tipo": "alumno",
+      "codigo_escuela": null,
+      "codigo_docente": null,
+      "fecha_registro": "2026-07-22T06:21:13.800439",
+      "diario": [],
+      "bitacoras": [],
+      "planes": [],
+      "guias": []
     }
   },
   "bitacoras": [
@@ -501,7 +549,7 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-19T04:44:42.292229",
+  "fecha": "2026-07-22T06:21:13.801289",
   "director": {
     "avisos": [],
     "bajas": [],
@@ -509,40 +557,10 @@
   },
   "primaria": {
     "grupos": {},
-    "anuncios_padres": [
-      {
-        "id": 1,
-        "escuela": "ESC-XGQ7KG",
-        "titulo": "Hola",
-        "mensaje": "Prueba",
-        "autor": "Docente",
-        "fecha": "2026-07-10T07:59:07.918440",
-        "activo": false
-      }
-    ],
-    "muro_tareas": {
-      "ESC-XGQ7KG": {
-        "GRP-001": []
-      }
-    },
-    "padres": {
-      "PAD-521LQI": {
-        "codigo": "PAD-521LQI",
-        "nombre_padre": "Juan",
-        "nombre_nino": "Perdo",
-        "relacion": "Padre/Madre",
-        "id_grupo": "GRP-001",
-        "escuela": "ESC-XGQ7KG",
-        "fecha": "2026-07-10T07:58:45.975009"
-      }
-    },
-    "fichas": {
-      "PAD-521LQI": {
-        "tareas": [],
-        "puntos": 0,
-        "recompensas": []
-      }
-    }
+    "anuncios_padres": [],
+    "muro_tareas": {},
+    "padres": {},
+    "fichas": {}
   },
   "juegos": [
     {
