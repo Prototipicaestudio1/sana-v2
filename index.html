@@ -73,6 +73,8 @@
         .game-icon{width:40px;height:40px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
         @media(max-width:400px){.home-grid{grid-template-columns:1fr 1fr;}}
     /* TEMA CLARO */ .theme-claro { --bg: #f5f0e8; --card: rgba(255,255,255,0.92); --card2: rgba(255,250,245,0.85); --border: rgba(0,0,0,0.08); --text: #2a1a0a; --muted: #8a7a6a; --purple: #6b8c42; --purple2: #8fbc5a; --green: #6b8c42; --green2: #8fbc5a; --orange: #c4852a; --red: #c0392b; --blue: #5a8a6a; --pink: #c0806a; --gold: #b8860b; }
+
+.theme-claro { --bg: #f5f0e8; --card: rgba(255,255,255,0.92); --card2: rgba(255,250,245,0.85); --border: rgba(0,0,0,0.08); --text: #2a1a0a; --muted: #8a7a6a; --purple: #6b8c42; --purple2: #8fbc5a; --green: #6b8c42; --green2: #8fbc5a; --orange: #c4852a; --red: #c0392b; --blue: #5a8a6a; --pink: #c0806a; --gold: #b8860b; }
 </style>
 </head>
 <body>
@@ -328,6 +330,11 @@ function toggleLang(){
     }
 })();
 
+
+function toggleTheme(){document.body.classList.toggle("theme-claro");var d=!document.body.classList.contains("theme-claro");document.getElementById("themeBtn").textContent=d?"🌙":"☀️";localStorage.setItem("sana_theme",d?"dark":"claro");}
+(function(){var s=localStorage.getItem("sana_theme");if(s==="claro"){document.body.classList.add("theme-claro");document.getElementById("themeBtn").textContent="☀️";}})();
+function toggleLang(){var c=document.documentElement.lang||"es";var n=c==="es"?"en":"es";document.documentElement.lang=n;document.getElementById("langBtn").textContent="🌐 "+n.toUpperCase();document.getElementById("tagline").textContent=n==="en"?"Emotional Wellness":"Bienestar Emocional";localStorage.setItem("sana_lang",n);}
+(function(){var l=localStorage.getItem("sana_lang");if(l){document.documentElement.lang=l;document.getElementById("langBtn").textContent="🌐 "+l.toUpperCase();document.getElementById("tagline").textContent=l==="en"?"Emotional Wellness":"Bienestar Emocional";}})();
 </script>
 </body>
 </html>
