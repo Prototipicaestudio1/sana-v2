@@ -24,6 +24,7 @@
         @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         .main-header h1{font-size:2.2rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--purple),var(--green),var(--blue),var(--purple));background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite;}
         @keyframes shimmer{to{background-position:300% center}}
+        .subtitle{font-size:0.7rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:0.2rem;}
         .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(8,8,28,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:1px solid var(--border);display:flex;overflow-x:auto;align-items:center;height:var(--nav-h);padding:0 0.2rem;padding-bottom:env(safe-area-inset-bottom,0);scrollbar-width:none;gap:0.1rem;}
         .bottom-nav::-webkit-scrollbar{display:none;}
         .bottom-nav .nav-item{background:none;border:none;color:var(--muted);font-size:0.55rem;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:0.12rem;cursor:pointer;transition:0.2s;padding:0.25rem 0.35rem;min-width:46px;flex-shrink:0;}
@@ -72,15 +73,31 @@
         .game-card:active{background:rgba(147,197,253,0.12);transform:scale(0.97);}
         .game-icon{width:40px;height:40px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
         @media(max-width:400px){.home-grid{grid-template-columns:1fr 1fr;}}
-    
-.theme-claro { --bg: #f5f0e8; --card: rgba(255,255,255,0.92); --card2: rgba(255,250,245,0.85); --border: rgba(0,0,0,0.08); --text: #2a1a0a; --muted: #8a7a6a; --purple: #6b8c42; --purple2: #8fbc5a; --green: #6b8c42; --green2: #8fbc5a; --orange: #c4852a; --red: #c0392b; --blue: #5a8a6a; --pink: #c0806a; --gold: #b8860b; }
-</style>
+
+        .theme-claro {
+            --bg: #f5f0e8; --card: rgba(255,255,255,0.92);
+            --border: rgba(0,0,0,0.08); --text: #2a1a0a; --muted: #8a7a6a;
+            --purple: #6b8c42; --purple2: #8fbc5a; --green: #6b8c42; --green2: #8fbc5a;
+            --orange: #c4852a; --red: #c0392b; --blue: #5a8a6a; --pink: #c0806a; --gold: #b8860b;
+        }
+    </style>
 </head>
 <body>
 <div class="cosmos" id="cosmos"><div class="nebula"></div><div class="nebula"></div><div class="nebula"></div></div>
 <div class="app" id="app">
-<div class="main-header"><div class="logo-emote" onclick="nav('home')">🌿</div><h1>SANA</h1></div>
 
+<!-- HEADER CON BOTONES DE TEMA E IDIOMA -->
+<div class="main-header">
+    <div style="display:flex;justify-content:flex-end;gap:0.4rem;margin-bottom:0.3rem;">
+        <button class="btn btn-xs btn-outline" onclick="toggleTheme()" id="themeBtn">🌙</button>
+        <button class="btn btn-xs btn-outline" onclick="toggleLang()" id="langBtn">🌐 ES</button>
+    </div>
+    <div class="logo-emote" onclick="nav('home')">🌿</div>
+    <h1>SANA</h1>
+    <p class="subtitle" id="tagline">Bienestar Emocional</p>
+</div>
+
+<!-- HOME -->
 <div class="page active" id="page-home">
 <div class="home-grid">
 <div class="home-card" onclick="nav('alumnos')"><span class="hc-emoji">🎓</span><span class="hc-title">Alumnos</span></div>
@@ -91,6 +108,7 @@
 <div class="home-card" onclick="nav('biblioteca')"><span class="hc-emoji">📚</span><span class="hc-title">Biblioteca</span></div>
 </div></div>
 
+<!-- ALUMNOS -->
 <div class="page" id="page-alumnos"><div id="alumnoLogin"><div class="section-title">🎓 Alumnos</div><div class="card"><input type="text" id="alumnoNombre" placeholder="Tu nombre" autocomplete="off"><button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear cuenta</button><div class="divider"></div><input type="text" id="alumnoId" placeholder="Tu ID" autocomplete="off"><button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar</button></div></div>
 <div id="alumnoPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-purple" id="aluAvatar">A</div><div><strong id="aluName"></strong><br><span class="text-muted" id="aluId"></span></div><button class="btn btn-outline btn-sm" onclick="verBuzonAlu()">📬<span id="aluBuzonBadge" class="buzon-badge" style="display:none;">0</span></button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAlu()">🚪</button></div>
 <div class="card"><div class="chat-box" id="chatBox"><div class="chat-msg bot">👋 ¡Hola! ¿Cómo te sientes? 💜</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMsg()" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div></div>
@@ -100,6 +118,7 @@
 <div class="card"><select id="paisSelect" onchange="loadLineas()"><option value="">Líneas ayuda...</option></select><div id="lineasList"></div></div>
 <div class="card" id="buzonAluCard" style="display:none;"><div class="card-row"><div class="card-icon c-purple">📬</div><div><div class="card-title">Buzón</div></div></div><div id="buzonAluList"></div></div></div></div>
 
+<!-- DOCENTES -->
 <div class="page" id="page-docentes"><div id="docenteLogin"><div class="section-title">👨‍🏫 Docentes</div><div class="card"><input type="text" id="docCodigo" placeholder="Código" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button><p id="docError" style="color:var(--red);font-size:0.6rem;display:none;"></p><div class="divider"></div><input type="text" id="docNombreReg" placeholder="Nombre" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar</button></div></div>
 <div id="docentePanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName"></strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-outline btn-sm" onclick="verBuzonDoc()">📬<span id="docBuzonBadge" class="buzon-badge" style="display:none;">0</span></button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
 <div id="avisosDocente"></div>
@@ -108,12 +127,14 @@
 <div class="card"><select id="planVisibilidad"><option value="privado">🔒 Privado</option><option value="publico">🌍 Público</option><option value="compartido">🔗 Compartido</option></select><input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;"><input type="text" id="planNombre" placeholder="Nombre"><input type="text" id="planObjetivo" placeholder="Objetivo"><textarea id="planActividades" placeholder="Actividades..."></textarea><button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Mis planes</button><div id="planesDocenteList"></div></div>
 <div class="card" id="buzonDocCard" style="display:none;"><div class="card-row"><div class="card-icon c-purple">📬</div><div><div class="card-title">Buzón</div></div></div><div id="buzonDocList"></div></div></div></div>
 
+<!-- DIRECTOR -->
 <div class="page" id="page-director"><div id="directorLogin"><div class="section-title">👔 Director</div><div class="card"><input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button></div></div>
 <div id="directorPanel" style="display:none;"><div class="profile-bar" style="background:rgba(251,191,36,0.08);"><div class="avatar av-gold">👔</div><div><strong id="dirName"></strong></div><button class="btn btn-outline btn-sm" onclick="verBuzonDir()">📬</button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
 <div class="card"><input type="text" id="avisoTitulo" placeholder="Título"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver</button><div id="avisosList"></div></div>
 <div class="card"><input type="text" id="bajaCodigo" placeholder="Código a dar de baja"><input type="text" id="bajaMotivo" placeholder="Motivo"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button><button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Nuevo</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Reporte</button><div id="bajasList"></div></div>
 <div class="card"><textarea id="dirBitacoraTexto" placeholder="Bitácora..."></textarea><button class="btn btn-primary btn-block" onclick="addDirBit()">📝 Registrar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDirBit()">📋 Ver</button><div id="dirBitList"></div></div></div></div>
 
+<!-- PRIMARIA -->
 <div class="page" id="page-primaria"><div class="section-title">🧒 Primaria</div><div class="flex mb-1"><button class="btn btn-primary btn-sm flex-1" id="tabDocente" onclick="switchPrimariaTab('docente')">👨‍🏫 Docente</button><button class="btn btn-outline btn-sm flex-1" id="tabPadre" onclick="switchPrimariaTab('padre')">👪 Padre</button></div>
 <div id="primariaDocenteTab"><div id="primariaLogin"><div class="card"><input type="text" id="primariaCodigo" placeholder="Código DOC-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button></div></div>
 <div id="primariaPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">P</div><div><strong id="primariaName"></strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPrimaria()">🚪</button></div>
@@ -126,10 +147,13 @@
 <div class="card"><div class="card-row"><div class="card-icon c-orange">📝</div><div class="card-title">Tareas</div></div><div id="padreTareasList"></div></div>
 <div class="card"><div class="card-row"><div class="card-icon c-purple">⭐</div><div class="card-title">Economía de Fichas</div></div><div class="fichas-card"><strong>⭐ <span id="fichasPuntos">0</span> pts</strong></div><input type="text" id="fichaTitulo" placeholder="Tarea"><input type="number" id="fichaPuntos" value="5" min="1"><input type="text" id="fichaRecompensa" placeholder="Recompensa"><button class="btn btn-primary btn-block" onclick="addFicha()">➕ Agregar</button><div id="fichasList"></div></div></div></div></div>
 
+<!-- JUEGOS -->
 <div class="page" id="page-juegos"><div class="section-title">🎮 Juegos</div><div id="juegosList"></div><div id="juegoFrame" style="display:none;"><button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button><div id="juegoContainer" style="width:100%;min-height:70vh;border-radius:1rem;overflow:hidden;"></div></div></div>
 
+<!-- BIBLIOTECA -->
 <div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div><select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div><div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
 
+<!-- ADMIN -->
 <div class="page" id="page-admin"><div id="adminLock"><div class="section-title">⚙️ Admin</div><div class="card text-center"><div style="font-size:2.5rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button></div></div>
 <div id="adminPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-purple">A</div><div><strong>Admin</strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAdmin()">🚪</button></div>
 <div class="card"><input type="text" id="escNombre" placeholder="Nombre"><input type="number" id="escDocs" value="3"><input type="number" id="escAdmins" value="1"><button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar</button><div id="escResult"></div></div>
@@ -165,6 +189,12 @@ async function POST(e,d){try{const b=Object.keys(d).map(k=>encodeURIComponent(k)
 function nav(p){S.page=p;document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.page===p));document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));const t=$('page-'+p);if(t)t.classList.add('active');window.scrollTo({top:0,behavior:'instant'});if(p==='alumnos'){loadBreaths();loadPaises();}if(p==='biblioteca'){loadMatsFiltro();loadGuias();loadPlanesPublicos();}if(p==='juegos')loadJuegos();if(p==='admin'&&S.admin)loadAdminJuegos();}
 document.querySelector('.bottom-nav').addEventListener('click',e=>{const b=e.target.closest('.nav-item');if(b)nav(b.dataset.page);});
 document.querySelectorAll('.home-card').forEach((c,i)=>{const p=['alumnos','docentes','director','primaria','juegos','biblioteca'];if(i<6)c.addEventListener('click',()=>nav(p[i]));});
+
+// ═══════════ TEMA E IDIOMA ═══════════
+function toggleTheme(){document.body.classList.toggle("theme-claro");var d=!document.body.classList.contains("theme-claro");document.getElementById("themeBtn").textContent=d?"🌙":"☀️";localStorage.setItem("sana_theme",d?"dark":"claro");}
+(function(){if(localStorage.getItem("sana_theme")==="claro"){document.body.classList.add("theme-claro");document.getElementById("themeBtn").textContent="☀️";}})();
+function toggleLang(){var n=document.documentElement.lang==="es"?"en":"es";document.documentElement.lang=n;document.getElementById("langBtn").textContent="🌐 "+n.toUpperCase();document.getElementById("tagline").textContent=n==="en"?"Emotional Wellness":"Bienestar Emocional";localStorage.setItem("sana_lang",n);}
+(function(){var l=localStorage.getItem("sana_lang");if(l){document.documentElement.lang=l;document.getElementById("langBtn").textContent="🌐 "+l.toUpperCase();document.getElementById("tagline").textContent=l==="en"?"Emotional Wellness":"Bienestar Emocional";}})();
 
 // BUZÓN
 async function loadBuzon(destino,cid){const d=await GET('/buzon?destino='+destino);const c=$(cid);if(!d||!d.mensajes||!d.mensajes.length){c.innerHTML='<p class="text-muted text-center">📬 Vacío</p>';return;}c.innerHTML='<div class="entry-list">'+d.mensajes.slice(-20).reverse().map(m=>`<div class="entry" style="background:${m.leido?'':'rgba(167,139,250,0.08)'};"><div class="entry-info"><strong>📩 ${m.tipo}</strong>: ${m.contenido||''}<div class="entry-meta">De: ${m.remitente||''} · ${m.fecha?new Date(m.fecha).toLocaleString():''}</div></div><button class="btn btn-xs ${m.leido?'btn-outline':'btn-primary'}" onclick="leerBuzon('${destino}',${m.id})">${m.leido?'✓':'📖'}</button><button class="btn btn-danger btn-xs" onclick="delBuzon('${destino}',${m.id})">🗑️</button></div>`).join('')+'</div>';}
@@ -266,7 +296,6 @@ async function loadJuegos(){const d=await GET('/juegos/lista');const c=$('juegos
 async function verJuego(id){
     const d=await GET('/juegos/ver?id='+id);
     if(!d||!d.juego)return;
-    // Modo pantalla completa
     const full=document.createElement('div');
     full.id='juegoFullscreen';
     full.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999;background:#000;';
@@ -278,10 +307,7 @@ async function verJuego(id){
     full.appendChild(iframe);
     document.body.appendChild(full);
 }
-function cerrarJuegoFull(){
-    const full=document.getElementById('juegoFullscreen');
-    if(full)full.remove();
-}
+function cerrarJuegoFull(){const full=document.getElementById('juegoFullscreen');if(full)full.remove();}
 function cerrarJuego(){$('juegoFrame').style.display='none';$('juegosList').style.display='block';$('juegoContainer').innerHTML='';}
 
 // ADMIN
@@ -294,11 +320,6 @@ async function borrarEscuelaDir(cod){if(!confirm('¿Borrar?'))return;await GET('
 async function loadAdminJuegos(){const d=await GET('/juegos/lista');const c=$('adminJuegosList');if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted">Sin juegos</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.juegos.map(j=>`<div class="entry"><div class="entry-info"><span style="font-size:1.2rem;">${ICONOS[j.categoria]||'🎮'}</span> <strong>${j.titulo}</strong> <span class="badge b-blue">${j.categoria||'general'}</span></div><button class="btn btn-danger btn-xs" onclick="borrarJuego(${j.id})">🗑️</button></div>`).join('')+'</div>';}
 async function borrarJuego(id){if(!confirm('¿Borrar este juego?'))return;await POST('/juegos/borrar',{id:id});loadAdminJuegos();loadJuegos();toast('🗑️ Borrado');}
 async function agregarJuego(){const t=$('juegoTitulo').value.trim(),h=$('juegoHtml').value.trim(),c=$('juegoCategoria').value;if(!t||!h)return toast('⚠️ Completa título y HTML');const r=await POST('/juegos/agregar',{titulo:t,descripcion:'',html_code:h,categoria:c});if(r&&r.guardado){$('juegoTitulo').value='';$('juegoHtml').value='';toast('✅ Agregado');loadAdminJuegos();}}
-
-function toggleTheme(){document.body.classList.toggle("theme-claro");var d=!document.body.classList.contains("theme-claro");document.getElementById("themeBtn").textContent=d?"🌙":"☀️";localStorage.setItem("sana_theme",d?"dark":"claro");}
-(function(){var s=localStorage.getItem("sana_theme");if(s==="claro"){document.body.classList.add("theme-claro");document.getElementById("themeBtn").textContent="☀️";}})();
-function toggleLang(){var c=document.documentElement.lang||"es";var n=c==="es"?"en":"es";document.documentElement.lang=n;document.getElementById("langBtn").textContent="🌐 "+n.toUpperCase();document.getElementById("tagline").textContent=n==="en"?"Emotional Wellness":"Bienestar Emocional";localStorage.setItem("sana_lang",n);}
-(function(){var l=localStorage.getItem("sana_lang");if(l){document.documentElement.lang=l;document.getElementById("langBtn").textContent="🌐 "+l.toUpperCase();document.getElementById("tagline").textContent=l==="en"?"Emotional Wellness":"Bienestar Emocional";}})();
 </script>
 </body>
 </html>
