@@ -293,6 +293,41 @@ async function borrarEscuelaDir(cod){if(!confirm('¿Borrar?'))return;await GET('
 async function loadAdminJuegos(){const d=await GET('/juegos/lista');const c=$('adminJuegosList');if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted">Sin juegos</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.juegos.map(j=>`<div class="entry"><div class="entry-info"><span style="font-size:1.2rem;">${ICONOS[j.categoria]||'🎮'}</span> <strong>${j.titulo}</strong> <span class="badge b-blue">${j.categoria||'general'}</span></div><button class="btn btn-danger btn-xs" onclick="borrarJuego(${j.id})">🗑️</button></div>`).join('')+'</div>';}
 async function borrarJuego(id){if(!confirm('¿Borrar este juego?'))return;await POST('/juegos/borrar',{id:id});loadAdminJuegos();loadJuegos();toast('🗑️ Borrado');}
 async function agregarJuego(){const t=$('juegoTitulo').value.trim(),h=$('juegoHtml').value.trim(),c=$('juegoCategoria').value;if(!t||!h)return toast('⚠️ Completa título y HTML');const r=await POST('/juegos/agregar',{titulo:t,descripcion:'',html_code:h,categoria:c});if(r&&r.guardado){$('juegoTitulo').value='';$('juegoHtml').value='';toast('✅ Agregado');loadAdminJuegos();}}
+
+function toggleTheme(){
+    document.body.classList.toggle('theme-claro');
+    var d = !document.body.classList.contains('theme-claro');
+    document.getElementById('themeBtn').textContent = d ? '🌙' : '☀️';
+    localStorage.setItem('sana_theme', d ? 'dark' : 'claro');
+}
+(function(){
+    var s = localStorage.getItem('sana_theme');
+    if(s === 'claro'){
+        document.body.classList.add('theme-claro');
+        document.getElementById('themeBtn').textContent = '☀️';
+    }
+})();
+function toggleLang(){
+    var c = document.documentElement.lang || 'es';
+    var n = c === 'es' ? 'en' : 'es';
+    document.documentElement.lang = n;
+    document.getElementById('langBtn').textContent = '🌐 ' + n.toUpperCase();
+    if(n === 'en'){
+        document.getElementById('tagline').textContent = 'Emotional Wellness';
+    } else {
+        document.getElementById('tagline').textContent = 'Bienestar Emocional';
+    }
+    localStorage.setItem('sana_lang', n);
+}
+(function(){
+    var l = localStorage.getItem('sana_lang');
+    if(l){
+        document.documentElement.lang = l;
+        document.getElementById('langBtn').textContent = '🌐 ' + l.toUpperCase();
+        if(l === 'en') document.getElementById('tagline').textContent = 'Emotional Wellness';
+    }
+})();
+
 </script>
 </body>
 </html>
