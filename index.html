@@ -109,35 +109,84 @@
 </div></div>
 
 <!-- ALUMNOS -->
-<div class="page" id="page-alumnos"><div id="alumnoLogin"><div class="section-title" style="font-size:1.3rem;gap:0.5rem;"><span style="font-size:1.8rem;">🎓</span> Alumnos</div><div class="card" style="padding:1.2rem;">
-    <div style="text-align:center;margin-bottom:0.8rem;">
-        <span style="font-size:2.5rem;">✨</span>
-        <p style="font-weight:700;color:var(--text);font-size:0.9rem;">Crear cuenta gratuita</p>
-        <p style="font-size:0.65rem;color:var(--muted);">Es anónimo y seguro</p>
-    </div>
+<div class="page" id="page-alumnos">
+
+<!-- LOGIN ALUMNO -->
+<div id="alumnoLogin">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;"><span style="font-size:1.8rem;">🎓</span> Alumnos</div>
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">✨</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Crear cuenta gratuita</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Es anónimo, seguro y para ti</p>
     <input type="text" id="alumnoNombre" placeholder="Elige un nombre o apodo" autocomplete="off" style="text-align:center;">
     <button class="btn btn-primary btn-block" onclick="regAlumno()">✨ Crear mi espacio</button>
     <div class="divider"></div>
-    <div style="text-align:center;margin-bottom:0.5rem;">
-        <p style="font-weight:700;color:var(--text);font-size:0.9rem;">¿Ya tienes cuenta?</p>
-    </div>
+    <p style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:0.3rem;">¿Ya tienes cuenta?</p>
     <input type="text" id="alumnoId" placeholder="Pega tu ID de acceso" autocomplete="off" style="text-align:center;">
     <button class="btn btn-outline btn-block" onclick="loginAlumno()">🔑 Entrar a mi cuenta</button>
 </div></div>
-<div id="alumnoPanel" style="display:none;"><div class="profile-bar" style="padding:0.6rem 1rem;">
-    <div class="avatar av-purple" id="aluAvatar" style="width:38px;height:38px;font-size:1rem;">A</div>
+
+<!-- PANEL ALUMNO -->
+<div id="alumnoPanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;">
+    <div class="avatar av-purple" id="aluAvatar" style="width:40px;height:40px;font-size:1.1rem;">A</div>
     <div style="flex:1;"><strong id="aluName" style="font-size:0.85rem;"></strong><br><span class="text-muted" id="aluId" style="font-size:0.6rem;"></span></div>
     <button class="btn btn-outline btn-sm" onclick="verBuzonAlu()" title="Buzón">📬<span id="aluBuzonBadge" class="buzon-badge" style="display:none;">0</span></button>
     <button class="btn btn-danger btn-sm" onclick="logoutAlu()">🚪 Salir</button>
 </div>
-<div class="card" style="padding:1rem;"><div class="chat-box" id="chatBox" style="min-height:180px;"><div class="chat-msg bot">👋 ¡Hola! ¿Cómo te sientes? 💜</div></div><div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe..." onkeypress="if(event.key==='Enter')sendMsg()" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div></div>
-<div class="card" style="padding:1rem;"><select id="breathSelect" onchange="loadBreath()"><option value="">Respiración...</option></select><div id="breathInfo" style="display:none;"><div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div><p class="text-center text-muted" id="breathText">Toca</p></div></div>
-<div class="card" style="padding:1rem;"><div class="flex flex-wrap" id="moodSel"><button class="btn btn-outline btn-xs" onclick="setMood('😊',this)">😊</button><button class="btn btn-outline btn-xs" onclick="setMood('😢',this)">😢</button><button class="btn btn-outline btn-xs" onclick="setMood('😰',this)">😰</button><button class="btn btn-outline btn-xs" onclick="setMood('😠',this)">😠</button><button class="btn btn-outline btn-xs" onclick="setMood('😌',this)">😌</button></div><textarea id="diarioText" placeholder="Hoy..."></textarea><button class="btn btn-primary btn-block" onclick="saveDiary()">💾 Guardar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDiary()">📋 Ver</button><div id="diaryList"></div></div>
-<div class="card" style="padding:1rem;"><button class="btn btn-outline btn-block btn-sm" onclick="loadMisPlanes()">🎯 Mis planes</button><div id="misPlanesList"></div></div>
-<div class="card" style="padding:1rem;"><select id="paisSelect" onchange="loadLineas()"><option value="">Líneas ayuda...</option></select><div id="lineasList"></div></div>
-<div class="card" id="buzonAluCard" style="padding:1rem;" style="display:none;"><div class="card-row"><div class="card-icon c-purple">📬</div><div><div class="card-title">Buzón</div></div></div><div id="buzonAluList"></div></div></div></div>
 
-<!-- DOCENTES -->
+<!-- ASISTENTE IA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">🤖</div><div><div class="card-title">Asistente SANA</div><div class="card-sub">Habla conmigo, estoy aquí para escucharte</div></div></div>
+    <div class="chat-box" id="chatBox" style="min-height:200px;"><div class="chat-msg bot">👋 ¡Hola! Soy Sana. ¿Cómo te sientes hoy? 💜</div></div>
+    <div class="chat-input-row"><input type="text" id="chatInput" placeholder="Escribe lo que sientas..." onkeypress="if(event.key==='Enter')sendMsg()" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="sendMsg()">➤</button></div>
+</div>
+
+<!-- RESPIRACIÓN -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-green" style="width:42px;height:42px;">🫁</div><div><div class="card-title">Respiración Guiada</div><div class="card-sub">7 ejercicios para calmar tu mente</div></div></div>
+    <select id="breathSelect" onchange="loadBreath()"><option value="">Elige un ejercicio...</option></select>
+    <div id="breathInfo" style="display:none;"><div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div><p class="text-center text-muted" id="breathText">Toca el círculo para empezar</p></div>
+</div>
+
+<!-- DIARIO EMOCIONAL -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-pink" style="width:42px;height:42px;">📝</div><div><div class="card-title">Diario Emocional</div><div class="card-sub">Registra cómo te sientes, solo tú lo ves</div></div></div>
+    <div class="flex flex-wrap" id="moodSel">
+        <button class="btn btn-outline btn-xs" onclick="setMood('😊',this)">😊 Feliz</button>
+        <button class="btn btn-outline btn-xs" onclick="setMood('😢',this)">😢 Triste</button>
+        <button class="btn btn-outline btn-xs" onclick="setMood('😰',this)">😰 Ansioso</button>
+        <button class="btn btn-outline btn-xs" onclick="setMood('😠',this)">😠 Enojado</button>
+        <button class="btn btn-outline btn-xs" onclick="setMood('😌',this)">😌 Calma</button>
+    </div>
+    <textarea id="diarioText" placeholder="Hoy me siento..."></textarea>
+    <button class="btn btn-primary btn-block" onclick="saveDiary()">💾 Guardar entrada</button>
+    <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDiary()">📋 Ver mi diario</button>
+    <div id="diaryList"></div>
+</div>
+
+<!-- MIS PLANES -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎯</div><div><div class="card-title">Mis Planes</div><div class="card-sub">Planes de estudio asignados por tus docentes</div></div></div>
+    <button class="btn btn-outline btn-block btn-sm" onclick="loadMisPlanes()">📋 Ver mis planes</button>
+    <div id="misPlanesList"></div>
+</div>
+
+<!-- LÍNEAS DE AYUDA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🆘</div><div><div class="card-title">Líneas de Ayuda</div><div class="card-sub">45+ contactos en 8 países</div></div></div>
+    <select id="paisSelect" onchange="loadLineas()"><option value="">Selecciona tu país...</option></select>
+    <div id="lineasList"></div>
+</div>
+
+<!-- BUZÓN -->
+<div class="card" id="buzonAluCard" style="display:none;padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">📬</div><div><div class="card-title">Buzón</div><div class="card-sub">Mensajes de tus docentes</div></div></div>
+    <div id="buzonAluList"></div>
+</div>
+</div></div>
+
+<!-- DOCENTES --><!-- DOCENTES -->
 <div class="page" id="page-docentes"><div id="docenteLogin"><div class="section-title">👨‍🏫 Docentes</div><div class="card"><input type="text" id="docCodigo" placeholder="Código" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button><p id="docError" style="color:var(--red);font-size:0.6rem;display:none;"></p><div class="divider"></div><input type="text" id="docNombreReg" placeholder="Nombre" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar</button></div></div>
 <div id="docentePanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName"></strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-outline btn-sm" onclick="verBuzonDoc()">📬<span id="docBuzonBadge" class="buzon-badge" style="display:none;">0</span></button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
 <div id="avisosDocente"></div>
