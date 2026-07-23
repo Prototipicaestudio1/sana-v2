@@ -54,8 +54,8 @@
         @keyframes msgPop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
         .chat-msg.user{background:var(--purple2);align-self:flex-end;}.chat-msg.bot{background:rgba(255,255,255,0.07);align-self:flex-start;}
         .chat-input-row{display:flex;gap:0.3rem;}.chat-input-row input{margin-bottom:0;flex:1;}
-        .breath-circle{width:100px;height:100px;border-radius:50%;margin:0.6rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all 0.1s ease;box-shadow:0 0 20px rgba(124,58,237,0.35);}
-        .breath-circle.inhale{transform:scale(1.35);}.breath-circle.exhale{transform:scale(0.7);}
+        .breath-circle{width:110px;height:110px;border-radius:50%;margin:0.8rem auto;background:radial-gradient(circle at 40% 40%,var(--purple2),#2d0a5e);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;cursor:pointer;transition:all 0.3s ease;box-shadow:0 0 30px rgba(124,58,237,0.4);}
+        .breath-circle.inhale{transform:scale(1.45);box-shadow:0 0 50px rgba(110,231,183,0.5);transition:all 1.5s ease-in-out;}.breath-circle.exhale{transform:scale(0.7);box-shadow:0 0 15px rgba(124,58,237,0.2);transition:all 2s ease-in-out;}
         .entry-list{display:flex;flex-direction:column;gap:0.2rem;max-height:220px;overflow-y:auto;}
         .entry{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.45rem 0.6rem;font-size:0.68rem;display:flex;justify-content:space-between;align-items:flex-start;gap:0.3rem;}
         .entry .entry-info{flex:1;}
@@ -146,6 +146,9 @@
 <div class="card" style="padding:1.2rem;">
     <div class="card-row"><div class="card-icon c-green" style="width:42px;height:42px;">🫁</div><div><div class="card-title">Respiración Guiada</div><div class="card-sub">7 ejercicios para calmar tu mente</div></div></div>
     <select id="breathSelect" onchange="loadBreath()"><option value="">Elige un ejercicio...</option></select>
+<div id="breathGuide" style="text-align:center;font-size:0.7rem;color:var(--muted);margin-top:0.3rem;display:none;">
+    <span id="breathStep">Selecciona un ejercicio para empezar</span>
+</div>
     <div id="breathInfo" style="display:none;"><div class="breath-circle" id="breathCircle" onclick="toggleBreath()">🌿</div><p class="text-center text-muted" id="breathText">Toca el círculo para empezar</p></div>
 </div>
 
@@ -244,6 +247,15 @@
 <div class="toast" id="toast"></div>
 <script>
 const API='/api';const $=id=>document.getElementById(id);const LS=localStorage;
+
+let audioCtx=null;
+function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playTone(f,d,t="sine",v=0.1){try{const ctx=getAudio();const o=ctx.createOscillator();const g=ctx.createGain();o.type=t;o.frequency.setValueAtTime(f,ctx.currentTime);g.gain.setValueAtTime(v,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+d);}catch(e){}}
+function sndInhale(){playTone(180,1.2,"sine",0.08);setTimeout(()=>playTone(220,0.8,"sine",0.1),200);}
+function sndExhale(){playTone(220,0.5,"sine",0.1);setTimeout(()=>playTone(160,1.5,"sine",0.08),100);}
+function sndHold(){playTone(200,0.6,"triangle",0.05);}
+function sndComplete(){playTone(330,0.3,"sine",0.1);setTimeout(()=>playTone(440,0.3,"sine",0.1),200);setTimeout(()=>playTone(550,0.4,"sine",0.12),400);}
+
 const S={page:'home',mood:null,breathing:false,breathTimer:null,breathCycles:0,breathMax:4,alu:JSON.parse(LS.getItem('sa_alu')||'null'),doc:JSON.parse(LS.getItem('sa_doc')||'null'),dir:JSON.parse(LS.getItem('sa_dir')||'null'),primaria:JSON.parse(LS.getItem('sa_prim')||'null'),padre:JSON.parse(LS.getItem('sa_padre')||'null'),admin:false,exercise:null,archivoB64:null,archivoTipo:null,archivoNombre:null};
 (function(){const c=$('cosmos');for(let i=0;i<40;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-delay:${Math.random()*3}s`;c.appendChild(s);}
 if(S.alu)showAluPanel(true);if(S.doc){$('docenteLogin').style.display='none';$('docentePanel').style.display='block';$('docName').textContent=S.doc.escuela||'Docente';}
@@ -280,9 +292,9 @@ function logoutAlu(){S.alu=null;LS.removeItem('sa_alu');$('alumnoLogin').style.d
 async function sendMsg(){const i=$('chatInput'),m=i.value.trim();if(!m)return;addChat(m,'user');i.value='';i.focus();addChat('💬...','bot thinking');const d=await POST('/chat',{mensaje:m});document.querySelector('.thinking')?.remove();if(d)addChat(d.respuesta,'bot');}
 function addChat(t,ty){const b=$('chatBox'),d=document.createElement('div');d.className='chat-msg '+ty;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
 async function loadBreaths(){const d=await GET('/respiracion/lista');if(d)$('breathSelect').innerHTML='<option value="">Elige...</option>'+d.ejercicios.map(e=>`<option value="${e.clave}">${e.nombre}</option>`).join('');}
-async function loadBreath(){const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;S.exercise=d;$('breathInfo').style.display='block';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';$('breathText').textContent='Toca';stopBreath();}
+async function loadBreath(){const c=$('breathSelect').value;if(!c){$('breathInfo').style.display='none';return;}const d=await GET('/respiracion/info?ejercicio='+c);if(!d)return;S.exercise=d;$('breathInfo').style.display='block';$('breathCircle').className='breath-circle';$('breathCircle').textContent='🌿';$('breathText').textContent='Toca para empezar';$('breathGuide').style.display='block';$('breathStep').textContent='Preparado para '+d.nombre;stopBreath();}
 function toggleBreath(){if(S.breathing){stopBreath();return;}if(!S.exercise)return;startBreath();}
-function startBreath(){S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;function cycle(){if(!S.breathing)return;if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Listo!';return;}}const p=pasos[pi],c=$('breathCircle'),t=$('breathText');if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';}else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';}else{c.classList.remove('inhale','exhale');c.textContent='✋';}t.textContent=p.texto+' · '+(S.breathCycles+1)+'/'+S.breathMax;pi++;S.breathTimer=setTimeout(cycle,p.segundos*1000);}$('breathCircle').onclick=stopBreath;cycle();}
+function startBreath(){S.breathing=true;S.breathCycles=0;S.breathMax=S.exercise.ciclos||4;const pasos=S.exercise.pasos||[{texto:'Inhala',segundos:4},{texto:'Exhala',segundos:4}];let pi=0;function cycle(){if(!S.breathing)return;if(pi>=pasos.length){S.breathCycles++;pi=0;if(S.breathCycles>=S.breathMax){stopBreath();$('breathCircle').textContent='✨';$('breathText').textContent=S.exercise.frase_cierre||'¡Listo!';sndComplete();return;}}const p=pasos[pi],c=$('breathCircle'),t=$('breathText');if(p.texto.toLowerCase().includes('inhala')){c.classList.add('inhale');c.classList.remove('exhale');c.textContent='💨';sndInhale();}else if(p.texto.toLowerCase().includes('exhala')){c.classList.add('exhale');c.classList.remove('inhale');c.textContent='😮‍💨';sndExhale();}else{c.classList.remove('inhale','exhale');c.textContent='✋';sndHold();}t.textContent=p.texto+' · '+(S.breathCycles+1)+'/'+S.breathMax;try{document.getElementById('breathStep').textContent=p.texto;}catch(e){}pi++;S.breathTimer=setTimeout(cycle,p.segundos*1000);}$('breathCircle').onclick=stopBreath;cycle();}
 function stopBreath(){S.breathing=false;if(S.breathTimer){clearTimeout(S.breathTimer);S.breathTimer=null;}}
 function setMood(m,btn){S.mood=m;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));btn.classList.add('btn-primary');}
 async function saveDiary(){if(!S.alu)return;const t=$('diarioText').value.trim();if(!t&&!S.mood)return;const e={texto:t||'',emocion:S.mood||'😶',fecha:new Date().toISOString(),id:Date.now()};let l=JSON.parse(LS.getItem('sa_diary')||'[]');l.unshift(e);LS.setItem('sa_diary',JSON.stringify(l.slice(0,50)));$('diarioText').value='';S.mood=null;document.querySelectorAll('#moodSel .btn').forEach(b=>b.classList.remove('btn-primary'));loadDiary(true);toast('✅');POST('/diario/guardar',{user_id:S.alu.id,texto:e.texto,emocion:e.emocion});}
