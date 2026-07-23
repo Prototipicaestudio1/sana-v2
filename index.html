@@ -69,9 +69,9 @@
         .flex{display:flex;gap:0.3rem;}.flex-wrap{flex-wrap:wrap;}
         .aviso-card{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-radius:var(--radius-sm);padding:0.5rem;margin-bottom:0.3rem;border-left:3px solid var(--gold);}
         .buzon-badge{background:var(--red);color:#fff;border-radius:50%;padding:0.1rem 0.35rem;font-size:0.55rem;font-weight:700;margin-left:0.2rem;}
-        .game-card{background:rgba(147,197,253,0.05);border:1px solid rgba(147,197,253,0.2);border-radius:var(--radius-sm);padding:0.7rem;margin-bottom:0.3rem;cursor:pointer;transition:0.2s;display:flex;align-items:center;gap:0.5rem;}
-        .game-card:active{background:rgba(147,197,253,0.12);transform:scale(0.97);}
-        .game-icon{width:40px;height:40px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+        .game-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.4rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.6rem;box-shadow:var(--shadow);}
+        .game-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 12px 30px rgba(0,0,0,0.2);}.game-card:active{transform:scale(0.96);}
+        .game-icon{width:50px;height:50px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;background:rgba(147,197,253,0.1);}
         @media(max-width:400px){.home-grid{grid-template-columns:1fr 1fr;}}
 
         .theme-claro {
@@ -447,7 +447,11 @@
 </div>
 
 <!-- JUEGOS --><!-- JUEGOS -->
-<div class="page" id="page-juegos"><div class="section-title">🎮 Juegos</div><div id="juegosList"></div><div id="juegoFrame" style="display:none;"><button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button><div id="juegoContainer" style="width:100%;min-height:70vh;border-radius:1rem;overflow:hidden;"></div></div></div>
+<div class="page" id="page-juegos">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;margin-bottom:0.6rem;"><span style="font-size:1.8rem;">🎮</span> Juegos</div>
+<div class="card" style="padding:1rem;text-align:center;margin-bottom:0.5rem;">
+    <p style="font-size:0.75rem;color:var(--muted);">🎯 Selecciona un juego para jugar a pantalla completa</p>
+</div><div id="juegosList"></div><div id="juegoFrame" style="display:none;"><button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button><div id="juegoContainer" style="width:100%;min-height:70vh;border-radius:1rem;overflow:hidden;"></div></div></div>
 
 <!-- BIBLIOTECA -->
 <div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div><select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div><div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
