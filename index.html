@@ -269,14 +269,64 @@
 </div>
 </div></div>
 
-<!-- DIRECTOR --><!-- DIRECTOR -->
-<div class="page" id="page-director"><div id="directorLogin"><div class="section-title">👔 Director</div><div class="card"><input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button></div></div>
-<div id="directorPanel" style="display:none;"><div class="profile-bar" style="background:rgba(251,191,36,0.08);"><div class="avatar av-gold">👔</div><div><strong id="dirName"></strong></div><button class="btn btn-outline btn-sm" onclick="verBuzonDir()">📬</button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
-<div class="card"><input type="text" id="avisoTitulo" placeholder="Título"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver</button><div id="avisosList"></div></div>
-<div class="card"><input type="text" id="bajaCodigo" placeholder="Código a dar de baja"><input type="text" id="bajaMotivo" placeholder="Motivo"><button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button><button class="btn btn-green btn-block btn-sm mt-1" onclick="nuevoCodigo()">🆕 Nuevo</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="verReporte()">📊 Reporte</button><div id="bajasList"></div></div>
-<div class="card"><textarea id="dirBitacoraTexto" placeholder="Bitácora..."></textarea><button class="btn btn-primary btn-block" onclick="addDirBit()">📝 Registrar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDirBit()">📋 Ver</button><div id="dirBitList"></div></div></div></div>
+<!-- DIRECTOR -->
+<div class="page" id="page-director">
 
-<!-- PRIMARIA -->
+<!-- LOGIN -->
+<div id="directorLogin">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;"><span style="font-size:1.8rem;">👔</span> Director</div>
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">🏫</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Acceso Director</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Ingresa con el código de tu escuela</p>
+    <input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX" autocomplete="off" style="text-align:center;">
+    <button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar al panel</button>
+    <p id="dirError" style="color:var(--red);font-size:0.65rem;display:none;margin-top:0.3rem;"></p>
+</div></div>
+
+<!-- PANEL DIRECTOR -->
+<div id="directorPanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);">
+    <div class="avatar av-gold" style="width:40px;height:40px;font-size:1.1rem;">👔</div>
+    <div style="flex:1;"><strong id="dirName" style="font-size:0.85rem;"></strong><br><span class="text-muted" id="dirInfo" style="font-size:0.6rem;"></span></div>
+    <button class="btn btn-outline btn-sm" onclick="verBuzonDir()">📬</button>
+    <button class="btn btn-danger btn-sm" onclick="logoutDir()">🚪 Salir</button>
+</div>
+
+<!-- AVISOS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-gold" style="width:42px;height:42px;">📢</div><div><div class="card-title">Publicar Aviso</div><div class="card-sub">Los docentes de tu escuela lo verán</div></div></div>
+    <input type="text" id="avisoTitulo" placeholder="Título del aviso">
+    <textarea id="avisoMensaje" placeholder="Escribe el mensaje para tus docentes..."></textarea>
+    <button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar aviso</button>
+    <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver avisos publicados</button>
+    <div id="avisosList"></div>
+</div>
+
+<!-- GESTIÓN DOCENTES -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-red" style="width:42px;height:42px;">🔄</div><div><div class="card-title">Gestionar Docentes</div><div class="card-sub">Dar de baja y generar nuevos códigos</div></div></div>
+    <div style="display:flex;gap:0.4rem;"><input type="text" id="bajaCodigo" placeholder="Código a dar de baja" style="flex:1;"><input type="text" id="bajaMotivo" placeholder="Motivo" style="flex:1;"></div>
+    <button class="btn btn-danger btn-block" onclick="darBaja()">❌ Dar de baja</button>
+    <div style="display:flex;gap:0.4rem;margin-top:0.4rem;">
+        <button class="btn btn-green btn-sm" onclick="nuevoCodigo()" style="flex:1;">🆕 Generar nuevo código</button>
+        <button class="btn btn-outline btn-sm" onclick="verReporte()" style="flex:1;">📊 Ver reporte mensual</button>
+    </div>
+    <div id="bajasList"></div>
+</div>
+
+<!-- BITÁCORA DIRECTOR -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">📋</div><div><div class="card-title">Bitácora del Director</div><div class="card-sub">Registra entradas para administradores y docentes</div></div></div>
+    <textarea id="dirBitacoraTexto" placeholder="Escribe tu entrada..."></textarea>
+    <button class="btn btn-primary btn-block" onclick="addDirBit()">📝 Registrar entrada</button>
+    <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadDirBit()">📋 Ver bitácora</button>
+    <div class="flex mt-1"><input type="text" id="dirBitCompartirId" placeholder="ID entrada" style="flex:1;"><input type="text" id="dirBitCompartirCodigo" placeholder="Código" style="flex:1;"><button class="btn btn-green btn-sm" onclick="compartirDirBit()">🔗 Compartir</button></div>
+    <div id="dirBitList"></div>
+</div>
+</div></div>
+
+<!-- PRIMARIA --><!-- PRIMARIA -->
 <div class="page" id="page-primaria"><div class="section-title">🧒 Primaria</div><div class="flex mb-1"><button class="btn btn-primary btn-sm flex-1" id="tabDocente" onclick="switchPrimariaTab('docente')">👨‍🏫 Docente</button><button class="btn btn-outline btn-sm flex-1" id="tabPadre" onclick="switchPrimariaTab('padre')">👪 Padre</button></div>
 <div id="primariaDocenteTab"><div id="primariaLogin"><div class="card"><input type="text" id="primariaCodigo" placeholder="Código DOC-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button></div></div>
 <div id="primariaPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">P</div><div><strong id="primariaName"></strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPrimaria()">🚪</button></div>
