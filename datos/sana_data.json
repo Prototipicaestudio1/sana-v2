@@ -561,5 +561,58 @@
   "planes": [],
   "tareas": [],
   "red_apoyo": [],
-  "fecha": "2026-07-23T02:20:44.262228"
+  "fecha": "2026-07-23T02:20:44.262228",
+  "director": {
+    "avisos": [],
+    "bajas": [],
+    "bitacora_director": []
+  },
+  "primaria": {
+    "grupos": {
+      "GRP-001": {
+        "id": "GRP-001",
+        "escuela": "ESC-79ZBJ3",
+        "nombre": "Ejemplo",
+        "docente": "EPR José María Morelos xhaniro",
+        "fecha": "2026-07-23T02:20:44.261947",
+        "num_padres": 1,
+        "codigos_padres": [
+          "PAD-9VO6ZF"
+        ],
+        "padres": [
+          {
+            "nombre_padre": "Jaitan",
+            "nombre_nino": "Haiton",
+            "relacion": "Padre/Madre"
+          }
+        ]
+      }
+    },
+    "anuncios_padres": [],
+    "muro_tareas": {
+      "ESC-79ZBJ3": {
+        "GRP-001": []
+      }
+    },
+    "padres": {
+      "PAD-9VO6ZF": {
+        "codigo": "PAD-9VO6ZF",
+        "nombre_padre": "Jaitan",
+        "nombre_nino": "Haiton",
+        "relacion": "Padre/Madre",
+        "id_grupo": "GRP-001",
+        "escuela": "ESC-79ZBJ3",
+        "fecha": "2026-07-23T02:20:44.261936"
+      }
+    },
+    "fichas": {
+      "PAD-9VO6ZF": {
+        "tareas": [],
+        "puntos": 0,
+        "recompensas": []
+      }
+    }
+  },
+  "juegos": [],
+  "buzon": {}
 }
