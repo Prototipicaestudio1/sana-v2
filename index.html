@@ -457,14 +457,73 @@
 <div class="page" id="page-biblioteca"><div class="section-title">📚 Biblioteca</div><select id="filtroMateria" onchange="loadGuias()"><option value="">Todas las materias</option></select><div id="guiasList"></div><div class="divider"></div><button class="btn btn-outline btn-block btn-sm" onclick="loadPlanesPublicos()">🌍 Planes públicos</button><div id="planesPublicosList"></div></div>
 
 <!-- ADMIN -->
-<div class="page" id="page-admin"><div id="adminLock"><div class="section-title">⚙️ Admin</div><div class="card text-center"><div style="font-size:2.5rem;">🔐</div><input type="password" id="adminCode" placeholder="Código" style="text-align:center;"><button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder</button></div></div>
-<div id="adminPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-purple">A</div><div><strong>Admin</strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutAdmin()">🚪</button></div>
-<div class="card"><input type="text" id="escNombre" placeholder="Nombre"><input type="number" id="escDocs" value="3"><input type="number" id="escAdmins" value="1"><button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar</button><div id="escResult"></div></div>
-<button class="btn btn-outline btn-block btn-sm" onclick="listEsc()">📋 Escuelas</button><div id="escList"></div>
-<div class="card mt-1"><div class="card-row"><div class="card-icon c-blue">🎮</div><div><div class="card-title">Agregar Juego</div></div></div><input type="text" id="juegoTitulo" placeholder="Título"><select id="juegoCategoria"><option value="general">🎯 General</option><option value="primaria">🧒 Primaria</option><option value="secundaria">🎓 Secundaria</option><option value="respiracion">🫁 Respiración</option><option value="emociones">🧠 Emociones</option></select><textarea id="juegoHtml" placeholder="Código HTML..."></textarea><button class="btn btn-primary btn-block" onclick="agregarJuego()">🎮 Agregar</button></div>
-<div class="card"><div class="card-row"><div class="card-icon c-red">🗑️</div><div><div class="card-title">Borrar Juegos</div></div></div><div id="adminJuegosList"></div></div>
-<div class="card"><input type="text" id="borrarEscuelaCodigo" placeholder="Código a borrar"><button class="btn btn-danger btn-block" onclick="borrarEscuela()">🗑️ Borrar escuela</button></div></div></div>
+<div class="page" id="page-admin">
+
+<!-- LOGIN -->
+<div id="adminLock">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;"><span style="font-size:1.8rem;">⚙️</span> Administración</div>
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">🔐</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Panel de Administrador</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Ingresa el código maestro</p>
+    <input type="password" id="adminCode" placeholder="Código de administrador" style="text-align:center;">
+    <button class="btn btn-primary btn-block" onclick="verifyAdmin()">Acceder al panel</button>
+    <p id="adminError" style="color:var(--red);font-size:0.65rem;display:none;margin-top:0.3rem;">❌ Código incorrecto</p>
+</div></div>
+
+<!-- PANEL ADMIN -->
+<div id="adminPanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;">
+    <div class="avatar av-purple" style="width:40px;height:40px;font-size:1.1rem;">A</div>
+    <div style="flex:1;"><strong style="font-size:0.85rem;">Administrador</strong><br><span class="text-muted" style="font-size:0.6rem;">Control total del sistema</span></div>
+    <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">🚪 Salir</button>
 </div>
+
+<!-- REGISTRAR ESCUELA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">🏫</div><div><div class="card-title">Registrar Escuela</div><div class="card-sub">Crea una nueva escuela y genera códigos</div></div></div>
+    <input type="text" id="escNombre" placeholder="Nombre de la escuela">
+    <div style="display:flex;gap:0.4rem;">
+        <div style="flex:1;"><span style="font-size:0.6rem;color:var(--muted);">Nº Docentes</span><input type="number" id="escDocs" value="3" min="1"></div>
+        <div style="flex:1;"><span style="font-size:0.6rem;color:var(--muted);">Nº Administrativos</span><input type="number" id="escAdmins" value="1" min="1"></div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="regEsc()">🏫 Registrar escuela</button>
+    <div id="escResult"></div>
+</div>
+
+<!-- VER ESCUELAS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-green" style="width:42px;height:42px;">📋</div><div><div class="card-title">Escuelas Registradas</div><div class="card-sub">Gestiona las escuelas del sistema</div></div></div>
+    <button class="btn btn-outline btn-block btn-sm" onclick="listEsc()">📋 Ver todas las escuelas</button>
+    <div id="escList"></div>
+</div>
+
+<!-- AGREGAR JUEGO -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎮</div><div><div class="card-title">Agregar Juego</div><div class="card-sub">Sube un juego en formato HTML</div></div></div>
+    <input type="text" id="juegoTitulo" placeholder="Título del juego">
+    <select id="juegoCategoria"><option value="general">🎯 General</option><option value="primaria">🧒 Primaria</option><option value="secundaria">🎓 Secundaria</option><option value="respiracion">🫁 Respiración</option><option value="emociones">🧠 Emociones</option></select>
+    <textarea id="juegoHtml" placeholder="Pega aquí el código HTML del juego..." style="min-height:100px;"></textarea>
+    <button class="btn btn-primary btn-block" onclick="agregarJuego()">🎮 Agregar juego</button>
+</div>
+
+<!-- BORRAR JUEGOS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-red" style="width:42px;height:42px;">🗑️</div><div><div class="card-title">Gestionar Juegos</div><div class="card-sub">Elimina juegos del sistema</div></div></div>
+    <div id="adminJuegosList"></div>
+</div>
+
+<!-- BORRAR ESCUELA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-red" style="width:42px;height:42px;">🗑️</div><div><div class="card-title">Borrar Escuela</div><div class="card-sub">Elimina una escuela por su código</div></div></div>
+    <input type="text" id="borrarEscuelaCodigo" placeholder="Código de la escuela a borrar">
+    <button class="btn btn-danger btn-block" onclick="borrarEscuela()">🗑️ Borrar escuela</button>
+</div>
+</div></div>
+
+</div>
+
+<nav class="bottom-nav"></div>
 
 <nav class="bottom-nav">
 <button class="nav-item active" data-page="home"><span class="nav-emoji">🏠</span>Inicio</button>
