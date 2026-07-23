@@ -189,16 +189,87 @@
 </div>
 </div></div>
 
-<!-- DOCENTES --><!-- DOCENTES -->
-<div class="page" id="page-docentes"><div id="docenteLogin"><div class="section-title">👨‍🏫 Docentes</div><div class="card"><input type="text" id="docCodigo" placeholder="Código" autocomplete="off"><button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar</button><p id="docError" style="color:var(--red);font-size:0.6rem;display:none;"></p><div class="divider"></div><input type="text" id="docNombreReg" placeholder="Nombre" autocomplete="off"><button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar</button></div></div>
-<div id="docentePanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">D</div><div><strong id="docName"></strong><br><span class="text-muted" id="docInfo"></span></div><button class="btn btn-outline btn-sm" onclick="verBuzonDoc()">📬<span id="docBuzonBadge" class="buzon-badge" style="display:none;">0</span></button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDoc()">🚪</button></div>
-<div id="avisosDocente"></div>
-<div class="card"><select id="bitTipo"><option value="observacion">Observación</option><option value="reporte">Reporte</option><option value="recomendacion">Recomendación</option><option value="calificacion">Calificación</option></select><input type="text" id="bitAlumno" placeholder="Alumno"><input type="text" id="bitGrupo" placeholder="Grupo"><textarea id="bitTexto" placeholder="Texto..."></textarea><button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBit()">📋 Ver</button><div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID entrada"><input type="text" id="bitCompartirDestino" placeholder="ID/Código destino"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗 Compartir</button></div><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadBitCompartidas()">📋 Compartidas conmigo</button><div id="bitList"></div></div>
-<div class="card"><select id="guiaMateria"></select><input type="text" id="guiaTitulo" placeholder="Título"><textarea id="guiaContenido" placeholder="Contenido..."></textarea><select id="guiaVisibilidad"><option value="publico">🌍 Público</option><option value="privado">🔒 Privado</option></select><div class="file-upload" onclick="document.getElementById('guiaArchivo').click()" style="border:2px dashed var(--border);border-radius:1rem;padding:0.6rem;text-align:center;cursor:pointer;margin-bottom:0.3rem;"><span>📎</span><span id="fileName"></span></div><input type="file" id="guiaArchivo" accept=".pdf,image/*" style="display:none;" onchange="previewFile()"><button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar</button></div>
-<div class="card"><select id="planVisibilidad"><option value="privado">🔒 Privado</option><option value="publico">🌍 Público</option><option value="compartido">🔗 Compartido</option></select><input type="text" id="planAlumnoId" placeholder="ID alumno" style="display:none;"><input type="text" id="planNombre" placeholder="Nombre"><input type="text" id="planObjetivo" placeholder="Objetivo"><textarea id="planActividades" placeholder="Actividades..."></textarea><button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Mis planes</button><div id="planesDocenteList"></div></div>
-<div class="card" id="buzonDocCard" style="display:none;"><div class="card-row"><div class="card-icon c-purple">📬</div><div><div class="card-title">Buzón</div></div></div><div id="buzonDocList"></div></div></div></div>
+<!-- DOCENTES -->
+<div class="page" id="page-docentes">
 
-<!-- DIRECTOR -->
+<!-- LOGIN -->
+<div id="docenteLogin">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;"><span style="font-size:1.8rem;">👨‍🏫</span> Docentes</div>
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">🔐</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Acceso Docente</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Ingresa con tu código de profesor</p>
+    <input type="text" id="docCodigo" placeholder="Código (DOC-XXXXXX o ESC-XXXXXX)" autocomplete="off" style="text-align:center;">
+    <button class="btn btn-primary btn-block" onclick="loginDoc()">Ingresar al panel</button>
+    <p id="docError" style="color:var(--red);font-size:0.65rem;display:none;margin-top:0.3rem;"></p>
+    <div class="divider"></div>
+    <p style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:0.3rem;">¿Primera vez?</p>
+    <input type="text" id="docNombreReg" placeholder="Tu nombre completo" autocomplete="off" style="text-align:center;">
+    <button class="btn btn-green btn-block" onclick="regDoc()">📝 Registrar mi perfil</button>
+</div></div>
+
+<!-- PANEL DOCENTE -->
+<div id="docentePanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;">
+    <div class="avatar av-green" style="width:40px;height:40px;font-size:1.1rem;">D</div>
+    <div style="flex:1;"><strong id="docName" style="font-size:0.85rem;"></strong><br><span class="text-muted" id="docInfo" style="font-size:0.6rem;"></span></div>
+    <button class="btn btn-outline btn-sm" onclick="verBuzonDoc()">📬<span id="docBuzonBadge" class="buzon-badge" style="display:none;">0</span></button>
+    <button class="btn btn-danger btn-sm" onclick="logoutDoc()">🚪 Salir</button>
+</div>
+<div id="avisosDocente"></div>
+
+<!-- BITÁCORA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-green" style="width:42px;height:42px;">📋</div><div><div class="card-title">Bitácora Escolar</div><div class="card-sub">Registra observaciones de tus alumnos</div></div></div>
+    <select id="bitTipo"><option value="observacion">📝 Observación</option><option value="reporte">🚩 Reporte</option><option value="recomendacion">💡 Recomendación</option><option value="calificacion">📊 Calificación</option></select>
+    <div style="display:flex;gap:0.4rem;"><input type="text" id="bitAlumno" placeholder="Nombre del alumno" style="flex:1;"><input type="text" id="bitGrupo" placeholder="Grupo" style="flex:1;"></div>
+    <textarea id="bitTexto" placeholder="Describe la observación..."></textarea>
+    <button class="btn btn-primary btn-block" onclick="addBit()">📝 Registrar entrada</button>
+    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+        <button class="btn btn-outline btn-sm" onclick="loadBit()" style="flex:1;">📋 Ver bitácora</button>
+        <button class="btn btn-outline btn-sm" onclick="loadBitCompartidas()" style="flex:1;">🔗 Compartidas</button>
+    </div>
+    <div class="flex mt-1"><input type="text" id="bitCompartirId" placeholder="ID entrada" style="flex:1;"><input type="text" id="bitCompartirDestino" placeholder="ID/Código" style="flex:1;"><button class="btn btn-green btn-sm" onclick="compartirBit()">🔗</button></div>
+    <div id="bitList"></div>
+</div>
+
+<!-- PUBLICAR GUÍA -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-orange" style="width:42px;height:42px;">📤</div><div><div class="card-title">Publicar Guía de Estudio</div><div class="card-sub">Sube material para tus alumnos</div></div></div>
+    <select id="guiaMateria"></select>
+    <input type="text" id="guiaTitulo" placeholder="Título de la guía">
+    <textarea id="guiaContenido" placeholder="Escribe el contenido de la guía..."></textarea>
+    <select id="guiaVisibilidad"><option value="publico">🌍 Visible para todos</option><option value="privado">🔒 Solo para mí</option></select>
+    <div class="file-upload" onclick="document.getElementById('guiaArchivo').click()" style="border:2px dashed var(--border);border-radius:1rem;padding:0.8rem;text-align:center;cursor:pointer;margin-bottom:0.4rem;">
+        <span style="font-size:1.5rem;">📎</span>
+        <p class="text-muted">Adjuntar PDF o imagen (opcional)</p>
+        <span id="fileName" style="font-size:0.7rem;color:var(--green);"></span>
+    </div>
+    <input type="file" id="guiaArchivo" accept=".pdf,image/*" style="display:none;" onchange="previewFile()">
+    <button class="btn btn-green btn-block" onclick="addGuia()">📤 Publicar guía</button>
+</div>
+
+<!-- CREAR PLAN -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎯</div><div><div class="card-title">Crear Plan de Estudio</div><div class="card-sub">Planes personalizados para tus alumnos</div></div></div>
+    <select id="planVisibilidad"><option value="privado">🔒 Solo para mí</option><option value="publico">🌍 Visible para todos</option><option value="compartido">🔗 Compartir con alumno</option></select>
+    <input type="text" id="planAlumnoId" placeholder="ID del alumno (si es compartido)" style="display:none;">
+    <input type="text" id="planNombre" placeholder="Nombre del plan">
+    <input type="text" id="planObjetivo" placeholder="Objetivo del plan">
+    <textarea id="planActividades" placeholder="Actividades a realizar..."></textarea>
+    <button class="btn btn-green btn-block" onclick="addPlan()">🎯 Crear plan</button>
+    <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadMisPlanesDocente()">📋 Ver mis planes</button>
+    <div id="planesDocenteList"></div>
+</div>
+
+<!-- BUZÓN -->
+<div class="card" id="buzonDocCard" style="display:none;padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">📬</div><div><div class="card-title">Buzón</div><div class="card-sub">Mensajes recibidos</div></div></div>
+    <div id="buzonDocList"></div>
+</div>
+</div></div>
+
+<!-- DIRECTOR --><!-- DIRECTOR -->
 <div class="page" id="page-director"><div id="directorLogin"><div class="section-title">👔 Director</div><div class="card"><input type="text" id="dirCodigo" placeholder="Código ESC-XXXXXX"><button class="btn btn-gold btn-block" onclick="loginDir()">Ingresar</button></div></div>
 <div id="directorPanel" style="display:none;"><div class="profile-bar" style="background:rgba(251,191,36,0.08);"><div class="avatar av-gold">👔</div><div><strong id="dirName"></strong></div><button class="btn btn-outline btn-sm" onclick="verBuzonDir()">📬</button><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutDir()">🚪</button></div>
 <div class="card"><input type="text" id="avisoTitulo" placeholder="Título"><textarea id="avisoMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAviso()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAvisos()">📋 Ver</button><div id="avisosList"></div></div>
