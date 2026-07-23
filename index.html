@@ -326,20 +326,127 @@
 </div>
 </div></div>
 
-<!-- PRIMARIA --><!-- PRIMARIA -->
-<div class="page" id="page-primaria"><div class="section-title">🧒 Primaria</div><div class="flex mb-1"><button class="btn btn-primary btn-sm flex-1" id="tabDocente" onclick="switchPrimariaTab('docente')">👨‍🏫 Docente</button><button class="btn btn-outline btn-sm flex-1" id="tabPadre" onclick="switchPrimariaTab('padre')">👪 Padre</button></div>
-<div id="primariaDocenteTab"><div id="primariaLogin"><div class="card"><input type="text" id="primariaCodigo" placeholder="Código DOC-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button></div></div>
-<div id="primariaPanel" style="display:none;"><div class="profile-bar"><div class="avatar av-green">P</div><div><strong id="primariaName"></strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPrimaria()">🚪</button></div>
-<div class="card"><input type="text" id="grupoNombre" placeholder="Nombre (ej: 3°A)"><input type="number" id="numPadres" value="1" min="1" onchange="genPadresInputs()"><div id="padresInputs"></div><button class="btn btn-primary btn-block" onclick="crearGrupo()">➕ Crear grupo</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadGrupos()">📋 Ver grupos</button><select id="grupoSelect" onchange="loadTareas()" class="mt-1"><option value="">Selecciona grupo...</option></select><div id="gruposList"></div></div>
-<div class="card"><input type="text" id="anuncioPadresTitulo" placeholder="Título"><textarea id="anuncioPadresMensaje" placeholder="Mensaje..."></textarea><button class="btn btn-gold btn-block" onclick="publicarAnuncioPadres()">📢 Publicar</button><button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAnunciosPadres()">📋 Ver</button><div id="anunciosPadresList"></div></div>
-<div class="card"><div class="card-sub" id="tareasGrupoInfo">Selecciona grupo</div><input type="text" id="tareaTitulo" placeholder="Título"><input type="text" id="tareaDescripcion" placeholder="Descripción"><button class="btn btn-primary btn-block" onclick="agregarTarea()">📝 Agregar</button><div id="tareasList"></div></div></div></div>
-<div id="primariaPadreTab" style="display:none;"><div id="padreLogin"><div class="card"><input type="text" id="padreCodigo" placeholder="Código PAD-XXXXXX"><button class="btn btn-primary btn-block" onclick="loginPadre()">Ingresar</button></div></div>
-<div id="padrePanel" style="display:none;"><div class="profile-bar" style="background:rgba(147,197,253,0.08);"><div class="avatar av-blue">👪</div><div><strong id="padreName"></strong></div><button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="logoutPadre()">🚪</button></div>
-<div class="card"><div class="card-row"><div class="card-icon c-gold">📢</div><div class="card-title">Anuncios</div></div><div id="padreAnunciosList"></div></div>
-<div class="card"><div class="card-row"><div class="card-icon c-orange">📝</div><div class="card-title">Tareas</div></div><div id="padreTareasList"></div></div>
-<div class="card"><div class="card-row"><div class="card-icon c-purple">⭐</div><div class="card-title">Economía de Fichas</div></div><div class="fichas-card"><strong>⭐ <span id="fichasPuntos">0</span> pts</strong></div><input type="text" id="fichaTitulo" placeholder="Tarea"><input type="number" id="fichaPuntos" value="5" min="1"><input type="text" id="fichaRecompensa" placeholder="Recompensa"><button class="btn btn-primary btn-block" onclick="addFicha()">➕ Agregar</button><div id="fichasList"></div></div></div></div></div>
+<!-- PRIMARIA -->
+<div class="page" id="page-primaria">
+<div class="section-title" style="font-size:1.3rem;gap:0.5rem;margin-bottom:0.6rem;"><span style="font-size:1.8rem;">🧒</span> Primaria</div>
 
-<!-- JUEGOS -->
+<!-- TABS -->
+<div class="flex mb-1" style="gap:0.4rem;">
+    <button class="btn btn-primary btn-sm flex-1" id="tabDocente" onclick="switchPrimariaTab('docente')" style="padding:0.6rem;">👨‍🏫 Soy Docente</button>
+    <button class="btn btn-outline btn-sm flex-1" id="tabPadre" onclick="switchPrimariaTab('padre')" style="padding:0.6rem;">👪 Soy Padre</button>
+</div>
+
+<!-- ═══════════ TAB DOCENTE ═══════════ -->
+<div id="primariaDocenteTab">
+
+<!-- LOGIN DOCENTE -->
+<div id="primariaLogin">
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">🔐</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Acceso Docente de Primaria</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Usa tu código de profesor</p>
+    <input type="text" id="primariaCodigo" placeholder="Código DOC-XXXXXX" autocomplete="off" style="text-align:center;">
+    <button class="btn btn-primary btn-block" onclick="loginPrimaria()">Ingresar</button>
+</div></div>
+
+<!-- PANEL DOCENTE PRIMARIA -->
+<div id="primariaPanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;">
+    <div class="avatar av-green" style="width:40px;height:40px;font-size:1.1rem;">P</div>
+    <div style="flex:1;"><strong id="primariaName" style="font-size:0.85rem;"></strong><br><span class="text-muted" id="primariaInfo" style="font-size:0.6rem;"></span></div>
+    <button class="btn btn-danger btn-sm" onclick="logoutPrimaria()">🚪 Salir</button>
+</div>
+
+<!-- CREAR GRUPO -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">👥</div><div><div class="card-title">Crear Grupo</div><div class="card-sub">Define el grupo y los padres de familia</div></div></div>
+    <input type="text" id="grupoNombre" placeholder="Nombre del grupo (ej: 3°A)">
+    <div style="display:flex;gap:0.4rem;align-items:center;margin-bottom:0.4rem;">
+        <span style="font-size:0.75rem;color:var(--muted);white-space:nowrap;">Nº de padres:</span>
+        <input type="number" id="numPadres" value="1" min="1" max="20" onchange="genPadresInputs()" style="width:70px;text-align:center;">
+    </div>
+    <div id="padresInputs"></div>
+    <button class="btn btn-primary btn-block" onclick="crearGrupo()">➕ Crear grupo</button>
+    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+        <button class="btn btn-outline btn-sm" onclick="loadGrupos()" style="flex:1;">📋 Ver mis grupos</button>
+    </div>
+    <select id="grupoSelect" onchange="loadTareas()" class="mt-1"><option value="">Selecciona un grupo para ver tareas...</option></select>
+    <div id="gruposList"></div>
+</div>
+
+<!-- ANUNCIOS PADRES -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-gold" style="width:42px;height:42px;">📢</div><div><div class="card-title">Anuncio para Padres</div><div class="card-sub">Los padres de tu grupo lo verán</div></div></div>
+    <input type="text" id="anuncioPadresTitulo" placeholder="Título del anuncio">
+    <textarea id="anuncioPadresMensaje" placeholder="Mensaje para los padres de familia..."></textarea>
+    <button class="btn btn-gold btn-block" onclick="publicarAnuncioPadres()">📢 Publicar anuncio</button>
+    <button class="btn btn-outline btn-block btn-sm mt-1" onclick="loadAnunciosPadres()">📋 Ver anuncios</button>
+    <div id="anunciosPadresList"></div>
+</div>
+
+<!-- MURO DE TAREAS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-orange" style="width:42px;height:42px;">📝</div><div><div class="card-title">Muro de Tareas</div><div class="card-sub" id="tareasGrupoInfo">Selecciona un grupo primero</div></div></div>
+    <input type="text" id="tareaTitulo" placeholder="Título de la tarea">
+    <input type="text" id="tareaDescripcion" placeholder="Descripción breve">
+    <button class="btn btn-primary btn-block" onclick="agregarTarea()">📝 Agregar tarea</button>
+    <div id="tareasList"></div>
+</div>
+</div></div>
+
+<!-- ═══════════ TAB PADRE ═══════════ -->
+<div id="primariaPadreTab" style="display:none;">
+
+<!-- LOGIN PADRE -->
+<div id="padreLogin">
+<div class="card" style="padding:1.5rem;text-align:center;">
+    <span style="font-size:3rem;">👪</span>
+    <p style="font-weight:700;font-size:1rem;color:var(--text);margin:0.3rem 0;">Acceso Padres de Familia</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.8rem;">Ingresa el código que te dio el profesor</p>
+    <input type="text" id="padreCodigo" placeholder="Código PAD-XXXXXX" autocomplete="off" style="text-align:center;">
+    <button class="btn btn-primary btn-block" onclick="loginPadre()">Ingresar</button>
+</div></div>
+
+<!-- PANEL PADRE -->
+<div id="padrePanel" style="display:none;">
+<div class="profile-bar" style="padding:0.6rem 1rem;background:rgba(147,197,253,0.08);border:1px solid rgba(147,197,253,0.2);">
+    <div class="avatar av-blue" style="width:40px;height:40px;font-size:1.1rem;">👪</div>
+    <div style="flex:1;"><strong id="padreName" style="font-size:0.85rem;"></strong><br><span class="text-muted" id="padreInfo" style="font-size:0.6rem;"></span></div>
+    <button class="btn btn-danger btn-sm" onclick="logoutPadre()">🚪 Salir</button>
+</div>
+
+<!-- ANUNCIOS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-gold" style="width:42px;height:42px;">📢</div><div><div class="card-title">Anuncios del Profesor</div><div class="card-sub">Comunicados importantes</div></div></div>
+    <div id="padreAnunciosList"></div>
+</div>
+
+<!-- TAREAS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-orange" style="width:42px;height:42px;">📝</div><div><div class="card-title">Tareas del Grupo</div><div class="card-sub">Revisa las tareas asignadas</div></div></div>
+    <div id="padreTareasList"></div>
+</div>
+
+<!-- ECONOMÍA DE FICHAS -->
+<div class="card" style="padding:1.2rem;">
+    <div class="card-row"><div class="card-icon c-purple" style="width:42px;height:42px;">⭐</div><div><div class="card-title">Economía de Fichas</div><div class="card-sub">Sistema de puntos y recompensas para tu hijo</div></div></div>
+    <div style="background:rgba(167,139,250,0.08);border-radius:1rem;padding:0.6rem;text-align:center;margin-bottom:0.5rem;">
+        <span style="font-size:1.5rem;">⭐</span>
+        <span style="font-weight:900;font-size:1.3rem;color:var(--purple);" id="fichasPuntos">0</span>
+        <span style="font-size:0.7rem;color:var(--muted);">puntos acumulados</span>
+    </div>
+    <input type="text" id="fichaTitulo" placeholder="Nombre de la tarea o conducta">
+    <div style="display:flex;gap:0.4rem;">
+        <input type="number" id="fichaPuntos" value="5" min="1" placeholder="Puntos" style="flex:1;">
+        <input type="text" id="fichaRecompensa" placeholder="Recompensa (opcional)" style="flex:2;">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="addFicha()">➕ Agregar tarea</button>
+    <div id="fichasList"></div>
+</div>
+</div></div>
+</div>
+
+<!-- JUEGOS --><!-- JUEGOS -->
 <div class="page" id="page-juegos"><div class="section-title">🎮 Juegos</div><div id="juegosList"></div><div id="juegoFrame" style="display:none;"><button class="btn btn-outline btn-block btn-sm mb-1" onclick="cerrarJuego()">⬅ Volver</button><div id="juegoContainer" style="width:100%;min-height:70vh;border-radius:1rem;overflow:hidden;"></div></div></div>
 
 <!-- BIBLIOTECA -->
