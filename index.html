@@ -71,7 +71,12 @@
         .buzon-badge{background:var(--red);color:#fff;border-radius:50%;padding:0.1rem 0.35rem;font-size:0.55rem;font-weight:700;margin-left:0.2rem;}
         .game-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.4rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:0.6rem;box-shadow:var(--shadow);}
         .game-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 12px 30px rgba(0,0,0,0.2);}.game-card:active{transform:scale(0.96);}
-        .game-icon{width:50px;height:50px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;background:rgba(147,197,253,0.1);}
+        #dropZone:hover {
+    border-color: var(--gold) !important;
+    background: rgba(184,134,11,0.05) !important;
+    transform: scale(1.01);
+}
+.game-icon{width:50px;height:50px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;background:rgba(147,197,253,0.1);}
         @media(max-width:400px){.home-grid{grid-template-columns:1fr 1fr;}}
 
         .theme-claro {
@@ -500,10 +505,18 @@
 
 <!-- AGREGAR JUEGO -->
 <div class="card" style="padding:1.2rem;">
-    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎮</div><div><div class="card-title">Agregar Juego</div><div class="card-sub">Sube un juego en formato HTML</div></div></div>
+    <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎮</div><div><div class="card-title">Agregar Juego</div><div class="card-sub">Sube un archivo HTML con el juego</div></div></div>
     <input type="text" id="juegoTitulo" placeholder="Título del juego">
     <select id="juegoCategoria"><option value="general">🎯 General</option><option value="primaria">🧒 Primaria</option><option value="secundaria">🎓 Secundaria</option><option value="respiracion">🫁 Respiración</option><option value="emociones">🧠 Emociones</option></select>
-    <textarea id="juegoHtml" placeholder="Pega aquí el código HTML del juego..." style="min-height:100px;"></textarea>
+    <div style="border:2px dashed var(--border);border-radius:1rem;padding:1.2rem;text-align:center;cursor:pointer;margin-bottom:0.5rem;transition:all 0.3s;background:rgba(147,197,253,0.03);" 
+         onclick="document.getElementById('juegoArchivo').click()"
+         ondrop="handleDrop(event)" ondragover="handleDragOver(event)" id="dropZone">
+        <span style="font-size:2.5rem;">📁</span>
+        <p style="font-weight:600;color:var(--text);margin:0.3rem 0;">Selecciona o arrastra un archivo HTML</p>
+        <p style="font-size:0.65rem;color:var(--muted);" id="archivoNombre">Ningún archivo seleccionado</p>
+        <p style="font-size:0.6rem;color:var(--green);display:none;" id="archivoCargado">✅ Archivo cargado correctamente</p>
+    </div>
+    <input type="file" id="juegoArchivo" accept=".html,.htm" style="display:none;" onchange="cargarArchivoJuego()">
     <button class="btn btn-primary btn-block" onclick="agregarJuego()">🎮 Agregar juego</button>
 </div>
 
@@ -690,7 +703,62 @@ async function borrarEscuela(){const c=$('borrarEscuelaCodigo').value.trim();if(
 async function borrarEscuelaDir(cod){if(!confirm('¿Borrar?'))return;await GET('/escuelas/borrar?codigo='+cod);listEsc();}
 async function loadAdminJuegos(){const d=await GET('/juegos/lista');const c=$('adminJuegosList');if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted">Sin juegos</p>';return;}c.innerHTML='<div class="entry-list mt-1">'+d.juegos.map(j=>`<div class="entry"><div class="entry-info"><span style="font-size:1.2rem;">${ICONOS[j.categoria]||'🎮'}</span> <strong>${j.titulo}</strong> <span class="badge b-blue">${j.categoria||'general'}</span></div><button class="btn btn-danger btn-xs" onclick="borrarJuego(${j.id})">🗑️</button></div>`).join('')+'</div>';}
 async function borrarJuego(id){if(!confirm('¿Borrar este juego?'))return;await POST('/juegos/borrar',{id:id});loadAdminJuegos();loadJuegos();toast('🗑️ Borrado');}
-async function agregarJuego(){const t=$('juegoTitulo').value.trim(),h=$('juegoHtml').value.trim(),c=$('juegoCategoria').value;if(!t||!h)return toast('⚠️ Completa título y HTML');const r=await POST('/juegos/agregar',{titulo:t,descripcion:'',html_code:h,categoria:c});if(r&&r.guardado){$('juegoTitulo').value='';$('juegoHtml').value='';toast('✅ Agregado');loadAdminJuegos();}}
+let juegoHTMLContent = '';
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('dropZone').style.borderColor = 'var(--gold)';
+    document.getElementById('dropZone').style.background = 'rgba(184,134,11,0.05)';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('dropZone').style.borderColor = 'var(--border)';
+    document.getElementById('dropZone').style.background = 'rgba(147,197,253,0.03)';
+    const file = e.dataTransfer.files[0];
+    if (file) procesarArchivo(file);
+}
+
+function cargarArchivoJuego() {
+    const file = document.getElementById('juegoArchivo').files[0];
+    if (file) procesarArchivo(file);
+}
+
+function procesarArchivo(file) {
+    if (!file.name.endsWith('.html') && !file.name.endsWith('.htm')) {
+        toast('⚠️ Solo se permiten archivos HTML');
+        return;
+    }
+    document.getElementById('archivoNombre').textContent = '📄 ' + file.name;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        juegoHTMLContent = e.target.result;
+        document.getElementById('archivoCargado').style.display = 'block';
+        document.getElementById('archivoNombre').style.color = 'var(--green)';
+        toast('✅ Archivo cargado: ' + file.name);
+    };
+    reader.readAsText(file);
+}
+
+async function agregarJuego(){
+    const t = document.getElementById('juegoTitulo').value.trim();
+    const c = document.getElementById('juegoCategoria').value;
+    if (!t) return toast('⚠️ Pon un título');
+    if (!juegoHTMLContent) return toast('⚠️ Selecciona un archivo HTML');
+    const r = await POST('/juegos/agregar', {titulo: t, descripcion: '', html_code: juegoHTMLContent, categoria: c});
+    if (r && r.guardado) {
+        document.getElementById('juegoTitulo').value = '';
+        document.getElementById('juegoArchivo').value = '';
+        document.getElementById('archivoNombre').textContent = 'Ningún archivo seleccionado';
+        document.getElementById('archivoCargado').style.display = 'none';
+        document.getElementById('archivoNombre').style.color = 'var(--muted)';
+        juegoHTMLContent = '';
+        toast('✅ Juego agregado correctamente');
+        loadAdminJuegos();
+    }
+}
 </script>
 </body>
 </html>
