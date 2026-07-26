@@ -507,17 +507,7 @@
 <div class="card" style="padding:1.2rem;">
     <div class="card-row"><div class="card-icon c-blue" style="width:42px;height:42px;">🎮</div><div><div class="card-title">Agregar Juego</div><div class="card-sub">Sube un archivo HTML con el juego</div></div></div>
     <input type="text" id="juegoTitulo" placeholder="Título del juego">
-    <div style="margin-bottom:0.5rem;">
-    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:0.2rem;">Categoría del juego:</p>
-    <div class="flex flex-wrap" style="gap:0.3rem;" id="catSelector">
-        <button class="btn btn-xs btn-outline cat-btn active" onclick="seleccionarCategoria('general',this)">🎯 General</button>
-        <button class="btn btn-xs btn-outline cat-btn" onclick="seleccionarCategoria('primaria',this)">🧒 Primaria</button>
-        <button class="btn btn-xs btn-outline cat-btn" onclick="seleccionarCategoria('secundaria',this)">🎓 Secundaria</button>
-        <button class="btn btn-xs btn-outline cat-btn" onclick="seleccionarCategoria('respiracion',this)">🫁 Respiración</button>
-        <button class="btn btn-xs btn-outline cat-btn" onclick="seleccionarCategoria('emociones',this)">🧠 Emociones</button>
-    </div>
-    <input type="hidden" id="juegoCategoria" value="general">
-</div>
+    <select id="juegoCategoria"><option value="general">🎯 General</option><option value="primaria">🧒 Primaria</option><option value="secundaria">🎓 Secundaria</option><option value="respiracion">🫁 Respiración</option><option value="emociones">🧠 Emociones</option></select>
     <div style="border:2px dashed var(--border);border-radius:1rem;padding:1.2rem;text-align:center;cursor:pointer;margin-bottom:0.5rem;transition:all 0.3s;background:rgba(147,197,253,0.03);" 
          onclick="document.getElementById('juegoArchivo').click()"
          ondrop="handleDrop(event)" ondragover="handleDragOver(event)" id="dropZone">
@@ -686,55 +676,7 @@ async function delFicha(id){if(!S.padre)return;await GET('/primaria/fichas-elimi
 
 // JUEGOS
 const ICONOS={general:'🎯',primaria:'🧒',secundaria:'🎓',respiracion:'🫁',emociones:'🧠'};
-let juegoFiltroActual = 'todos';
-let todosLosJuegos = [];
-
-function filtrarJuegos(cat) {
-    juegoFiltroActual = cat;
-    // Actualizar tabs
-    document.querySelectorAll('#juegoTabs .btn').forEach(b => b.className = 'btn btn-sm btn-outline');
-    document.getElementById('tab' + cat.charAt(0).toUpperCase() + cat.slice(1)).className = 'btn btn-sm btn-primary';
-    // Filtrar y mostrar
-    const filtrados = cat === 'todos' ? todosLosJuegos : todosLosJuegos.filter(j => j.categoria === cat);
-    renderizarJuegos(filtrados);
-    document.getElementById('juegoCount').textContent = filtrados.length + ' juego(s) en esta categoría';
-}
-
-function renderizarJuegos(lista) {
-    const c = document.getElementById('juegosList');
-    if (!lista.length) {
-        c.innerHTML = '<div class="card" style="text-align:center;padding:2rem;"><span style="font-size:3rem;">🎮</span><p style="color:var(--muted);margin-top:0.5rem;">No hay juegos en esta categoría</p></div>';
-        return;
-    }
-    c.innerHTML = '<div class="entry-list">' + lista.map(j => `
-        <div class="game-card" onclick="verJuego(${j.id})">
-            <div class="game-icon">${ICONOS[j.categoria] || '🎮'}</div>
-            <div style="flex:1;">
-                <strong>${j.titulo}</strong>
-                <br><span class="text-muted">${j.descripcion || ''} · ${j.categoria || 'general'}</span>
-            </div>
-            <span style="font-size:1.5rem;">▶️</span>
-        </div>
-    `).join('') + '</div>';
-}
-
-function seleccionarCategoria(cat, btn) {
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('juegoCategoria').value = cat;
-}
-async function loadJuegos(){
-    const d = await GET('/juegos/lista');
-    document.getElementById('juegoFrame').style.display = 'none';
-    document.getElementById('juegosList').style.display = 'block';
-    if (!d || !d.juegos || !d.juegos.length) {
-        document.getElementById('juegosList').innerHTML = '<div class="card" style="text-align:center;padding:2rem;"><span style="font-size:3rem;">🎮</span><p style="color:var(--muted);margin-top:0.5rem;">No hay juegos aún</p></div>';
-        document.getElementById('juegoCount').textContent = '0 juegos';
-        return;
-    }
-    todosLosJuegos = d.juegos;
-    filtrarJuegos(juegoFiltroActual);
-}
+async function loadJuegos(){const d=await GET('/juegos/lista');const c=$('juegosList');$('juegoFrame').style.display='none';$('juegosList').style.display='block';if(!d||!d.juegos||!d.juegos.length){c.innerHTML='<p class="text-muted text-center mt-1">🎮 No hay juegos aún</p>';return;}c.innerHTML='<div class="entry-list">'+d.juegos.map(j=>`<div class="game-card" onclick="verJuego(${j.id})"><div class="game-icon">${ICONOS[j.categoria]||'🎮'}</div><div style="flex:1;"><strong>${j.titulo}</strong><br><span class="text-muted">${j.descripcion||''} · ${j.categoria||'general'}</span></div></div>`).join('')+'</div>';}
 async function verJuego(id){
     const d=await GET('/juegos/ver?id='+id);
     if(!d||!d.juego)return;
@@ -820,4 +762,3 @@ async function agregarJuego(){
 </script>
 </body>
 </html>
- 
